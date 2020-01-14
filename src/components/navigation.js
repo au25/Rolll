@@ -9,6 +9,8 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   list: {
@@ -16,19 +18,49 @@ const useStyles = makeStyles({
   },
   fullList: {
     width: "auto"
-  }, 
+  },
+  welcomeMsgContainer: {
+    padding: "15px"
+  },
+  loginContainer: {
+    display: "flex",
+    padding: "15px"
+  },
+  loginIcon: {
+    backgroundColor: "grey",
+    width: "15px",
+    height: "15px",
+    margin: "0 10px 0 0"
+  },
+  signupContainer: {
+    display: "flex",
+    padding: "15px"
+  },
+  signupIcon: {
+    backgroundColor: "grey",
+    width: "15px",
+    height: "15px",
+    margin: "0 10px 0 0"
+  },
+  forBusinessContainer: {
+    display: "flex",
+    padding: "15px"
+  },
+  forBusinessIcon: {
+    backgroundColor: "grey",
+    width: "15px",
+    height: "15px",
+    margin: "0 10px 0 0"
+  },
   navigationContainer: {
-      display: "flex",
-      justifyContent: "flex-end"
+    display: "flex",
+    justifyContent: "flex-end"
   }
 });
 
 export default function SwipeableTemporaryDrawer() {
   const classes = useStyles();
   const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
     right: false
   });
 
@@ -51,72 +83,65 @@ export default function SwipeableTemporaryDrawer() {
       onClick={toggleDrawer(side, false)}
       onKeyDown={toggleDrawer(side, false)}
     >
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      <div className={classes.welcomeMsgContainer}>Welcome!</div>
+      <div className={classes.loginSingupContainer}>
+        <div className={classes.loginContainer}>
+          <div className={classes.loginIcon}></div>
+          <Link to="/login">
+            <button>Log in</button>
+          </Link>
+        </div>
+        <div className={classes.signupContainer}>
+          <div className={classes.signupIcon}></div>
+          <Link to="/signup">
+            <button>Sign up</button>
+          </Link>
+        </div>
+      </div>
       <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
+      <div className={classes.forBusinessContainer}>
+        <div className={classes.forBusinessIcon}></div>
+        <Link to="/forBusiness">
+          <button>For Business</button>
+        </Link>
+      </div>
     </div>
   );
 
-  const fullList = side => (
-    <div
-      className={classes.fullList}
-      role="presentation"
-      onClick={toggleDrawer(side, false)}
-      onKeyDown={toggleDrawer(side, false)}
-    >
-      <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
+  /**
+   * Media Queries
+   */
+  const max600 = useMediaQuery("(max-width:600px)");
+  const min600 = useMediaQuery("(min-width:600px)");
 
   return (
     <div className={classes.navigationContainer}>
-      <Button onClick={toggleDrawer("right", true)}>Menu</Button>
-      <SwipeableDrawer
-        anchor="right"
-        open={state.right}
-        onClose={toggleDrawer("right", false)}
-        onOpen={toggleDrawer("right", true)}
-      >
-        {sideList("right")}
-      </SwipeableDrawer>
+      {max600 && (
+        <div>
+          <Button onClick={toggleDrawer("right", true)}>Menu</Button>
+          <SwipeableDrawer
+            anchor="right"
+            open={state.right}
+            onClose={toggleDrawer("right", false)}
+            onOpen={toggleDrawer("right", true)}
+          >
+            {sideList("right")}
+          </SwipeableDrawer>
+        </div>
+      )}
+      {min600 && (
+        <div>
+          <Button onClick={toggleDrawer("right", true)}>LOL</Button>
+          <SwipeableDrawer
+            anchor="right"
+            open={state.right}
+            onClose={toggleDrawer("right", false)}
+            onOpen={toggleDrawer("right", true)}
+          >
+            {sideList("right")}
+          </SwipeableDrawer>
+        </div>
+      )}
     </div>
   );
 }
