@@ -81,6 +81,7 @@ const SignUp = ({ history }) => {
   });
 
   async function accountSignup(e) {
+      console.log("signing up...");
     e.preventDefault();
     try {
       await app
@@ -93,7 +94,7 @@ const SignUp = ({ history }) => {
   }
 
   return (
-    <form className={classes.signupFormContainer} noValidate onSubmit={accountSignup}>
+    <form className={classes.signupFormContainer} noValidate>
       <CssTextField
         label="Email"
         onChange={e => setValue({ ...value, email: e.target.value })}
@@ -108,7 +109,7 @@ const SignUp = ({ history }) => {
         label="Confirm Password"
         onChange={e => setValue({ ...value, confirmPassword: e.target.value })}
       />
-      <Button variant="contained">
+      <Button variant="contained" onClick={accountSignup}>
         SIGN UP
       </Button>
     </form>
