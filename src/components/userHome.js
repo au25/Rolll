@@ -1,12 +1,33 @@
-import React from 'react';
+import React from "react";
 import app from "../firebase";
+import {makeStyles} from "@material-ui/core/styles";
+import Gift from "./gift";
 
-export default function(){
-    return (
-        <div>
-            This is the user home page after signning up.
-            <br></br>
-            <button onClick={()=> app.auth().signOut()}>Log out</button>
-        </div>
-    )
+const useStyles = makeStyles({
+  userHomeContainer: {
+    display: "flex",
+    flexDirection: "column"
+  }
+})
+
+export default function() {
+const classes = useStyles();
+
+  return (
+    <div className={classes.userHomeContainer}>
+      This is the user home page after signning up.
+      <br></br>
+      <div className={classes.giftContainer}>
+        <Gift />
+      </div>
+      <button
+        onClick={e => {
+          e.preventDefault();
+          app.auth().signOut();
+        }}
+      >
+        Log out
+      </button>
+    </div>
+  );
 }

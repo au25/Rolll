@@ -81,10 +81,9 @@ const SignUp = ({ history }) => {
   });
 
   async function accountSignup(e) {
-      console.log("signing up...");
     e.preventDefault();
     try {
-      await app
+      const credential = await app
         .auth()
         .createUserWithEmailAndPassword(value.email, value.password);
       history.push("/");

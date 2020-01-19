@@ -10,6 +10,8 @@ import Signup from "./components/signup";
 import ForBusiness from "./components/forBusiness";
 import UserHome from "./components/userHome";
 
+import Gift from "./components/gift";
+
 function App() {
   return (
     <AuthProvider>
@@ -21,6 +23,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route path="/forBusiness" component={ForBusiness} />
+          {/* <Gift /> */}
         </div>
       </Router>
     </AuthProvider>

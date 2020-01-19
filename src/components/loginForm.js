@@ -82,10 +82,9 @@ const SignUp = ({ history }) => {
   });
 
   async function accountSignup(e) {
-      console.log("signing up...");
     e.preventDefault();
     try {
-      await app
+      const credential = await app
         .auth()
         .signInWithEmailAndPassword(value.email, value.password);
       history.push("/");
@@ -94,11 +93,17 @@ const SignUp = ({ history }) => {
     }
   }
 
+  /**
+   * If user is logged in, route to user home page
+   */
   const { currentUser } = useContext(AuthContext);
   if (currentUser){
       return <Redirect to="/" />
   }
 
+  /**
+   * Returns the form for logging in
+   */
   return (
     <form className={classes.signupFormContainer} noValidate>
       <CssTextField
