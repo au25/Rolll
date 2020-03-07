@@ -7,8 +7,9 @@ import Navigation from "./components/navigation";
 import Home from "./components/home";
 import Login from "./components/login";
 import Signup from "./components/signup";
-import ForBusiness from "./components/forBusiness";
+import ForBusiness from "./components/Business/businessInfoPage";
 import UserHome from "./components/userHome";
+import RegisterBusiness from "./components/Business/registerBusinessPage";
 
 import Gift from "./components/gift";
 
@@ -22,7 +23,8 @@ function App() {
           <Route path="/home" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
-          <Route path="/forBusiness" component={ForBusiness} />
+          <Route path="/businessHome" component={ForBusiness} />
+          <Route path="/registerBusiness" component={RegisterBusiness} />
           {/* <Gift /> */}
         </div>
       </Router>

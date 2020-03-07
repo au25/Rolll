@@ -95,7 +95,7 @@ export default function SwipeableTemporaryDrawer() {
       <Divider />
       <div className={classes.forBusinessContainer}>
         <div className={classes.forBusinessIcon}></div>
-        <Link to="/forBusiness">
+        <Link to="/businessHome">
           <button>For Business</button>
         </Link>
       </div>

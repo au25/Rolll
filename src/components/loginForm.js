@@ -75,18 +75,17 @@ const ValidationTextField = withStyles({
  */
 const SignUp = ({ history }) => {
   const classes = useStyles();
-  const [value, setValue] = useState({
+  const [loginValue, setLoginValue] = useState({
     password: "",
-    confirmPassword: "",
     email: ""
   });
 
-  async function accountSignup(e) {
+  async function userLogin(e) {
     e.preventDefault();
     try {
       const credential = await app
         .auth()
-        .signInWithEmailAndPassword(value.email, value.password);
+        .signInWithEmailAndPassword(loginValue.email, loginValue.password);
       history.push("/");
     } catch (error) {
       console.log(error);
@@ -97,8 +96,10 @@ const SignUp = ({ history }) => {
    * If user is logged in, route to user home page
    */
   const { currentUser } = useContext(AuthContext);
-  if (currentUser){
-      return <Redirect to="/" />
+  if (currentUser) {
+    console.log("User Info?");
+    console.log(currentUser);
+    return <Redirect to="/" />;
   }
 
   /**
@@ -108,14 +109,16 @@ const SignUp = ({ history }) => {
     <form className={classes.signupFormContainer} noValidate>
       <CssTextField
         label="Email"
-        onChange={e => setValue({ ...value, email: e.target.value })}
+        onChange={e => setLoginValue({ ...loginValue, email: e.target.value })}
       />
       <CssTextField
         type="password"
         label="Password"
-        onChange={e => setValue({ ...value, password: e.target.value })}
+        onChange={e =>
+          setLoginValue({ ...loginValue, password: e.target.value })
+        }
       />
-      <Button variant="contained" onClick={accountSignup}>
+      <Button variant="contained" onClick={userLogin}>
         LOG IN
       </Button>
     </form>

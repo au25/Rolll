@@ -1,17 +1,19 @@
-import React from "react";
+import React, {useContext} from "react";
 import app from "../firebase";
-import {makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Gift from "./gift";
+import {AuthContext} from "../Auth";
 
 const useStyles = makeStyles({
   userHomeContainer: {
     display: "flex",
     flexDirection: "column"
   }
-})
+});
 
 export default function() {
-const classes = useStyles();
+  const { currentUser } = useContext(AuthContext);
+  const classes = useStyles();
 
   return (
     <div className={classes.userHomeContainer}>

@@ -1,0 +1,19 @@
+Feb 15, 2020
+
+Read location from DB and added it as dropdown select items
+
+Next time:
+
+Render gifts based on selection
+Render and add municipals as drop down selection to filter gifts
+Business creation and login page
+
+Bug:
+    - Determine account login type and route to appropiate page 
+      (ex. user acc to user home and business acc to business home)
+
+lol@ok.com
+123123
+
+bacc@ok.com
+123123

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -6,6 +6,7 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Select from "@material-ui/core/Select";
 import app from "../firebase";
+import { AuthContext } from "../Auth";
 
 const useStyles = makeStyles({
   giftContainer: {
@@ -34,42 +35,81 @@ const useStyles = makeStyles({
 
 export default function() {
   const classes = useStyles();
-  const [snapshot, setSnapshot] = useState([]);
+  const [giftSnapshot, setGiftSnapshot] = useState([]);
+  const [userSnapshot, setUserSnapshot] = useState([]);
   const [gift, setGift] = useState([]);
   const [userSelection, setUserSelection] = useState([]);
+  const [location, setLocation] = useState([]);
   const db = app.firestore();
+  const { currentUser } = useContext(AuthContext);
+
+  const user = db.collection("user").doc(currentUser.uid);
+  const userFireBaseSnapShot = db.collec;
 
   // Happens before component mounts
   // Saves a snapshot of gift as state
   useEffect(() => {
-    async function fetchData() {
-      const snapshot = await db.collection("gift").get();
-      const docs = snapshot.docs;
-      for (let i = 0; i < 2; i++) {
-        setSnapshot(snapshot => [
+    async function fetchGiftData() {
+      const giftSnapshot = await db.collection("gift").get();
+      const giftDocs = giftSnapshot.docs;
+      for (let i = 0; i < giftDocs.length; i++) {
+        setGiftSnapshot(snapshot => [
           ...snapshot,
           {
-            id: docs[i].id,
-            shopName: docs[i].data().name,
-            location: docs[i].data().location,
-            giftDescription: docs[i].data().giftDescription
+            id: giftDocs[i].id,
+            shopName: giftDocs[i].data().name,
+            location: giftDocs[i].data().location,
+            giftDescription: giftDocs[i].data().giftDescription
           }
         ]);
       }
     }
-    fetchData();
+
+    async function fetchUserData() {
+      const userDoc = await user.get();
+      // console.log(userDoc.data().giftLocationView);
+      setUserSnapshot(snapshot => [
+        ...snapshot,
+        {
+          email: userDoc.data().email,
+          giftLocationView: userDoc.data().giftLocationView
+        }
+      ]);
+    }
+
+    async function fetchLocationData() {
+      const locationDoc = await db.collection("location").get();
+      const locationDocs = locationDoc.docs;
+      const locationArray = locationDocs[0].data();
+      console.log(Object.keys(locationArray));
+      console.log(Object.keys(locationArray).length);
+
+      for (let i = 0; i < Object.keys(locationArray).length; i++) {
+        console.log(i);
+        setLocation(location => [
+          ...location,
+          {
+            [Object.keys(locationArray)[i]]: Object.values(locationArray)[i]
+          }
+        ]);
+      }
+    }
+
+    fetchGiftData();
+    fetchUserData();
+    fetchLocationData();
   }, []);
 
-  // To do next time: call function after setState
-  // Render location divs according to dropdown input
   const handleChange = event => {
+    const locationPref = event.target.value;
     setUserSelection({
-      city: event.target.value
+      city: locationPref
     });
+    console.log(locationPref);
   };
 
   function RenderGift() {
-    return snapshot.map(data => (
+    return giftSnapshot.map(data => (
       <div className={classes.individualGiftContainer}>
         <div className={classes.giftImgShopName}>
           <div className={classes.giftImg}></div>
@@ -90,10 +130,14 @@ export default function() {
   return (
     <div className={classes.giftContainer}>
       <FormControl className={classes.formControl}>
+        {/*   Location is an array holding an city array
+              City : Municipal is key value pair within the city array
+              Map the array, and callback returns */}
         <NativeSelect onChange={handleChange}>
           <option value="">City</option>
-          <option value={"richmond"}>richmond</option>
-          <option value={"burnaby"}>burnaby</option>
+          {location.map(x => (
+            <option value={Object.keys(x)}>{Object.keys(x)}</option>
+          ))}
         </NativeSelect>
       </FormControl>
       <React.Fragment>
