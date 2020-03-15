@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AdminLoginForm from "./adminLoginForm";
 import { AuthContext } from "../../Auth";
 import { withRouter, Redirect, useHistory } from "react-router";
-// import { useHistory } from "react-router-dom;";
+import Navigation from "../landingPageNavigation";
 
 const useStyles = makeStyles({
   signupPageContainer: {
@@ -37,6 +37,7 @@ export default function() {
 
   return (
     <div className={classes.signupPageContainer}>
+      <Navigation />
       <div className={classes.formContainer}>
         <AdminLoginForm />
       </div>

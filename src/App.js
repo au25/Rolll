@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthProvider, AuthContext } from "../src/Auth";
 import PrivateRoute from "./PrivateRoute";
 
-import Navigation from "./components/navigation";
+import Navigation from "./components/landingPageNavigation";
 import Home from "./components/home";
-import Login from "./components/User/userLogin";
+import Login from "./components/User/userLoginPage";
 import Signup from "./components/User/userSignupPage";
 
 // Admin imports
@@ -28,7 +28,6 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="App">
-          <Navigation />
           <PrivateRoute path="/" exact component={Home} />
           <Route path="/home" component={Home} />
           <Route path="/login" component={Login} />

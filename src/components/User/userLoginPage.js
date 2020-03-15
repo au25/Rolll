@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import LoginForm from "./userLoginForm";
+import Navigation from "../landingPageNavigation";
 
 const useStyles = makeStyles({
   signupPageContainer: {
@@ -23,6 +24,7 @@ export default function() {
   const classes = useStyles();
   return (
     <div className={classes.signupPageContainer}>
+      <Navigation />
       <button className={classes.fbButton}>Log in with Facebook</button>
       <button className={classes.googleButton}>Log in with Google</button>
       <br />

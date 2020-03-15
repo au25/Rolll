@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../Auth";
 import { Redirect, useHistory } from "react-router";
+import Navigation from "./landingPageNavigation";
 
 export default function() {
   /**
@@ -24,5 +25,10 @@ export default function() {
     });
   }
 
-  return <div>This is the home page.</div>;
+  return (
+    <div>
+      <Navigation />
+      This is the home page.
+    </div>
+  );
 }
