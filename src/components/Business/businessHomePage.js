@@ -4,12 +4,12 @@ import { setupUI } from "../setupUI";
 import firebase from "../../firebase";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
+import BusinessNavigation from "./businessNavigation";
 
 const useStyles = makeStyles({
-  unapprovedShop: {},
-  approvedShop: {
-    display: "none"
-  }
+contentContainer: {
+  height: "600px"
+}
 });
 
 export default function() {
@@ -19,7 +19,7 @@ export default function() {
 
   return (
     <div>
-      <div>This is the APPROVED div container yayyyyyyyyy.</div>
+      <div className={classes.contentContainer}>This is the APPROVED div container yayyyyyyyyy.</div>
       <button
         onClick={async e => {
           e.preventDefault();
@@ -29,6 +29,7 @@ export default function() {
       >
         Log out
       </button>
+      <BusinessNavigation />
     </div>
   );
 }

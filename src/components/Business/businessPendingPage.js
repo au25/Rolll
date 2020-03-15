@@ -18,7 +18,7 @@ export default function() {
       <button
         onClick={async e => {
           e.preventDefault();
-          await app.auth().signOut();
+          app.auth().signOut();
           history.push("/home");
         }}
       >
