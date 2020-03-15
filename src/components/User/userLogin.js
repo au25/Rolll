@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import SignupForm from "./signupForm";
+import LoginForm from "./userLoginForm";
 
 const useStyles = makeStyles({
   signupPageContainer: {
@@ -23,12 +23,12 @@ export default function() {
   const classes = useStyles();
   return (
     <div className={classes.signupPageContainer}>
-      <button className={classes.fbButton}>Sign up with Facebook</button>
-      <button className={classes.googleButton}>Sign up with Google</button>
+      <button className={classes.fbButton}>Log in with Facebook</button>
+      <button className={classes.googleButton}>Log in with Google</button>
       <br />
-      <div className={classes.accountMsg}>Sign up for an account</div>
+      <div className={classes.accountMsg}>Log in</div>
       <div className={classes.formContainer}>
-        <SignupForm />
+        <LoginForm />
       </div>
     </div>
   );

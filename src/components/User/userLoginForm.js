@@ -12,9 +12,9 @@ import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import { green } from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
-import app from "../firebase";
+import app from "../../firebase";
 import { withRouter, Redirect } from "react-router";
-import { AuthContext } from "../Auth";
+import { AuthContext } from "../../Auth";
 
 /**
  * CSS of the page

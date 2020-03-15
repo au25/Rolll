@@ -4,13 +4,27 @@ Read location from DB and added it as dropdown select items
 
 Next time:
 
+    - Custom claim to determine user account or business account that is logged in
+    to know if user should be forwarded to home page (only normal user can stay
+    loggined in)
+
+To do:
+
 Render gifts based on selection
 Render and add municipals as drop down selection to filter gifts
 Business creation and login page
+Remove adding admin functionalities from source code *IMPORTANT*
+Change cloud function servers to Canada if possible? doesnt matter if data not stored?
 
 Bug:
     - Determine account login type and route to appropiate page 
-      (ex. user acc to user home and business acc to business home)
+    (ex. user acc to user home and business acc to business home)
+    - Redirect user to user home page only after SUCCESSFUL signup
+
+MAJOR Bug:
+    - On refresh userHome page, uid is undefined, history.push() works though
+    - after logging in with business with approvedShop role, and then logging out,
+    an unapproved business can login and still be redirected to approved page
 
 lol@ok.com
 123123

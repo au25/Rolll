@@ -1,14 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../Auth";
-import { Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router";
 
 export default function() {
   /**
    * If user is logged in, route to user home page
    */
   const { currentUser } = useContext(AuthContext);
-  if (currentUser) {
-    return <Redirect to="/" />;
+  const history = useHistory();
+
+  // Redirect user to their home page according to their role
+  if (currentUser != null) {
+    currentUser.getIdTokenResult().then(idTokenResult => {
+      if (idTokenResult.claims.adminRole) {
+        history.push("/adminHome");
+      }
+      if (idTokenResult.claims.userRole) {
+        history.push("/userHome");
+      }
+      if (idTokenResult.claims.shopRole) {
+        history.push("/businessHome");
+      }
+    });
   }
 
   return <div>This is the home page.</div>;

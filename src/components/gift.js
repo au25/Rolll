@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import NativeSelect from "@material-ui/core/NativeSelect";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Select from "@material-ui/core/Select";
-import app from "../firebase";
+import firebase from "../firebase";
 import { AuthContext } from "../Auth";
 
 const useStyles = makeStyles({
@@ -40,15 +37,18 @@ export default function() {
   const [gift, setGift] = useState([]);
   const [userSelection, setUserSelection] = useState([]);
   const [location, setLocation] = useState([]);
-  const db = app.firestore();
   const { currentUser } = useContext(AuthContext);
 
-  const user = db.collection("user").doc(currentUser.uid);
-  const userFireBaseSnapShot = db.collec;
+  firebase.auth().onAuthStateChanged(user => {
+ 
+  });
 
   // Happens before component mounts
   // Saves a snapshot of gift as state
   useEffect(() => {
+    const db = firebase.firestore();
+    const user = db.collection("user").doc(currentUser.uid);
+
     async function fetchGiftData() {
       const giftSnapshot = await db.collection("gift").get();
       const giftDocs = giftSnapshot.docs;
@@ -65,6 +65,8 @@ export default function() {
       }
     }
 
+    // Setting the email and chosen location state of a user
+    // Used for loadding gifts
     async function fetchUserData() {
       const userDoc = await user.get();
       // console.log(userDoc.data().giftLocationView);
@@ -81,11 +83,11 @@ export default function() {
       const locationDoc = await db.collection("location").get();
       const locationDocs = locationDoc.docs;
       const locationArray = locationDocs[0].data();
-      console.log(Object.keys(locationArray));
-      console.log(Object.keys(locationArray).length);
+      // console.log(Object.keys(locationArray));
+      // console.log(Object.keys(locationArray).length);
 
       for (let i = 0; i < Object.keys(locationArray).length; i++) {
-        console.log(i);
+        // console.log(i);
         setLocation(location => [
           ...location,
           {
@@ -105,7 +107,7 @@ export default function() {
     setUserSelection({
       city: locationPref
     });
-    console.log(locationPref);
+    // console.log(locationPref);
   };
 
   function RenderGift() {
