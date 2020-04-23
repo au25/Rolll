@@ -97,9 +97,7 @@ const SignUp = ({ history }) => {
    */
   const { currentUser } = useContext(AuthContext);
   if (currentUser) {
-    console.log("User Info?");
-    console.log(currentUser);
-    return <Redirect to="/" />;
+    // return <Redirect to="/userHome" />;
   }
 
   /**

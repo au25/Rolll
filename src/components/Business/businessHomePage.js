@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { setupUI } from "../setupUI";
 import firebase from "../../firebase";
@@ -6,30 +6,45 @@ import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import BusinessNavigation from "./businessNavigation";
 
-const useStyles = makeStyles({
-contentContainer: {
-  height: "600px"
-}
-});
+const useStyles = makeStyles({});
 
-export default function() {
+export default function () {
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
 
+  const [userAuthInfo, setUserAuthnfo] = useState();
+  const [userDbInfo, setUserDbInfo] = useState();
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user != null) {
+      setUserAuthnfo(user);
+    }
+  });
+
+  /**
+   * Sets initial state of userDbInfo and shopInfo
+   */
+  useEffect(() => {
+    async function fetchUserInfo() {
+      if (userAuthInfo && userAuthInfo.uid) {
+        console.log("making a read operation");
+        const db = firebase.firestore();
+        const user = await db
+          .collection("businessUser")
+          .doc(userAuthInfo.uid)
+          .get();
+        setUserDbInfo(user);
+      }
+    }
+    fetchUserInfo();
+  }, [userAuthInfo]);
+
   return (
     <div>
-      <div className={classes.contentContainer}>This is the APPROVED div container yayyyyyyyyy.</div>
-      <button
-        onClick={async e => {
-          e.preventDefault();
-          await firebase.auth().signOut();
-          history.push("./home");
-        }}
-      >
-        Log out
-      </button>
-      <BusinessNavigation />
+      {userDbInfo && userDbInfo.data() ? (
+        <BusinessNavigation userDbInfo={userDbInfo} />
+      ) : null}
     </div>
   );
 }

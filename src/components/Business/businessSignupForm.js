@@ -72,6 +72,7 @@ const SignUp = ({ history }) => {
     shop_name: "",
     shop_address: "",
     shop_floor: "",
+    shop_number: "",
     first_name: "",
     last_name: "",
     phone_number: "",
@@ -84,6 +85,7 @@ const SignUp = ({ history }) => {
    */
   async function accountSignup(e) {
     const db = firebase.firestore();
+    console.log(registrationValue);
     try {
       const credential = await firebase
         .auth()
@@ -95,26 +97,30 @@ const SignUp = ({ history }) => {
         .collection("businessUser")
         .doc(credential.user.uid)
         .set({
-          shop_name: registrationValue.shop_name,
-          shop_address: registrationValue.shop_address,
-          shop_floor: registrationValue.shop_floor,
+          shop: [
+            {
+              shop_name: registrationValue.shop_name,
+              shop_address: registrationValue.shop_address,
+              shop_floor: registrationValue.shop_floor,
+            }
+          ],
           first_name: registrationValue.first_name,
           last_name: registrationValue.last_name,
           phone_number: registrationValue.phone_number,
           email: registrationValue.email,
-          approveShop: "false"
+          is_approve: "false"
         });
     } catch (error) {
       console.log(error);
     }
 
     // Adds "shop role" to account after account creation
-    const addShopRole = await firebase.functions().httpsCallable("addShopRole");
-    addShopRole({ email: registrationValue.email }).then(result => {
+    const addBusinessUserRole = await firebase.functions().httpsCallable("addBusinessUserRole");
+    addBusinessUserRole({ email: registrationValue.email }).then(result => {
       console.log(result);
     });
 
-    history.push("/businessHome");
+    // history.push("/businessHome");
   }
 
   return (

@@ -42,7 +42,7 @@ export default function() {
   firebase.auth().onAuthStateChanged(user => {
     if (user != null) {
       currentUser.getIdTokenResult().then(idTokenResult => {
-        if (idTokenResult.claims.approvedShop) {
+        if (idTokenResult.claims.is_approve) {
           history.push("/businessHome");
         } else {
           history.push("/businessPending");

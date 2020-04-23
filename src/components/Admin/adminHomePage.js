@@ -25,8 +25,8 @@ const useStyles = makeStyles({
 
 export default function() {
   const [allShopSnapshot, setAllShopSnapshot] = useState([]);
-  const [allApproveShop, setAllApproveShop] = useState([]);
-  const [allUnapproveShop, setAllUnapproveShop] = useState([]);
+  const [allApproveUser, setAllApproveUser] = useState([]);
+  const [allUnapproveUser, setAllUnapproveUser] = useState([]);
   const { currentUser } = useContext(AuthContext);
 
   const classes = useStyles();
@@ -34,54 +34,53 @@ export default function() {
   const db = firebase.firestore();
 
   useEffect(() => {
-    async function fetchAllShop() {
-      const allShopSnapshot = await db.collection("businessUser").get();
-      const allShopDocs = allShopSnapshot.docs;
-      for (let i = 0; i < allShopDocs.length; i++) {
-        console.log(allShopDocs[i].data().approveShop);
-        if (allShopDocs[i].data().approveShop == "false") {
-          setAllUnapproveShop(shop => [
-            ...shop,
+    async function fetchAllBusinessUser() {
+      const businessUserCollection = await db.collection("businessUser").get();
+      const businessUserDoc = businessUserCollection.docs;
+      for (let i = 0; i < businessUserDoc.length; i++) {
+        if (businessUserDoc[i].data().is_approve == "false") {
+          setAllUnapproveUser(user => [
+            ...user,
             {
-              id: allShopDocs[i].id,
-              first_name: allShopDocs[i].data().first_name,
-              last_name: allShopDocs[i].data().last_name,
-              phone_number: allShopDocs[i].data().phone_number,
-              shop_address: allShopDocs[i].data().shop_address,
-              shop_floor: allShopDocs[i].data().shop_floor,
-              shop_name: allShopDocs[i].data().shop_name,
-              email: allShopDocs[i].data().email,
-              approveShop: allShopDocs[i].data().approveShop
+              id: businessUserDoc[i].id,
+              first_name: businessUserDoc[i].data().first_name,
+              last_name: businessUserDoc[i].data().last_name,
+              phone_number: businessUserDoc[i].data().phone_number,
+              shop_address: businessUserDoc[i].data().shop.shop_address,
+              shop_floor: businessUserDoc[i].data().shop.shop_floor,
+              shop_name: businessUserDoc[i].data().shop.shop_name,
+              email: businessUserDoc[i].data().email,
+              approveShop: businessUserDoc[i].data().is_approve
             }
           ]);
         }
 
-        if (allShopDocs[i].data().approveShop == "true") {
-          setAllApproveShop(shop => [
-            ...shop,
+        if (businessUserDoc[i].data().is_approve == "true") {
+          setAllApproveUser(user => [
+            ...user,
             {
-              id: allShopDocs[i].id,
-              first_name: allShopDocs[i].data().first_name,
-              last_name: allShopDocs[i].data().last_name,
-              phone_number: allShopDocs[i].data().phone_number,
-              shop_address: allShopDocs[i].data().shop_address,
-              shop_floor: allShopDocs[i].data().shop_floor,
-              shop_name: allShopDocs[i].data().shop_name,
-              email: allShopDocs[i].data().email,
-              approveShop: allShopDocs[i].data().approveShop
+              id: businessUserDoc[i].id,
+              first_name: businessUserDoc[i].data().first_name,
+              last_name: businessUserDoc[i].data().last_name,
+              phone_number: businessUserDoc[i].data().phone_number,
+              shop_address: businessUserDoc[i].data().shop.shop_address,
+              shop_floor: businessUserDoc[i].data().shop.shop_floor,
+              shop_name: businessUserDoc[i].data().shop.shop_name,
+              email: businessUserDoc[i].data().email,
+              approveShop: businessUserDoc[i].data().is_approve
             }
           ]);
         }
       }
     }
-    fetchAllShop();
+    fetchAllBusinessUser();
   }, []);
 
   /**
-   * Renders the list of unapproved shop from allUnapproveShop state
+   * Renders the list of unapproved shop from allUnapproveUser state
    */
-  function RenderUnapproveShop() {
-    return allUnapproveShop.map(data => (
+  function RenderUnapproveUser() {
+    return allUnapproveUser.map(data => (
       <div className={classes.shopInfoContainer}>
         <div>{data.email}</div>
         <div>
@@ -89,7 +88,7 @@ export default function() {
         </div>
         <button
           onClick={e => {
-            approveShop(data);
+            approveUser(data);
           }}
         >
           Grand Approval Permission
@@ -98,12 +97,12 @@ export default function() {
     ));
   }
 
-  const approveShop = data => {
+  const approveUser = data => {
     // Change the custom claim of shop to not approved
-    const addShopApproved = firebase
+    const addBusinessUserApproved = firebase
       .functions()
-      .httpsCallable("addShopApproved");
-    addShopApproved({ email: data.email }).then(result => {
+      .httpsCallable("addBusinessUserApproved");
+    addBusinessUserApproved({ email: data.email }).then(result => {
       console.log(result);
     });
 
@@ -111,19 +110,19 @@ export default function() {
     db.collection("businessUser")
       .doc(data.id)
       .update({
-        approveShop: "true"
+        is_approve: "true"
       });
 
     // Set state of unapproved shop to filter out new approved shop
-    setAllUnapproveShop(
-      allUnapproveShop.filter(shop => {
+    setAllUnapproveUser(
+      allUnapproveUser.filter(shop => {
         return shop.id != data.id;
       })
     );
 
     // Set state of approved shop and add new approved shop
-    setAllApproveShop(shop => [
-      ...shop,
+    setAllApproveUser(user => [
+      ...user,
       {
         id: data.id,
         first_name: data.first_name,
@@ -139,10 +138,10 @@ export default function() {
   };
 
   /**
-   * Renders the list of approved shop from allApproveShop state
+   * Renders the list of approved shop from allApproveUser state
    */
-  function RenderApproveShop() {
-    return allApproveShop.map(data => (
+  function RenderApproveUser() {
+    return allApproveUser.map(data => (
       <div className={classes.shopInfoContainer}>
         <div>{data.email}</div>
         <div>
@@ -150,7 +149,7 @@ export default function() {
         </div>
         <button
           onClick={() => {
-            removeApproveShop(data);
+            removeApproveUser(data);
           }}
         >
           Remove Approval Permission
@@ -159,12 +158,12 @@ export default function() {
     ));
   }
 
-  const removeApproveShop = data => {
+  const removeApproveUser = data => {
     // Change the custom claim of shop to not approved
-    const removeShopApproved = firebase
+    const removeBusinessUserApproved = firebase
       .functions()
-      .httpsCallable("removeShopApproved");
-    removeShopApproved({ email: data.email }).then(result => {
+      .httpsCallable("removeBusinessUserApproved");
+    removeBusinessUserApproved({ email: data.email }).then(result => {
       console.log(result);
     });
 
@@ -172,18 +171,18 @@ export default function() {
     db.collection("businessUser")
       .doc(data.id)
       .update({
-        approveShop: "false"
+        is_approve: "false"
       });
 
     // Set new state of approved shop to filter new unapproved shop
-    setAllApproveShop(
-      allApproveShop.filter(shop => {
+    setAllApproveUser(
+      allApproveUser.filter(shop => {
         return shop.id != data.id;
       })
     );
 
     // Set new state of unapproved shop and add new unapproved shop
-    setAllUnapproveShop(shop => [
+    setAllUnapproveUser(shop => [
       ...shop,
       {
         id: data.id,
@@ -202,9 +201,9 @@ export default function() {
   return (
     <div className={classes.adminHomePageContainer}>
       <div className={classes.unapprovedTitleContainer}>Not Approved</div>
-      <RenderUnapproveShop />
+      <RenderUnapproveUser />
       <div className={classes.approvedTitleContainer}>Approved</div>
-      <RenderApproveShop />
+      <RenderApproveUser />
       <br />
       <button
         onClick={async e => {

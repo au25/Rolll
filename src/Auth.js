@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         console.log("admin role: " + user.adminRole);
         console.log("user role: " + user.userRole);
         console.log("shop role: " + user.shopRole);
-        console.log("approved shop: " + user.approvedShop);
+        console.log("approved shop: " + user.is_approve);
         console.log(user);
         console.log("------------------------------");
       });
