@@ -17,6 +17,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
   const [shopInfo, setShopInfo] = useState({
     shop_name: "shop name",
     shop_address: "shop address",
+    shop_city: "shop city",
   });
 
   /**
@@ -43,6 +44,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
         shop: firebase.firestore.FieldValue.arrayUnion({
           shop_name: shopInfo.shop_name,
           shop_address: shopInfo.shop_address,
+          shop_city: shopInfo.shop_city,
         }),
       });
 
@@ -67,6 +69,12 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
             value={shopInfo.shop_address}
             className={classes.inputStyle}
             name="shop_address"
+            onChange={(e) => handleShopProfileChange(e)}
+          />
+          <input
+            value={shopInfo.shop_city}
+            className={classes.inputStyle}
+            name="shop_city"
             onChange={(e) => handleShopProfileChange(e)}
           />
         </div>

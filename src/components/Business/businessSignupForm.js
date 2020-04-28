@@ -4,6 +4,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import firebase from "../../firebase";
+import {
+  CountryDropdown,
+  RegionDropdown,
+  CountryRegionData,
+} from "react-country-region-selector";
 // Required for side-effects
 require("firebase/functions");
 
@@ -13,30 +18,30 @@ require("firebase/functions");
 const CssTextField = withStyles({
   root: {
     "& label.Mui-focused": {
-      color: "green"
+      color: "green",
     },
     "& .MuiInput-underline:after": {
-      borderBottomColor: "green"
+      borderBottomColor: "green",
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: "red"
+        borderColor: "red",
       },
       "&:hover fieldset": {
-        borderColor: "yellow"
+        borderColor: "yellow",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "green"
-      }
-    }
-  }
+        borderColor: "green",
+      },
+    },
+  },
 })(TextField);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   signupFormContainer: {
     display: "flex",
-    flexDirection: "column"
-  }
+    flexDirection: "column",
+  },
 }));
 
 /**
@@ -46,17 +51,17 @@ const ValidationTextField = withStyles({
   root: {
     "& input:valid + fieldset": {
       borderColor: "green",
-      borderWidth: 2
+      borderWidth: 2,
     },
     "& input:invalid + fieldset": {
       borderColor: "red",
-      borderWidth: 2
+      borderWidth: 2,
     },
     "& input:valid:focus + fieldset": {
       borderLeftWidth: 6,
-      padding: "4px !important" // override inline-style
-    }
-  }
+      padding: "4px !important", // override inline-style
+    },
+  },
 })(TextField);
 
 /**
@@ -65,18 +70,21 @@ const ValidationTextField = withStyles({
  * @param {history} param0
  */
 const SignUp = ({ history }) => {
+  const [giftRecord, setGiftRecord] = useState({});
   const classes = useStyles();
   const [registrationValue, setRegistrationValue] = useState({
     password: "",
     confirmPassword: "",
     shop_name: "",
     shop_address: "",
-    shop_floor: "",
+    shop_city: "",
+    shop_region: "", //province or state or territory
+    shop_country: "",
     shop_number: "",
     first_name: "",
     last_name: "",
     phone_number: "",
-    email: ""
+    email: "",
   });
 
   /**
@@ -101,22 +109,34 @@ const SignUp = ({ history }) => {
             {
               shop_name: registrationValue.shop_name,
               shop_address: registrationValue.shop_address,
-              shop_floor: registrationValue.shop_floor,
-            }
+              shop_city: registrationValue.shop_city,
+              shop_region: registrationValue.shop_region,
+              shop_country: registrationValue.shop_country
+            },
           ],
           first_name: registrationValue.first_name,
           last_name: registrationValue.last_name,
           phone_number: registrationValue.phone_number,
           email: registrationValue.email,
-          is_approve: "false"
+          is_approve: "false",
+          gift: [
+            {
+              gift_name: "defaultGift-template1"
+            },
+            {
+              gift_name: "defaultGift-template2"
+            }
+          ]
         });
     } catch (error) {
       console.log(error);
     }
 
     // Adds "shop role" to account after account creation
-    const addBusinessUserRole = await firebase.functions().httpsCallable("addBusinessUserRole");
-    addBusinessUserRole({ email: registrationValue.email }).then(result => {
+    const addBusinessUserRole = await firebase
+      .functions()
+      .httpsCallable("addBusinessUserRole");
+    addBusinessUserRole({ email: registrationValue.email }).then((result) => {
       console.log(result);
     });
 
@@ -127,29 +147,44 @@ const SignUp = ({ history }) => {
     <form className={classes.signupFormContainer} noValidate>
       <CssTextField
         label="Shop Name"
-        onChange={e =>
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            shop_name: e.target.value
+            shop_name: e.target.value,
           })
         }
       />
       <CssTextField
         label="Shop Address"
-        onChange={e =>
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            shop_address: e.target.value
+            shop_address: e.target.value,
           })
         }
       />
       <CssTextField
-        label="Floor / Suite (Optional)"
-        onChange={e =>
+        label="City"
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            shop_floor: e.target.value
+            shop_city: e.target.value,
           })
+        }
+      />
+      <CountryDropdown
+        value={registrationValue.shop_country}
+        onChange={(country) =>
+          setRegistrationValue({ ...registrationValue, shop_country: country })
+        }
+        priorityOptions={["CA", "US", "GB"]}
+      />
+      <RegionDropdown
+        disableWhenEmpty={true}
+        country={registrationValue.shop_country}
+        value={registrationValue.shop_region}
+        onChange={(region) =>
+          setRegistrationValue({ ...registrationValue, shop_region: region })
         }
       />
 
@@ -157,30 +192,30 @@ const SignUp = ({ history }) => {
 
       <CssTextField
         label="First Name"
-        onChange={e =>
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            first_name: e.target.value
+            first_name: e.target.value,
           })
         }
       />
 
       <CssTextField
         label="Last Name"
-        onChange={e =>
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            last_name: e.target.value
+            last_name: e.target.value,
           })
         }
       />
 
       <CssTextField
         label="Phone Number"
-        onChange={e =>
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            phone_number: e.target.value
+            phone_number: e.target.value,
           })
         }
       />
@@ -188,30 +223,30 @@ const SignUp = ({ history }) => {
       <br />
       <CssTextField
         label="Email"
-        onChange={e =>
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            email: e.target.value
+            email: e.target.value,
           })
         }
       />
       <CssTextField
         type="password"
         label="Password"
-        onChange={e =>
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            password: e.target.value
+            password: e.target.value,
           })
         }
       />
       <CssTextField
         type="password"
         label="Confirm Password"
-        onChange={e =>
+        onChange={(e) =>
           setRegistrationValue({
             ...registrationValue,
-            confirmPassword: e.target.value
+            confirmPassword: e.target.value,
           })
         }
       />

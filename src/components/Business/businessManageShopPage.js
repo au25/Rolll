@@ -89,6 +89,12 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
                   name="shop_address"
                   onChange={(e) => handleShopProfileChange(index, e)}
                 />
+                <input
+                  value={shop.shop_city}
+                  className={classes.inputStyle}
+                  name="shop_city"
+                  onChange={(e) => handleShopProfileChange(index, e)}
+                />
               </div>
               <input type="submit" value="Update Shop" />
               <button onClick={(e) => handleRemoveShop(shop, e)}>

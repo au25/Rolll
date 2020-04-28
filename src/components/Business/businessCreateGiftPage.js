@@ -23,8 +23,13 @@ export default function ({ userDbInfo, parentShopInfo }) {
     gift_duration: "",
   });
 
+  const userId = userDbInfo.id;
+
+  console.log("inside renderGift on create gift page");
+  console.log(parentShopInfo);
+
   const handleGiftDuration = (e) => {
-    const { name , value} = e.target;
+    const { name, value } = e.target;
     setGiftDuration({
       ...giftDuration,
       [name]: value,
@@ -53,7 +58,7 @@ export default function ({ userDbInfo, parentShopInfo }) {
         <Link
           to={{
             pathname: "/businessGiftSelectShop",
-            state: { parentShopInfo, gift, giftDuration },
+            state: { userId, parentShopInfo, gift, giftDuration },
           }}
         >
           <div>{gift.gift_name}</div>

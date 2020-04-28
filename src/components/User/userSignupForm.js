@@ -4,6 +4,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import firebase from "../../firebase";
+import {
+  CountryDropdown,
+  RegionDropdown,
+  CountryRegionData,
+} from "react-country-region-selector";
 // Required for side-effects
 require("firebase/functions");
 
@@ -13,30 +18,30 @@ require("firebase/functions");
 const CssTextField = withStyles({
   root: {
     "& label.Mui-focused": {
-      color: "green"
+      color: "green",
     },
     "& .MuiInput-underline:after": {
-      borderBottomColor: "green"
+      borderBottomColor: "green",
     },
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
-        borderColor: "red"
+        borderColor: "red",
       },
       "&:hover fieldset": {
-        borderColor: "yellow"
+        borderColor: "yellow",
       },
       "&.Mui-focused fieldset": {
-        borderColor: "green"
-      }
-    }
-  }
+        borderColor: "green",
+      },
+    },
+  },
 })(TextField);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   signupFormContainer: {
     display: "flex",
-    flexDirection: "column"
-  }
+    flexDirection: "column",
+  },
 }));
 
 /**
@@ -46,17 +51,17 @@ const ValidationTextField = withStyles({
   root: {
     "& input:valid + fieldset": {
       borderColor: "green",
-      borderWidth: 2
+      borderWidth: 2,
     },
     "& input:invalid + fieldset": {
       borderColor: "red",
-      borderWidth: 2
+      borderWidth: 2,
     },
     "& input:valid:focus + fieldset": {
       borderLeftWidth: 6,
-      padding: "4px !important" // override inline-style
-    }
-  }
+      padding: "4px !important", // override inline-style
+    },
+  },
 })(TextField);
 
 /**
@@ -66,10 +71,13 @@ const ValidationTextField = withStyles({
  */
 const SignUp = ({ history }) => {
   const classes = useStyles();
-  const [value, setValue] = useState({
+  const [registrationValue, setRegistrationValue] = useState({
     password: "",
     confirmPassword: "",
-    email: ""
+    user_email: "",
+    user_city: "",
+    user_region: "",
+    user_country: "",
   });
 
   /**
@@ -81,17 +89,19 @@ const SignUp = ({ history }) => {
     try {
       const credential = await firebase
         .auth()
-        .createUserWithEmailAndPassword(value.email, value.password);
-      await db
-        .collection("user")
-        .doc(credential.user.uid)
-        .set({
-          email: value.email,
-          giftLocationView: ""
-        });
+        .createUserWithEmailAndPassword(
+          registrationValue.user_email,
+          registrationValue.password
+        );
+      await db.collection("user").doc(credential.user.uid).set({
+        user_email: registrationValue.user_email,
+        user_city: registrationValue.user_city,
+        user_region: registrationValue.user_region,
+        user_country: registrationValue.user_country
+      });
 
       const addUserRole = firebase.functions().httpsCallable("addUserRole");
-      addUserRole({ email: value.email }).then(result => {
+      addUserRole({ email: registrationValue.user_email }).then((result) => {
         console.log(result);
       });
 
@@ -106,17 +116,50 @@ const SignUp = ({ history }) => {
     <form className={classes.signupFormContainer} noValidate>
       <CssTextField
         label="Email"
-        onChange={e => setValue({ ...value, email: e.target.value })}
+        onChange={(e) =>
+          setRegistrationValue({ ...registrationValue, user_email: e.target.value })
+        }
       />
       <CssTextField
         type="password"
         label="Password"
-        onChange={e => setValue({ ...value, password: e.target.value })}
+        onChange={(e) =>
+          setRegistrationValue({
+            ...registrationValue,
+            password: e.target.value,
+          })
+        }
       />
       <CssTextField
         type="password"
         label="Confirm Password"
-        onChange={e => setValue({ ...value, confirmPassword: e.target.value })}
+        onChange={(e) =>
+          setRegistrationValue({
+            ...registrationValue,
+            confirmPassword: e.target.value,
+          })
+        }
+      />
+      <CountryDropdown
+        value={registrationValue.user_country}
+        onChange={(country) =>
+          setRegistrationValue({ ...registrationValue, user_country: country })
+        }
+        priorityOptions={["CA", "US", "GB"]}
+      />
+      <RegionDropdown
+        disableWhenEmpty={true}
+        country={registrationValue.user_country}
+        value={registrationValue.shop_region}
+        onChange={(region) =>
+          setRegistrationValue({ ...registrationValue, user_region: region })
+        }
+      />
+      <CssTextField
+        label="City"
+        onChange={(e) =>
+          setRegistrationValue({ ...registrationValue, user_city: e.target.value })
+        }
       />
       <Button variant="contained" onClick={accountSignup}>
         SIGN UP

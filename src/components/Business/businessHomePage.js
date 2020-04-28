@@ -8,13 +8,16 @@ import BusinessNavigation from "./businessNavigation";
 
 const useStyles = makeStyles({});
 
-export default function () {
+export default function ({ location }) {
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
 
   const [userAuthInfo, setUserAuthnfo] = useState();
   const [userDbInfo, setUserDbInfo] = useState();
+
+  console.log("business home");
+  console.log(location);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user != null) {
@@ -43,7 +46,7 @@ export default function () {
   return (
     <div>
       {userDbInfo && userDbInfo.data() ? (
-        <BusinessNavigation userDbInfo={userDbInfo} />
+        <BusinessNavigation userDbInfo={userDbInfo} location={location}/>
       ) : null}
     </div>
   );

@@ -20,13 +20,14 @@ export default function() {
     ],
     callbacks: {
       signInSuccessWithAuthResult: userInfo => {
-        console.log(userInfo.user.uid);
         const db = firebase.firestore();
         db.collection("user")
           .doc(userInfo.user.uid)
           .set({
             email: userInfo.user.email,
-            giftLocationView: ""
+            user_city: "",
+            user_country: "",
+            user_region: ""
           });
 
         const addUserRole = firebase.functions().httpsCallable("addUserRole");

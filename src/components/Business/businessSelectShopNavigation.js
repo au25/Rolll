@@ -39,81 +39,65 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ({ userDbInfo, location }) {
+export default function ({ userDbInfo }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState("create");
+  const [value, setValue] = React.useState("");
   const [parentShopInfo, setParentShopInfo] = useState({});
+  const history = useHistory();
 
-  console.log("location stuff");
-  console.log(location);
+    const handleCreate = () => {
+        const pushState = "create";
+        history.push({
+            pathname: "/businessHome",
+            state: { pushState }
+        })
+    }
 
-  useEffect(() => {
-    setParentShopInfo(userDbInfo.data());
-    if (location && location.state) {
-      console.log("inside location stuff");
-      console.log(location);
-      if (value == "") {
-        setValue("create");
-      } else {
-        setValue(location.state.pushState);
-      }
+    const handleHistory = () => {
+        const pushState = "history";
+        history.push({
+            pathname: "/businessHome",
+            state: { pushState }
+        })
     }
-  }, []);
 
-  const RenderBody = () => {
-    if (value == "") {
-      return null;
+    const handleShop = () => {
+        const pushState = "shop";
+        history.push({
+            pathname: "/businessHome",
+            state: { pushState }
+        })
     }
-    if (value == "create") {
-      return (
-        <BusinessCreateGiftPage
-          userDbInfo={userDbInfo}
-          parentShopInfo={parentShopInfo}
-          setValue={setValue}
-        />
-      );
+
+    const handleProfile = () => {
+        const pushState = "profile";
+        history.push({
+            pathname: "/businessHome",
+            state: { pushState }
+        })
     }
-    if (value == "history") {
-      return <BusinessGiftHistoryPage userDbInfo={userDbInfo} />;
-    }
-    if (value == "shop") {
-      return (
-        <BusinessManageShopPage
-          userDbInfo={userDbInfo}
-          parentShopInfo={parentShopInfo}
-          setParentShopInfo={setParentShopInfo}
-        />
-      );
-    }
-    if (value == "profile") {
-      return <BusinessProfilePage userDbInfo={userDbInfo} />;
-    }
-  };
 
   return (
     <div>
-      <div className={classes.renderBodyContainer}>
-        <RenderBody />
-      </div>
-      <FontAwesomeIcon
-        icon={faEdit}
-        className={classes.profileIcon}
-        onClick={() => setValue("create")}
-      />
+        <FontAwesomeIcon
+          icon={faEdit}
+          className={classes.profileIcon}
+          onClick={() => handleCreate()}
+        />
       <FontAwesomeIcon
         icon={faClone}
         className={classes.profileIcon}
-        onClick={() => setValue("history")}
+        onClick={() => handleHistory()}
       />
       <FontAwesomeIcon
         icon={faStoreAlt}
         className={classes.profileIcon}
-        onClick={() => setValue("shop")}
+        onClick={() => handleShop()}
       />
       <FontAwesomeIcon
         icon={faUserCircle}
         className={classes.profileIcon}
-        onClick={() => setValue("profile")}
+        onClick={() => handleProfile()}
       />
     </div>
   );
