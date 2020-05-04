@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import UserProfile from "./userProfilePage";
 import UserFavorite from "./userFavorite";
 import UserGiftList from "./userGift";
-import Div100vh from "react-div-100vh";
 
 // Navigation Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -66,7 +65,6 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   };
 
   return (
-    <Div100vh>
       <div className={classes.userNavigation_container}>
         <div className={classes.userNavigation_renderBodyContainer}>
           <RenderBody />
@@ -89,6 +87,5 @@ export default function ({ userDbInfo, setUserDbInfo }) {
           />
         </div>
       </div>
-    </Div100vh>
   );
 }

@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import app from "../../firebase";
 import { makeStyles } from "@material-ui/core/styles";
-import UserGift from "./userGift";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import UserNavigation from "./userNavigation";
 import firebase from "../../firebase";
+import Div100vh from "react-div-100vh";
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles((theme) => ({
   userHome_container: {
     display: "flex",
     flexDirection: "column",
@@ -15,8 +15,8 @@ const useStyles = makeStyles( theme => ({
     height: "100%",
 
     [theme.breakpoints.down(600)]: {
-      backgroundColor: "yellow"
-    }
+      backgroundColor: "yellow",
+    },
   },
 }));
 
@@ -50,8 +50,10 @@ export default function () {
   }, [userAuthInfo]);
 
   return (
-    <div className={classes.userHome_container}>
+    <Div100vh>
+      <div className={classes.userHome_container}>
         <UserNavigation userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} />
-    </div>
+      </div>
+    </Div100vh>
   );
 }
