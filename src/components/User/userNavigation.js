@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import UserProfile from "./userProfilePage";
 import UserFavorite from "./userFavorite";
 import UserGiftList from "./userGift";
+import Div100vh from "react-div-100vh";
 
 // Navigation Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   userNavigation_container: {
     [theme.breakpoints.down(600)]: {
       width: "100%",
-      height: "100vh",
+      //   height: "100vh",
     },
   },
   userNavigation_renderBodyContainer: {
@@ -65,7 +66,8 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   };
 
   return (
-      <div className={classes.userNavigation_container}>
+    <div className={classes.userNavigation_container}>
+      <Div100vh>
         <div className={classes.userNavigation_renderBodyContainer}>
           <RenderBody />
         </div>
@@ -86,6 +88,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
             onClick={() => setNavigationValue("profile")}
           />
         </div>
-      </div>
+      </Div100vh>
+    </div>
   );
 }

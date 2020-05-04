@@ -10,11 +10,11 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
-    // backgroundColor: "yellow"
+    [theme.breakpoints.down(600)]: {},
   },
-});
+}));
 
 export default function ({ userDbInfo }) {
   const { currentUser } = useContext(AuthContext);
