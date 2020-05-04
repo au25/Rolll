@@ -211,6 +211,7 @@ export default function ({ location }) {
         [giftName]: firebase.firestore.FieldValue.arrayUnion({
           gift_name: gift.gift_name,
           gift_id: giftDocRef.id,
+          [giftDocRef.id]: "gift_id",
           gift_creation_timeStamp: firebase.firestore.Timestamp.now(new Date()),
           gift_creation_date: gift_creation_date,
           gift_expiry_date: gift_expiry_date,
@@ -224,6 +225,7 @@ export default function ({ location }) {
         [giftName]: firebase.firestore.FieldValue.arrayUnion({
           gift_name: gift.gift_name,
           gift_id: giftDocRef.id,
+          [giftDocRef.id]: "gift_id",
           gift_creation_timeStamp: firebase.firestore.Timestamp.now(new Date()),
           gift_creation_date: gift_creation_date,
           gift_expiry_date: gift_expiry_date,
@@ -254,6 +256,7 @@ export default function ({ location }) {
           [gift.gift_name]: firebase.firestore.FieldValue.arrayUnion({
             gift_name: gift.gift_name,
             gift_id: giftDocRef.id,
+            [giftDocRef.id]: "gift_id",
             gift_creation_timeStamp: firebase.firestore.Timestamp.now(
               new Date()
             ),
@@ -278,6 +281,7 @@ export default function ({ location }) {
         [gift.gift_name]: firebase.firestore.FieldValue.arrayUnion({
           gift_name: gift.gift_name,
           gift_id: giftDocRef.id,
+          [giftDocRef.id]: "gift_id",
           gift_creation_timeStamp: firebase.firestore.Timestamp.now(new Date()),
           gift_creation_date: gift_creation_date,
           gift_expiry_date: gift_expiry_date,

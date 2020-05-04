@@ -177,7 +177,8 @@ const SignUp = ({ history }) => {
         onChange={(country) =>
           setRegistrationValue({ ...registrationValue, shop_country: country })
         }
-        priorityOptions={["CA", "US", "GB"]}
+        whitelist={["CA", "US"]}
+        priorityOptions={["CA", "US"]}
       />
       <RegionDropdown
         disableWhenEmpty={true}

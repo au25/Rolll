@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import firebase from "../../firebase";
+import { AuthContext } from "../../Auth";
 import {
   CountryDropdown,
   RegionDropdown,
@@ -71,6 +72,7 @@ const ValidationTextField = withStyles({
  */
 const SignUp = ({ history }) => {
   const classes = useStyles();
+  const { currentUser } = useContext(AuthContext);
   const [registrationValue, setRegistrationValue] = useState({
     password: "",
     confirmPassword: "",
@@ -93,11 +95,15 @@ const SignUp = ({ history }) => {
           registrationValue.user_email,
           registrationValue.password
         );
+
+        credential.user.sendEmailVerification();
+        
       await db.collection("user").doc(credential.user.uid).set({
         user_email: registrationValue.user_email,
         user_city: registrationValue.user_city,
         user_region: registrationValue.user_region,
-        user_country: registrationValue.user_country
+        user_country: registrationValue.user_country,
+        claimedGift: []
       });
 
       const addUserRole = firebase.functions().httpsCallable("addUserRole");
@@ -145,12 +151,13 @@ const SignUp = ({ history }) => {
         onChange={(country) =>
           setRegistrationValue({ ...registrationValue, user_country: country })
         }
-        priorityOptions={["CA", "US", "GB"]}
+        whitelist={["CA", "US"]}
+        priorityOptions={["CA", "US"]}
       />
       <RegionDropdown
         disableWhenEmpty={true}
         country={registrationValue.user_country}
-        value={registrationValue.shop_region}
+        value={registrationValue.user_region}
         onChange={(region) =>
           setRegistrationValue({ ...registrationValue, user_region: region })
         }

@@ -44,7 +44,7 @@ export default function ({ userDbInfo }) {
     e.preventDefault();
 
     const db = firebase.firestore();
-    const userRef = db.collection("businessUser").doc(userDbInfo.id).update({
+    db.collection("businessUser").doc(userDbInfo.id).update({
       email: userInfo.email,
       first_name: userInfo.first_name,
       last_name: userInfo.last_name,

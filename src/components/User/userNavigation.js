@@ -23,19 +23,32 @@ import {
   faStoreAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-const useStyles = makeStyles({
-  root: {
-    width: 500,
+const useStyles = makeStyles((theme) => ({
+  userNavigation_container: {
+    [theme.breakpoints.down(600)]: {
+        width: "100%",
+        height: "100vh",
+    },
   },
-  renderBodyContainer: {
-    height: "600px",
+  userNavigation_renderBodyContainer: {
+    height: "85%",
+  },
+  userNavigation_navContainer: {
+    [theme.breakpoints.down(600)]: {
+        width: "100%",
+        height: "15%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center"
+    },
   },
   profileIcon: {
     fontSize: "25px",
   },
-});
+}));
 
-export default function ({ userDbInfo }) {
+export default function ({ userDbInfo, setUserDbInfo }) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [parentShopInfo, setParentShopInfo] = useState({});
@@ -44,36 +57,40 @@ export default function ({ userDbInfo }) {
 
   const RenderBody = () => {
     if (navigationValue == "giftList") {
-      return <UserGiftList />;
+      return (
+        <UserGiftList userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} />
+      );
     }
     if (navigationValue == "favorite") {
-      return <UserFavorite />;
+      return <UserFavorite userDbInfo={userDbInfo} />;
     }
     if (navigationValue == "profile") {
-      return <UserProfile />;
+      return <UserProfile userDbInfo={userDbInfo} />;
     }
   };
 
   return (
-    <div>
-      <div>
+    <div className={classes.userNavigation_container}>
+      <div className={classes.userNavigation_renderBodyContainer}>
         <RenderBody />
       </div>
-      <FontAwesomeIcon
-        icon={faHeart}
-        className={classes.profileIcon}
-        onClick={() => setNavigationValue("favorite")}
-      />
-      <FontAwesomeIcon
-        icon={faClone}
-        className={classes.profileIcon}
-        onClick={() => setNavigationValue("giftList")}
-      />
-      <FontAwesomeIcon
-        icon={faUserCircle}
-        className={classes.profileIcon}
-        onClick={() => setNavigationValue("profile")}
-      />
+      <div className={classes.userNavigation_navContainer}>
+        <FontAwesomeIcon
+          icon={faHeart}
+          className={classes.profileIcon}
+          onClick={() => setNavigationValue("favorite")}
+        />
+        <FontAwesomeIcon
+          icon={faClone}
+          className={classes.profileIcon}
+          onClick={() => setNavigationValue("giftList")}
+        />
+        <FontAwesomeIcon
+          icon={faUserCircle}
+          className={classes.profileIcon}
+          onClick={() => setNavigationValue("profile")}
+        />
+      </div>
     </div>
   );
 }
