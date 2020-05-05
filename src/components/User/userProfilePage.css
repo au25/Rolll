@@ -1,0 +1,29 @@
+.userProfile_countryTitle {
+    width: 200px;
+    font-size: 14px;
+}
+
+.userProfile_regionTitle {
+    width: 100px;
+    font-size: 14px;
+}
+
+.userProfile_selectCountry {
+    width: 200px;
+    border: 0;
+    padding: 12px;
+    height: 30px;
+    background-color: transparent;
+    font-size: 16px;
+    outline: none;
+}
+
+.userProfile_selectRegion {
+    width: 100px;
+    border: 0;
+    padding: 12px;
+    height: 30px;
+    background-color: transparent;
+    font-size: 16px;
+    outline: none;
+}

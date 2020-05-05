@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
       //   height: "100vh",
     },
   },
+  userNavigation_div100Container: {
+    
+  },
   userNavigation_renderBodyContainer: {
     height: "85%",
   },
@@ -67,7 +70,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
 
   return (
     <div className={classes.userNavigation_container}>
-      <Div100vh>
+      <Div100vh className={classes.userNavigation_div100Container}>
         <div className={classes.userNavigation_renderBodyContainer}>
           <RenderBody />
         </div>

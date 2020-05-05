@@ -16,7 +16,7 @@ const useStyles = makeStyles( theme => ({
     height: "100%",
 
     [theme.breakpoints.down(600)]: {
-      backgroundColor: "yellow"
+      backgroundColor: "lightyellow"
     }
   },
 }));
