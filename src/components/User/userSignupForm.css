@@ -1,0 +1,27 @@
+.userSignup_countryTitle {
+    width: 120px;
+    font-size: 14px;
+}
+
+.userSignup_regionTitle {
+    width: 115px;
+    font-size: 14px;
+}
+
+.userSignup_selectCountry {
+    width: 100%;
+    border: 0;
+    height: 30px;
+    background-color: transparent;
+    font-size: 16px;
+    outline: none;
+}
+
+.userSignup_selectRegion {
+    width: 100%;
+    border: 0;
+    height: 30px;
+    background-color: transparent;
+    font-size: 16px;
+    outline: none;
+}

@@ -40,7 +40,6 @@ export default function() {
 
   return (
     <div>
-      <button onClick={() => firebase.auth().signOut()}> Sign out </button>
       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
   );

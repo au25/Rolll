@@ -174,7 +174,6 @@ export default function ({ userDbInfo }) {
         <div className={classes.userProfile_cityTitle}>City</div>
         <div className={classes.userProfile_cityInputContainer}>
           <input
-            autoFocus
             name="user_city"
             onChange={handleProfileChange}
             value={userInfo.user_city}
