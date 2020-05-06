@@ -11,8 +11,11 @@
 .userSignup_selectCountry {
     width: 100%;
     border: 0;
-    height: 30px;
-    background-color: transparent;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     font-size: 16px;
     outline: none;
 }
@@ -20,8 +23,11 @@
 .userSignup_selectRegion {
     width: 100%;
     border: 0;
-    height: 30px;
-    background-color: transparent;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     font-size: 16px;
     outline: none;
 }

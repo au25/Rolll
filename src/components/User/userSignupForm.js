@@ -1,5 +1,10 @@
 import React, { useState, useContext } from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import {
+  withStyles,
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
@@ -11,6 +16,16 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import "./userSignupForm.css";
+import FilledInput from "@material-ui/core/FilledInput";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
+import clsx from "clsx";
 import Div100vh from "react-div-100vh";
 // Required for side-effects
 require("firebase/functions");
@@ -18,175 +33,40 @@ require("firebase/functions");
 /**
  * CSS of the page
  */
-const CssTextField = withStyles({
-  root: {
-    "& label.Mui-focused": {
-      color: "green",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "green",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "red",
-      },
-      "&:hover fieldset": {
-        borderColor: "yellow",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "green",
-      },
-    },
-  },
-})(TextField);
-
 const useStyles = makeStyles((theme) => ({
-  signupFormContainer: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    alignItems: "center",
+  root: {
+    margin: "0 0 32px 0",
   },
-  container: {
-    [theme.breakpoints.down(600)]: {
-      height: "100%",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  },
-  userSignup_formContainer: {
-    [theme.breakpoints.down(600)]: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      width: "100%",
-    },
-  },
-  userSignup_input: {
-    [theme.breakpoints.down(600)]: {
-      width: "250px",
-      margin: "6px 0",
-      border: "none",
-      fontSize: "16px",
-      backgroundColor: "transparent",
-    },
-  },
-  userSignup_cityInputContainer: {
-    width: "70%",
-    display: "flex",
-    borderBottom: "1px solid black",
-  },
-  userSignup_emailInputContainer: {
-    width: "70%",
-    display: "flex",
-    borderBottom: "1px solid black",
-  },
-  userSignup_passwordContainer: {
-    width: "70%",
-    display: "flex",
-    justifyContent: "space-between",
-    margin: "15px 0 0 0"
-  },
-  userSignup_passwordTitlepasswordInputContainer: {
-    display: "flex",
-    flexDirection: "column",
-    width: "120px",
-  },
-  userSignup_passwordInputContainer: {
+  formContainer: {
     width: "100%",
     display: "flex",
-    borderBottom: "1px solid black",
-  },
-  userSignup_confirmTitileConfirmInputContainer: {
-    display: "flex",
     flexDirection: "column",
-    width: "120px",
   },
-  userSignup_emailTitle: {
-    width: "70%",
-    display: "flex",
-    fontSize: "14px",
-    margin: "45px 0 0 0",
+  countryContainer: {
+    margin: "0 0 28px 0",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
   },
-  userSignup_passwordTitle: {
-    width: "100%",
-    display: "flex",
-    fontSize: "14px",
-  },
-  userSignup_passwordInput: {
-    [theme.breakpoints.down(600)]: {
-      width: "100%",
-      margin: "5px 0",
-      border: "none",
-      fontSize: "20px",
-      backgroundColor: "transparent",
-      padding: "0 0 1px 4px",
-      outline: "none",
-      fontSize: "16px",
-    },
-  },
-  userSignup_cityTitle: {
-    width: "70%",
-    display: "flex",
-    fontSize: "14px",
-    margin: "45px 0 0 0",
-  },
-  userSignup_emailInput: {
-    [theme.breakpoints.down(600)]: {
-      width: "193px",
-      margin: "5px 0",
-      border: "none",
-      fontSize: "20px",
-      backgroundColor: "transparent",
-      padding: "0 0 1px 4px",
-      outline: "none",
-      fontSize: "16px",
-    },
-  },
-  userSignup_cityInput: {
-    [theme.breakpoints.down(600)]: {
-      width: "193px",
-      margin: "5px 0",
-      border: "none",
-      fontSize: "20px",
-      backgroundColor: "transparent",
-      padding: "0 0 1px 4px",
-      outline: "none",
-      fontSize: "16px",
-    },
-  },
-  userSignup_countryRegionContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    width: "70%",
-  },
-  userSignup_countryRegionTitleContainer: {
-    display: "flex",
-    width: "70%",
-    margin: "15px 0 0 0",
-    justifyContent: "space-between",
-  },
-  userSignup_countryDropdownContainer: {
-    borderBottom: "1px solid black",
-    height: "100%",
-    width: "125px",
-  },
-  userSignup_regionDropdownContainer: {
-    borderBottom: "1px solid black",
-    height: "100%",
-    width: "115px",
-  },
-  userSignup_saveButton: {
-    padding: " 8px 15px 8px",
-    backgroundColor: "darkgoldenrod",
-    borderRadius: "5px",
-    border: "none",
-    fontSize: "14px",
-    margin: "25px 0 0 0"
-  },
+  regionContainer: {
+    borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+  }
 }));
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiFilledInput: {
+      root: {
+        margin: "0 0 28px 0",
+        height: "60px",
+        backgroundColor: "rgba(0, 0, 0, 0.05)",
+      },
+    },
+    MuiInputLabel: {
+      filled: {
+        margin: "4px 0 0 0",
+      },
+    },
+  },
+});
 
 /**
  * Currently unused validation styles
@@ -224,6 +104,15 @@ const SignUp = ({ history }) => {
     user_region: "",
     user_country: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   /**
    * This creates authentication user and also database user with the same unique ID
@@ -262,110 +151,135 @@ const SignUp = ({ history }) => {
   }
 
   return (
-    <form className={classes.signupFormContainer} noValidate>
-      <div className={classes.userSignup_emailTitle}>Email</div>
-      <div className={classes.userSignup_emailInputContainer}>
-        <input
-          value={registrationValue.user_email}
-          className={classes.userSignup_emailInput}
-          onChange={(e) =>
-            setRegistrationValue({
-              ...registrationValue,
-              user_email: e.target.value,
-            })
-          }
-        />
-      </div>
-      <div className={classes.userSignup_passwordContainer}>
-        <div className={classes.userSignup_passwordTitlepasswordInputContainer}>
-          <div className={classes.userSignup_passwordTitle}>Password</div>
-          <div className={classes.userSignup_passwordInputContainer}>
-            <input
-              value={registrationValue.password}
-              className={classes.userSignup_passwordInput}
+    <ThemeProvider theme={theme}>
+      <div>
+        <form className={classes.root} noValidate autoComplete="off">
+          <div className={classes.formContainer}>
+            <TextField
+              id="filled-basic"
+              label="Email"
+              variant="filled"
+              value={registrationValue.user_email}
               onChange={(e) =>
                 setRegistrationValue({
                   ...registrationValue,
-                  password: e.target.value,
+                  user_email: e.target.value,
                 })
               }
             />
-          </div>
-        </div>
-        <div className={classes.userSignup_confirmTitileConfirmInputContainer}>
-          <div className={classes.userSignup_passwordTitle}>
-            Confirm Password
-          </div>
-          <div className={classes.userSignup_passwordInputContainer}>
-            <input
-              value={registrationValue.confirmPassword}
-              className={classes.userSignup_passwordInput}
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
+              <InputLabel htmlFor="filled-adornment-password">
+                Password
+              </InputLabel>
+              <FilledInput
+                id="filled-adornment-password"
+                type={showPassword ? "text" : "password"}
+                value={registrationValue.password}
+                onChange={(e) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    password: e.target.value,
+                  })
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
+              <InputLabel htmlFor="filled-adornment-password">
+                Confirm Password
+              </InputLabel>
+              <FilledInput
+                id="filled-adornment-password"
+                type={showPassword ? "text" : "password"}
+                value={registrationValue.confirmPassword}
+                onChange={(e) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    confirmPassword: e.target.value,
+                  })
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            <TextField
+              id="filled-basic"
+              label="City"
+              variant="filled"
+              value={registrationValue.user_city}
               onChange={(e) =>
                 setRegistrationValue({
                   ...registrationValue,
-                  conFirmassword: e.target.value,
+                  user_city: e.target.value,
                 })
               }
             />
+            <div className={classes.countryContainer}>
+              <CountryDropdown
+                value={registrationValue.user_country}
+                onChange={(country) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    user_country: country,
+                  })
+                }
+                whitelist={["CA", "US"]}
+                priorityOptions={["CA", "US"]}
+                classes="userSignup_selectCountry"
+              />
+            </div>
+            <div className={classes.regionContainer}>
+              <RegionDropdown
+                disableWhenEmpty={true}
+                country={registrationValue.user_country}
+                value={registrationValue.user_region}
+                disableWhenEmpty={true}
+                onChange={(region) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    user_region: region,
+                  })
+                }
+                classes="userSignup_selectRegion"
+              />
+            </div>
+            <Button
+              className={classes.userSignup_saveButton}
+              onClick={accountSignup}
+            >
+              SIGN UP
+            </Button>
           </div>
-        </div>
+        </form>
       </div>
-      <div className={classes.userSignup_cityTitle}>City</div>
-      <div className={classes.userSignup_cityInputContainer}>
-        <input
-          name="user_city"
-          value={registrationValue.user_city}
-          className={classes.userSignup_cityInput}
-          onChange={(e) =>
-            setRegistrationValue({
-              ...registrationValue,
-              user_city: e.target.value,
-            })
-          }
-        />
-      </div>
-
-      <div className={classes.userSignup_countryRegionTitleContainer}>
-        <div className="userSignup_countryTitle">Country</div>
-        <div className="userSignup_regionTitle">Region</div>
-      </div>
-      <div className={classes.userSignup_countryRegionContainer}>
-        <div className={classes.userSignup_countryDropdownContainer}>
-          <CountryDropdown
-            value={registrationValue.user_country}
-            onChange={(country) =>
-              setRegistrationValue({
-                ...registrationValue,
-                user_country: country,
-              })
-            }
-            whitelist={["CA", "US"]}
-            priorityOptions={["CA", "US"]}
-            classes="userSignup_selectCountry"
-          />
-        </div>
-        <div className={classes.userSignup_regionDropdownContainer}>
-          <RegionDropdown
-            disableWhenEmpty={true}
-            country={registrationValue.user_country}
-            value={registrationValue.user_region}
-            valueType="short"
-            labelType="short"
-            disableWhenEmpty={true}
-            onChange={(region) =>
-              setRegistrationValue({
-                ...registrationValue,
-                user_region: region,
-              })
-            }
-            classes="userSignup_selectRegion"
-          />
-        </div>
-      </div>
-      <Button className={classes.userSignup_saveButton} onClick={accountSignup}>
-        SIGN UP
-      </Button>
-    </form>
+    </ThemeProvider>
   );
 };
 

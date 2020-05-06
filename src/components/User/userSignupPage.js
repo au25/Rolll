@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    backgroundColor: "lightyellow",
+    // backgroundColor: "lightyellow",
   },
   fbButton: {
     width: "300px",
