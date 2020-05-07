@@ -3,6 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import SignupForm from "./userSignupForm";
 import OAuthLogin from "./userOAuthLoginComponent";
 import Div100vh from "react-div-100vh";
+import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
+import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   signupPageContainer: {
@@ -20,20 +24,65 @@ const useStyles = makeStyles({
   accountMsg: {
     width: "300px",
   },
-  orText: {
+  signinTitle: {
     fontSize: "14px",
-    textTransform: "uppercase",
-    margin: "30px 0 15px 0"
-  }
+    fontSize: "16px",
+    margin: "80px 0 15px 0",
+    display: "flex",
+    width: "70%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+  },
+  orText: {
+    fontSize: "16px",
+    margin: "40px 0 50px 0",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+    display: "flex",
+    width: "70%",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  orBorderBottom: {
+    padding: "4px 0 0 0",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.3)",
+    width: "35%",
+  },
+  signupFormContainer: {
+    margin: "0 0 15px 0",
+  },
+  signupPolicyContainer: {
+    width: "70%",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "14px",
+    textAlign: "center",
+    margin: "0 0 80px 0",
+  },
 });
 
 export default function () {
   const classes = useStyles();
+
+  const [expanded, setExpanded] = React.useState("panel1");
+
   return (
     <Div100vh className={classes.signupPageContainer}>
-      <SignupForm />
-      <div className={classes.orText}>or</div>
-      <OAuthLogin />
+      {/* <OAuthLogin /> */}
+      <div className={classes.signinTitle}>Have an account? Log in</div>
+      <div className={classes.orText}>
+        <div className={classes.orBorderBottom}></div>
+        <div>or</div>
+        <div className={classes.orBorderBottom}></div>
+      </div>
+      <div className={classes.signupFormContainer}>
+        <SignupForm />
+      </div>
+      <div className={classes.signupPolicyContainer}>
+        By signing up, you agree with the Terms of Service & Privacy Policy
+      </div>
     </Div100vh>
   );
 }

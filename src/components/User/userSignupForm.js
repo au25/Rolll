@@ -53,16 +53,16 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
   },
   countryErrorMessage: {
-    fontSize: "12px",
+    fontSize: "12.5px",
     color: "#f44336",
-    padding: "4px 0 0 14px",
-    fontFamily: "Roboto",
+    padding: "5px 0 0 14px",
+    fontFamily: "CoreSans, sans-serif",
   },
   regionErrorMessage: {
-    fontSize: "12px",
+    fontSize: "12.5px",
     color: "#f44336",
-    padding: "4px 0 0 14px",
-    fontFamily: "Roboto",
+    padding: "5px 0 0 14px",
+    fontFamily: "CoreSans, sans-serif",
   },
   regionOuterContainer: {
     margin: "0 0 28px 0",
@@ -250,7 +250,7 @@ const SignUp = ({ history }) => {
             variant="filled"
             value={registrationValue.user_email}
             validators={["required", "isEmail"]}
-            errorMessages={["this field is required", "email is not valid"]}
+            errorMessages={["Email address is requred", "Email address is not valid"]}
             onChange={(e) =>
               setRegistrationValue({
                 ...registrationValue,
@@ -266,7 +266,7 @@ const SignUp = ({ history }) => {
               type={showPassword ? "text" : "password"}
               value={registrationValue.password}
               validators={["required"]}
-              errorMessages={["this field is required"]}
+              errorMessages={["Password is required"]}
               onChange={(e) =>
                 setRegistrationValue({
                   ...registrationValue,
@@ -294,7 +294,7 @@ const SignUp = ({ history }) => {
               validators={["isPasswordMatch", "required"]}
               errorMessages={[
                 "Password doesn't match",
-                "this field is required",
+                "Confirm password is required",
               ]}
               onChange={(e) =>
                 setRegistrationValue({
@@ -319,7 +319,7 @@ const SignUp = ({ history }) => {
             variant="filled"
             value={registrationValue.user_city}
             validators={["required"]}
-            errorMessages={["this field is required"]}
+            errorMessages={["City is required"]}
             onChange={(e) =>
               setRegistrationValue({
                 ...registrationValue,
@@ -346,7 +346,7 @@ const SignUp = ({ history }) => {
             <div>
               {countryErrorState && registrationValue.user_country == "" ? (
                 <div className={classes.countryErrorMessage}>
-                  please select a country
+                    Select a country
                 </div>
               ) : null}
             </div>
@@ -371,7 +371,7 @@ const SignUp = ({ history }) => {
             <div>
               {regionErrorState && registrationValue.user_region == "" ? (
                 <div className={classes.regionErrorMessage}>
-                  please select a region
+                  Select a region
                 </div>
               ) : null}
             </div>
