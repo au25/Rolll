@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   withStyles,
   makeStyles,
@@ -26,6 +26,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import clsx from "clsx";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Div100vh from "react-div-100vh";
 // Required for side-effects
 require("firebase/functions");
@@ -36,26 +37,49 @@ require("firebase/functions");
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: "0 0 32px 0",
+    width: "100vw",
+    display: "flex",
+    justifyContent: "center",
   },
   formContainer: {
-    width: "100%",
+    width: "70%",
     display: "flex",
     flexDirection: "column",
   },
-  countryContainer: {
+  countryOuterContainer: {
     margin: "0 0 28px 0",
+  },
+  countryContainer: {
     borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
+  },
+  countryErrorMessage: {
+    fontSize: "12px",
+    color: "#f44336",
+    padding: "4px 0 0 14px",
+    fontFamily: "Roboto",
+  },
+  regionErrorMessage: {
+    fontSize: "12px",
+    color: "#f44336",
+    padding: "4px 0 0 14px",
+    fontFamily: "Roboto",
+  },
+  regionOuterContainer: {
+    margin: "0 0 28px 0",
   },
   regionContainer: {
     borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
-  }
+  },
+  passwordContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
 }));
 
 const theme = createMuiTheme({
   overrides: {
     MuiFilledInput: {
       root: {
-        margin: "0 0 28px 0",
         height: "60px",
         backgroundColor: "rgba(0, 0, 0, 0.05)",
       },
@@ -64,6 +88,29 @@ const theme = createMuiTheme({
       filled: {
         margin: "4px 0 0 0",
       },
+    },
+    MuiButton: {
+      root: {
+        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        height: "60px",
+      },
+    },
+    MuiIconButton: {
+      edgeEnd: {
+        height: "60px",
+        borderRadius: "0",
+      },
+    },
+    MuiFormControl: {
+      root: {
+        width: "100%",
+        margin: "0 0 28px 0",
+      },
+    },
+    MuiFormHelperText: {
+      root: {
+        fontSize: "12px"
+      }
     },
   },
 });
@@ -105,6 +152,22 @@ const SignUp = ({ history }) => {
     user_country: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [countryErrorState, setCountryErrorState] = useState(null);
+  const [regionErrorState, setRegionErrorState] = useState(null);
+
+  useEffect(() => {
+    checkValidationRule();
+  }, [registrationValue]);
+
+  const checkValidationRule = () => {
+    ValidatorForm.addValidationRule("isPasswordMatch", (value) => {
+      if (value !== registrationValue.password) {
+        console.log(value + "     " + registrationValue.password);
+        return false;
+      }
+      return true;
+    });
+  };
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -112,6 +175,28 @@ const SignUp = ({ history }) => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const validateCountry = (e) => {
+    setRegistrationValue({ ...registrationValue, user_country: e });
+  };
+
+  const validateRegion = (e) => {
+    setRegistrationValue({ ...registrationValue, user_region: e });
+  };
+
+  const validateCoutrynRegion = () => {
+    if (registrationValue.user_country == "") {
+      setCountryErrorState(true);
+    } else {
+      setCountryErrorState(false);
+    }
+
+    if (registrationValue.user_region == "") {
+      setRegionErrorState(true);
+    } else {
+      setRegionErrorState(false);
+    }
   };
 
   /**
@@ -152,97 +237,100 @@ const SignUp = ({ history }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
-        <form className={classes.root} noValidate autoComplete="off">
-          <div className={classes.formContainer}>
-            <TextField
+      <ValidatorForm
+        className={classes.root}
+        noValidate
+        autoComplete="off"
+        onSubmit={accountSignup}
+      >
+        <div className={classes.formContainer}>
+          <TextValidator
+            id="filled-basic"
+            label="Email"
+            variant="filled"
+            value={registrationValue.user_email}
+            validators={["required", "isEmail"]}
+            errorMessages={["this field is required", "email is not valid"]}
+            onChange={(e) =>
+              setRegistrationValue({
+                ...registrationValue,
+                user_email: e.target.value,
+              })
+            }
+          />
+          <div className={classes.passwordContainer}>
+            <TextValidator
               id="filled-basic"
-              label="Email"
+              label="Password"
               variant="filled"
-              value={registrationValue.user_email}
+              type={showPassword ? "text" : "password"}
+              value={registrationValue.password}
+              validators={["required"]}
+              errorMessages={["this field is required"]}
               onChange={(e) =>
                 setRegistrationValue({
                   ...registrationValue,
-                  user_email: e.target.value,
+                  password: e.target.value,
                 })
               }
             />
-            <FormControl
-              className={clsx(classes.margin, classes.textField)}
-              variant="filled"
+            <IconButton
+              className={classes.passwordIcon}
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              edge="end"
             >
-              <InputLabel htmlFor="filled-adornment-password">
-                Password
-              </InputLabel>
-              <FilledInput
-                id="filled-adornment-password"
-                type={showPassword ? "text" : "password"}
-                value={registrationValue.password}
-                onChange={(e) =>
-                  setRegistrationValue({
-                    ...registrationValue,
-                    password: e.target.value,
-                  })
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl
-              className={clsx(classes.margin, classes.textField)}
-              variant="filled"
-            >
-              <InputLabel htmlFor="filled-adornment-password">
-                Confirm Password
-              </InputLabel>
-              <FilledInput
-                id="filled-adornment-password"
-                type={showPassword ? "text" : "password"}
-                value={registrationValue.confirmPassword}
-                onChange={(e) =>
-                  setRegistrationValue({
-                    ...registrationValue,
-                    confirmPassword: e.target.value,
-                  })
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <TextField
+              {showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </div>
+          <div className={classes.passwordContainer}>
+            <TextValidator
               id="filled-basic"
-              label="City"
+              label="Repeat Password"
               variant="filled"
-              value={registrationValue.user_city}
+              type={showPassword ? "text" : "password"}
+              value={registrationValue.confirmPassword}
+              validators={["isPasswordMatch", "required"]}
+              errorMessages={[
+                "Password doesn't match",
+                "this field is required",
+              ]}
               onChange={(e) =>
                 setRegistrationValue({
                   ...registrationValue,
-                  user_city: e.target.value,
+                  confirmPassword: e.target.value,
                 })
               }
             />
+            <IconButton
+              className={classes.passwordIcon}
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              edge="end"
+            >
+              {showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </div>
+          <TextValidator
+            id="filled-basic"
+            label="City"
+            variant="filled"
+            value={registrationValue.user_city}
+            validators={["required"]}
+            errorMessages={["this field is required"]}
+            onChange={(e) =>
+              setRegistrationValue({
+                ...registrationValue,
+                user_city: e.target.value,
+              })
+            }
+          />
+          <div className={classes.countryOuterContainer}>
             <div className={classes.countryContainer}>
               <CountryDropdown
+                required
                 value={registrationValue.user_country}
                 onChange={(country) =>
                   setRegistrationValue({
@@ -255,8 +343,18 @@ const SignUp = ({ history }) => {
                 classes="userSignup_selectCountry"
               />
             </div>
+            <div>
+              {countryErrorState && registrationValue.user_country == "" ? (
+                <div className={classes.countryErrorMessage}>
+                  please select a country
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div className={classes.regionOuterContainer}>
             <div className={classes.regionContainer}>
               <RegionDropdown
+                required
                 disableWhenEmpty={true}
                 country={registrationValue.user_country}
                 value={registrationValue.user_region}
@@ -270,15 +368,23 @@ const SignUp = ({ history }) => {
                 classes="userSignup_selectRegion"
               />
             </div>
-            <Button
-              className={classes.userSignup_saveButton}
-              onClick={accountSignup}
-            >
-              SIGN UP
-            </Button>
+            <div>
+              {regionErrorState && registrationValue.user_region == "" ? (
+                <div className={classes.regionErrorMessage}>
+                  please select a region
+                </div>
+              ) : null}
+            </div>
           </div>
-        </form>
-      </div>
+          <Button
+            className={classes.userSignup_saveButton}
+            type="submit"
+            onClick={() => validateCoutrynRegion()}
+          >
+            SIGN UP
+          </Button>
+        </div>
+      </ValidatorForm>
     </ThemeProvider>
   );
 };
