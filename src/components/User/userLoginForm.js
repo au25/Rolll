@@ -1,19 +1,13 @@
 import React, { useState, useContext } from "react";
 import {
-  fade,
   ThemeProvider,
-  withStyles,
   makeStyles,
   createMuiTheme,
 } from "@material-ui/core/styles";
-import InputBase from "@material-ui/core/InputBase";
-import InputLabel from "@material-ui/core/InputLabel";
-import TextField from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
-import { green } from "@material-ui/core/colors";
 import Button from "@material-ui/core/Button";
 import app from "../../firebase";
 import { withRouter, Redirect } from "react-router";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../Auth";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Visibility from "@material-ui/icons/Visibility";
@@ -60,10 +54,16 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
   },
   userSignup_saveButton: {
-    backgroundColor: "rgba(0, 0, 0, 0.05)"
-  }
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+  },
+  signupLinkContainer: {
+    textDecoration: "none",
+  },
 }));
 
+/**
+ * Overriding MUI theme css
+ */
 const theme = createMuiTheme({
   overrides: {
     MuiFilledInput: {
@@ -79,7 +79,6 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        // backgroundColor: "rgba(0, 0, 0, 0.05)",
         height: "60px",
         width: "100%",
       },
@@ -117,14 +116,19 @@ const SignUp = ({ history }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
+  /**
+   * Shows password after clicking eye icon
+   */
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+  /**
+   * Logs user in and take them to home page
+   */
   async function userLogin(e) {
     e.preventDefault();
     try {
@@ -199,8 +203,12 @@ const SignUp = ({ history }) => {
         </Button>
       </ValidatorForm>
       <div className={classes.forgotPasswordText}> Forgot Your Password?</div>
-      <div className={classes.dontHaveAccountText}> Don't have an account?</div>
-      <div className={classes.signUpText}> Sign up</div>
+      <Link to="/signup" className={classes.signupLinkContainer}>
+        <div className={classes.dontHaveAccountText}>
+          Don't have an account?
+        </div>
+        <div className={classes.signUpText}> Sign up</div>
+      </Link>
     </ThemeProvider>
   );
 };

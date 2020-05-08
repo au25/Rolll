@@ -5,7 +5,6 @@ import {
   ThemeProvider,
   createMuiTheme,
 } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import firebase from "../../firebase";
@@ -16,12 +15,6 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import "./userSignupForm.css";
-import FilledInput from "@material-ui/core/FilledInput";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputLabel from "@material-ui/core/InputLabel";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";

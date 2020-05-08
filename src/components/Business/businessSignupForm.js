@@ -18,6 +18,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
+import Navigation from "../landingPageNavigation";
 // Required for side-effects
 require("firebase/functions");
 
@@ -306,6 +307,7 @@ const SignUp = ({ history }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Navigation />
       <div className={classes.outerFormContainer}>
         <div className={classes.woolooWithUsText}>
           We just need a few information before you can wooloo your business.
