@@ -75,6 +75,8 @@ const useStyles = makeStyles({
     fontWeight: "400",
     margin: "0 0 0 10px",
     color: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "transparent",
+    border: "none",
   },
   signupButton: {
     fontSize: "14px",
@@ -83,6 +85,8 @@ const useStyles = makeStyles({
     fontWeight: "400",
     margin: "0 0 0 10px",
     color: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "transparent",
+    border: "none",
   },
   forBusinessButton: {
     fontSize: "14px",
@@ -91,30 +95,26 @@ const useStyles = makeStyles({
     fontWeight: "400",
     margin: "0 0 0 10px",
     color: "rgba(0, 0, 0, 0.7)",
+    backgroundColor: "transparent",
+    border: "none",
   },
   loginLinkContainer: {
     display: "flex",
     alignItems: "center",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     textDecoration: "none",
-    backgroundColor: "transparent",
-    border: "none",
   },
   signupLinkContainer: {
     display: "flex",
     alignItems: "center",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     textDecoration: "none",
-    backgroundColor: "transparent",
-    border: "none",
   },
   forBusinessLinkContainer: {
     display: "flex",
     alignItems: "center",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     textDecoration: "none",
-    backgroundColor: "transparent",
-    border: "none",
   },
 });
 
