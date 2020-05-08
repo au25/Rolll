@@ -34,7 +34,7 @@ require("firebase/functions");
 /**
  * CSS of the page
  */
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     margin: "0 0 32px 0",
     width: "100vw",
@@ -157,7 +157,7 @@ const SignUp = ({ history }) => {
 
   useEffect(() => {
     checkValidationRule();
-  }, [registrationValue]);
+  }, [registrationValue.confirmPassword]);
 
   const checkValidationRule = () => {
     ValidatorForm.addValidationRule("isPasswordMatch", (value) => {
@@ -185,7 +185,7 @@ const SignUp = ({ history }) => {
     setRegistrationValue({ ...registrationValue, user_region: e });
   };
 
-  const validateCoutrynRegion = () => {
+  const validateCountryRegion = () => {
     if (registrationValue.user_country == "") {
       setCountryErrorState(true);
     } else {
@@ -379,7 +379,7 @@ const SignUp = ({ history }) => {
           <Button
             className={classes.userSignup_saveButton}
             type="submit"
-            onClick={() => validateCoutrynRegion()}
+            onClick={() => validateCountryRegion()}
           >
             SIGN UP
           </Button>
