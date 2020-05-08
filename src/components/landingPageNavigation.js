@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   welcomeMsgContainer: {
     padding: "20px",
     fontSize: "16px",
-    height: "60px",
+    height: "45px",
     display: "flex",
     alignItems: "center",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
@@ -97,18 +97,24 @@ const useStyles = makeStyles({
     alignItems: "center",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     textDecoration: "none",
+    backgroundColor: "transparent",
+    border: "none",
   },
   signupLinkContainer: {
     display: "flex",
     alignItems: "center",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     textDecoration: "none",
+    backgroundColor: "transparent",
+    border: "none",
   },
   forBusinessLinkContainer: {
     display: "flex",
     alignItems: "center",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     textDecoration: "none",
+    backgroundColor: "transparent",
+    border: "none",
   },
 });
 
