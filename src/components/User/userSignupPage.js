@@ -3,17 +3,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import SignupForm from "./userSignupForm";
 import OAuthLogin from "./userOAuthLoginComponent";
 import Div100vh from "react-div-100vh";
-import MuiExpansionPanel from "@material-ui/core/ExpansionPanel";
-import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
+import Navigation from "../landingPageNavigation";
 
 const useStyles = makeStyles({
   signupPageContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    // backgroundColor: "lightyellow",
+    width: "100%",
   },
   fbButton: {
     width: "300px",
@@ -24,16 +18,24 @@ const useStyles = makeStyles({
   accountMsg: {
     width: "300px",
   },
+  signinTitleContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
   signinTitle: {
     fontSize: "14px",
     fontSize: "16px",
     margin: "80px 0 15px 0",
     display: "flex",
     width: "70%",
-    justifyContent: "space-between",
     alignItems: "center",
     color: "rgba(0, 0, 0, 0.5)",
     fontFamily: "CoreSans, sans-serif",
+  },
+  orTextContainer: {
+    display: "flex",
+    justifyContent: "center",
   },
   orText: {
     fontSize: "16px",
@@ -71,11 +73,16 @@ export default function () {
   return (
     <Div100vh className={classes.signupPageContainer}>
       {/* <OAuthLogin /> */}
-      <div className={classes.signinTitle}>Have an account? Log in</div>
-      <div className={classes.orText}>
-        <div className={classes.orBorderBottom}></div>
-        <div>or</div>
-        <div className={classes.orBorderBottom}></div>
+      <Navigation />
+      <div className={classes.signinTitleContainer}>
+        <div className={classes.signinTitle}>Have an account? Log in</div>
+      </div>
+      <div className={classes.orTextContainer}>
+        <div className={classes.orText}>
+          <div className={classes.orBorderBottom}></div>
+          <div>or</div>
+          <div className={classes.orBorderBottom}></div>
+        </div>
       </div>
       <div className={classes.signupFormContainer}>
         <SignupForm />

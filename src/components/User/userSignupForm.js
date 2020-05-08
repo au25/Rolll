@@ -116,26 +116,6 @@ const theme = createMuiTheme({
 });
 
 /**
- * Currently unused validation styles
- */
-const ValidationTextField = withStyles({
-  root: {
-    "& input:valid + fieldset": {
-      borderColor: "green",
-      borderWidth: 2,
-    },
-    "& input:invalid + fieldset": {
-      borderColor: "red",
-      borderWidth: 2,
-    },
-    "& input:valid:focus + fieldset": {
-      borderLeftWidth: 6,
-      padding: "4px !important", // override inline-style
-    },
-  },
-})(TextField);
-
-/**
  * This is the signup component
  * History from withRouter to navigate after signing up
  * @param {history} param0

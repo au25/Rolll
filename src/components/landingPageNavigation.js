@@ -19,6 +19,10 @@ const useStyles = makeStyles({
   fullList: {
     width: "auto",
   },
+  menuButton: {
+    backgroundColor: "transparent",
+    border: "none",
+  },
   welcomeMsgContainer: {
     padding: "20px",
     fontSize: "16px",
@@ -27,6 +31,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     fontFamily: "CoreSans, sans-serif",
+    color: "rgba(0, 0, 0, 0.7)",
   },
   loginContainer: {
     display: "flex",
@@ -188,7 +193,12 @@ export default function SwipeableTemporaryDrawer() {
       <div className={classes.navigationContainer}>
         {max600 && (
           <div>
-            <Button onClick={toggleDrawer("right", true)}>Menu</Button>
+            <Button
+              className={classes.menuButton}
+              onClick={toggleDrawer("right", true)}
+            >
+              Menu
+            </Button>
             <SwipeableDrawer
               anchor="right"
               open={state.right}
