@@ -9,6 +9,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import FaceIcon from "@material-ui/icons/Face";
 import HistoryIcon from "@material-ui/icons/DynamicFeed";
 import { useHistory } from "react-router-dom";
+import Div100vh from "react-div-100vh";
 
 // Navigation Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +29,11 @@ import BusinessProfilePage from "./businessProfilePage";
 import BusinessManageShopPage from "./businessManageShopPage";
 
 const useStyles = makeStyles({
+  div100Container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
   root: {
     width: 500,
   },
@@ -36,6 +42,14 @@ const useStyles = makeStyles({
   },
   profileIcon: {
     fontSize: "25px",
+  },
+  navigationIconContainer: {
+    // borderTop: "1px solid rgba(0, 0, 0, 0.15)",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: "12%",
+    padding: "0 15px",
   },
 });
 
@@ -91,30 +105,32 @@ export default function ({ userDbInfo, location }) {
   };
 
   return (
-    <div>
+    <Div100vh className={classes.div100Container}>
       <div className={classes.renderBodyContainer}>
         <RenderBody />
       </div>
-      <FontAwesomeIcon
-        icon={faEdit}
-        className={classes.profileIcon}
-        onClick={() => setValue("create")}
-      />
-      <FontAwesomeIcon
-        icon={faClone}
-        className={classes.profileIcon}
-        onClick={() => setValue("history")}
-      />
-      <FontAwesomeIcon
-        icon={faStoreAlt}
-        className={classes.profileIcon}
-        onClick={() => setValue("shop")}
-      />
-      <FontAwesomeIcon
-        icon={faUserCircle}
-        className={classes.profileIcon}
-        onClick={() => setValue("profile")}
-      />
-    </div>
+      <div className={classes.navigationIconContainer}>
+        <FontAwesomeIcon
+          icon={faEdit}
+          className={classes.profileIcon}
+          onClick={() => setValue("create")}
+        />
+        <FontAwesomeIcon
+          icon={faClone}
+          className={classes.profileIcon}
+          onClick={() => setValue("history")}
+        />
+        <FontAwesomeIcon
+          icon={faStoreAlt}
+          className={classes.profileIcon}
+          onClick={() => setValue("shop")}
+        />
+        <FontAwesomeIcon
+          icon={faUserCircle}
+          className={classes.profileIcon}
+          onClick={() => setValue("profile")}
+        />
+      </div>
+    </Div100vh>
   );
 }

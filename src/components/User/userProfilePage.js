@@ -1,6 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import firebase from "../../firebase";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  ThemeProvider,
+  makeStyles,
+  createMuiTheme,
+} from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
@@ -10,6 +15,7 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import "./userProfilePage.css";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -21,12 +27,15 @@ const useStyles = makeStyles((theme) => ({
       alignItems: "center",
     },
   },
-  userProfile_formContainer: {
+  yourProfileText: {
+    fontSize: "14px",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+    padding: "28px 0 14px 0",
+  },
+  userProfileFormContainer: {
     [theme.breakpoints.down(600)]: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      width: "100%",
+      width: "70%",
     },
   },
   userProfile_input: {
@@ -52,13 +61,13 @@ const useStyles = makeStyles((theme) => ({
     width: "70%",
     display: "flex",
     fontSize: "14px",
-    margin: "45px 0 0 0"
+    margin: "45px 0 0 0",
   },
   userProfile_cityTitle: {
     width: "70%",
     display: "flex",
     fontSize: "14px",
-    margin: "45px 0 0 0"
+    margin: "45px 0 0 0",
   },
   userProfile_emailInput: {
     [theme.breakpoints.down(600)]: {
@@ -122,7 +131,61 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
     fontSize: "14px",
   },
+  updateButtonText: {
+    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    margin: "0 0 28px 0"
+  },
+  logoutButton: {
+    width: "40%",
+    fontSize: "12px",
+    padding: "0",
+    height: "40px",
+    backgroundColor: "indianred",
+  },
+  logoutContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
 }));
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiFilledInput: {
+      root: {
+        height: "60px",
+        backgroundColor: "rgba(0, 0, 0, 0.05)",
+      },
+    },
+    MuiInputLabel: {
+      filled: {
+        margin: "4px 0 0 0",
+      },
+    },
+    MuiButton: {
+      root: {
+        height: "60px",
+        width: "100%",
+      },
+    },
+    MuiIconButton: {
+      edgeEnd: {
+        height: "60px",
+        borderRadius: "0",
+      },
+    },
+    MuiFormControl: {
+      root: {
+        width: "100%",
+        margin: "0 0 28px 0",
+      },
+    },
+    MuiFormHelperText: {
+      root: {
+        fontSize: "12px",
+      },
+    },
+  },
+});
 
 export default function ({ userDbInfo }) {
   const { currentUser } = useContext(AuthContext);
@@ -130,9 +193,13 @@ export default function ({ userDbInfo }) {
   const classes = useStyles();
 
   const [userInfo, setUserInfo] = useState({});
+  const [countryErrorState, setCountryErrorState] = useState(null);
+  const [regionErrorState, setRegionErrorState] = useState(null);
 
   useEffect(() => {
-    setUserInfo(userDbInfo.data());
+    if (userDbInfo && userDbInfo.data()) {
+      setUserInfo(userDbInfo.data());
+    }
   }, []);
 
   /**
@@ -159,77 +226,107 @@ export default function ({ userDbInfo }) {
 
   return (
     <div className={classes.container}>
-      <form
-        className={classes.userProfile_formContainer}
-        onSubmit={handleProfileUpdate}
-      >
-        <div className={classes.userProfile_emailTitle}>Email</div>
-        <div className={classes.userProfile_emailInputContainer}>
-          <input
-            disabled
+      <ThemeProvider theme={theme}>
+        <ValidatorForm
+          className={classes.userProfileFormContainer}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleProfileUpdate}
+        >
+          <div className={classes.yourProfileText}>Your Profile</div>
+          <TextValidator
+            id="filled-basic"
+            label="Email"
+            variant="filled"
+            InputLabelProps={{ shrink: true }}
             value={userInfo.user_email}
-            className={classes.userProfile_emailInput}
+            validators={["required", "isEmail"]}
+            errorMessages={[
+              "Email address is requred",
+              "Email address is not valid",
+            ]}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, user_email: e.target.value })
+            }
           />
-        </div>
-        <div className={classes.userProfile_cityTitle}>City</div>
-        <div className={classes.userProfile_cityInputContainer}>
-          <input
-            name="user_city"
-            onChange={handleProfileChange}
+          <TextValidator
+            id="filled-basic"
+            label="City"
+            variant="filled"
+            InputLabelProps={{ shrink: true }}
             value={userInfo.user_city}
-            className={classes.userProfile_cityInput}
+            validators={["required"]}
+            errorMessages={["City is requred"]}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, user_city: e.target.value })
+            }
           />
-        </div>
-        <div className={classes.userProfile_countryRegionTitleContainer}>
-          <div className="userProfile_countryTitle">Country</div>
-          <div className="userProfile_regionTitle">Region</div>
-        </div>
-        <div className={classes.userProfile_countryRegionContainer}>
-          <div className={classes.userProfile_countryDropdownContainer}>
-            <CountryDropdown
-              value={userInfo.user_country}
-              onChange={(country) =>
-                setUserInfo({
-                  ...userInfo,
-                  user_country: country,
-                })
-              }
-              whitelist={["CA", "US"]}
-              priorityOptions={["CA", "US"]}
-              classes="userProfile_selectCountry"
-            />
+          <div className={classes.countryOuterContainer}>
+            <div className={classes.countryContainer}>
+              <CountryDropdown
+                required
+                value={userInfo.user_country}
+                onChange={(country) =>
+                  setUserInfo({
+                    ...userInfo,
+                    user_country: country,
+                  })
+                }
+                whitelist={["CA", "US"]}
+                priorityOptions={["CA", "US"]}
+                classes="userProfile_selectCountry"
+              />
+            </div>
+            <div>
+              {countryErrorState && userInfo.user_country == "" ? (
+                <div className={classes.countryErrorMessage}>
+                  Select a country
+                </div>
+              ) : null}
+            </div>
           </div>
-          <div className={classes.userProfile_countryDropdownContainer}>
-            <RegionDropdown
-              disableWhenEmpty={true}
-              country={userInfo.user_country}
-              value={userInfo.user_region}
-              valueType="short"
-              labelType="short"
-              disableWhenEmpty={true}
-              onChange={(region) =>
-                setUserInfo({ ...userInfo, user_region: region })
-              }
-              classes="userProfile_selectRegion"
-            />
+          <div className={classes.regionOuterContainer}>
+            <div className={classes.regionContainer}>
+              <RegionDropdown
+                required
+                disableWhenEmpty={true}
+                country={userInfo.user_country}
+                value={userInfo.user_region}
+                disableWhenEmpty={true}
+                onChange={(region) =>
+                  setUserInfo({
+                    ...userInfo,
+                    user_region: region,
+                  })
+                }
+                classes="userProfile_selectRegion"
+              />
+            </div>
+            <div>
+              {regionErrorState && userInfo.user_region == "" ? (
+                <div className={classes.regionErrorMessage}>
+                  Select a region
+                </div>
+              ) : null}
+            </div>
+            <Button type="submit" className={classes.updateButtonText}>
+              Update
+            </Button>
+            <div className={classes.logoutContainer}>
+              <Button
+                className={classes.logoutButton}
+                onClick={(e) => {
+                  e.preventDefault();
+                  firebase.auth().signOut();
+                  history.push("/home");
+                }}
+              >
+                Logout
+              </Button>
+            </div>
           </div>
-        </div>
-        <div className={classes.userProfile_saveLogoutContainer}>
-          <button className={classes.userProfile_saveButton} type="submit">
-            Save
-          </button>
-          <button
-            className={classes.userProfile_logoutButton}
-            onClick={(e) => {
-              e.preventDefault();
-              firebase.auth().signOut();
-              history.push("/home");
-            }}
-          >
-            Logout
-          </button>
-        </div>
-      </form>
+        </ValidatorForm>
+      </ThemeProvider>
     </div>
   );
 }

@@ -31,7 +31,6 @@ export default function ({ location }) {
   useEffect(() => {
     async function fetchUserInfo() {
       if (userAuthInfo && userAuthInfo.uid) {
-        console.log("making a read operation");
         const db = firebase.firestore();
         const user = await db
           .collection("businessUser")

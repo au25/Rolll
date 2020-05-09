@@ -158,7 +158,7 @@ const SignUp = ({ history }) => {
         className={classes.root}
         noValidate
         autoComplete="off"
-        onSubmit={() => userLogin()}
+        onSubmit={(e) => userLogin(e)}
       >
         <TextValidator
           id="filled-basic"

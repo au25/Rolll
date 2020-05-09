@@ -1,10 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import firebase from "../../firebase";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
+  businessProfilePageContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  maangerInfoText: {
+    fontSize: "16px",
+    margin: "45px 0 15px 0",
+    display: "flex",
+    width: "70%",
+    alignItems: "center",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+  },
+  formContainer: {
+    width: "70%",
+    display: "flex",
+    flexDirection: "column",
+  },
   inputStyle: {
     width: "80%",
     padding: "12px 20px",
@@ -12,6 +38,57 @@ const useStyles = makeStyles({
     border: "1px solid #ccc",
     borderRadius: "4px",
     boxSizing: "border-box",
+  },
+  logoutButtonContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  logoutButton: {
+    width: "40%",
+    fontSize: "12px",
+    padding: "0",
+    height: "40px",
+    backgroundColor: "indianred",
+  },
+});
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiFilledInput: {
+      root: {
+        height: "60px",
+        backgroundColor: "rgba(0, 0, 0, 0.05)",
+      },
+    },
+    MuiInputLabel: {
+      filled: {
+        margin: "4px 0 0 0",
+      },
+    },
+    MuiButton: {
+      root: {
+        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        height: "60px",
+        margin: "0 0 28px 0",
+      },
+    },
+    MuiIconButton: {
+      edgeEnd: {
+        height: "60px",
+        borderRadius: "0",
+      },
+    },
+    MuiFormControl: {
+      root: {
+        width: "100%",
+        margin: "0 0 28px 0",
+      },
+    },
+    MuiFormHelperText: {
+      root: {
+        fontSize: "12px",
+      },
+    },
   },
 });
 
@@ -23,7 +100,6 @@ export default function ({ userDbInfo }) {
 
   useEffect(() => {
     setUserInfo(userDbInfo.data());
-    console.log(userDbInfo);
   }, []);
 
   /**
@@ -31,6 +107,7 @@ export default function ({ userDbInfo }) {
    */
   function handleProfileChange(e) {
     const { name, value } = e.target;
+    console.log(value);
     setUserInfo({
       ...userInfo,
       [name]: value,
@@ -42,6 +119,7 @@ export default function ({ userDbInfo }) {
    */
   function handleProfileSubmit(e) {
     e.preventDefault();
+    console.log("profile submiting...");
 
     const db = firebase.firestore();
     db.collection("businessUser").doc(userDbInfo.id).update({
@@ -52,64 +130,78 @@ export default function ({ userDbInfo }) {
     });
   }
 
-  /**
-   * Renders user information
-   */
-  function RenderProfile() {
-    return (
-      <form onSubmit={handleProfileSubmit}>
-        <div>
-          <div>
-            <input
-              value={userInfo && userInfo.email}
-              className={classes.inputStyle}
-              name="email"
-              onChange={handleProfileChange}
-            />
-          </div>
-          <div>
-            <input
-              value={userInfo && userInfo.first_name}
-              className={classes.inputStyle}
-              name="first_name"
-              onChange={handleProfileChange}
-            />
-          </div>
-          <div>
-            <input
-              value={userInfo && userInfo.last_name}
-              className={classes.inputStyle}
-              name="last_name"
-              onChange={handleProfileChange}
-            />
-          </div>
-          <div>
-            <input
-              value={userInfo && userInfo.phone_number}
-              className={classes.inputStyle}
-              name="phone_number"
-              onChange={handleProfileChange}
-            />
-          </div>
-        </div>
-        <button>Edit</button>
-        <input type="submit" value="submit" />
-      </form>
-    );
-  }
-
   return (
-    <div>
-      <RenderProfile />
-      <button
-        onClick={async (e) => {
-          e.preventDefault();
-          await firebase.auth().signOut();
-          history.push("./home");
-        }}
-      >
-        Log out
-      </button>
+    <div className={classes.businessProfilePageContainer}>
+      <div className={classes.maangerInfoText}>Manager Information</div>
+      <ThemeProvider theme={theme}>
+        <ValidatorForm
+          className={classes.formContainer}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleProfileSubmit}
+        >
+          <TextValidator
+            id="filled-basic"
+            label="Email"
+            InputLabelProps={{ shrink: true }}
+            variant="filled"
+            value={userInfo && userInfo.email}
+            validators={["required", "isEmail"]}
+            errorMessages={[
+              "Email address is requred",
+              "Email address is not valid",
+            ]}
+            name="email"
+            onChange={handleProfileChange}
+          />
+          <TextValidator
+            id="filled-basic"
+            label="First Name"
+            InputLabelProps={{ shrink: true }}
+            variant="filled"
+            value={userInfo && userInfo.first_name}
+            validators={["required"]}
+            errorMessages={["First name is requred"]}
+            name="first_name"
+            onChange={handleProfileChange}
+          />
+          <TextValidator
+            id="filled-basic"
+            label="Last Name"
+            InputLabelProps={{ shrink: true }}
+            variant="filled"
+            value={userInfo && userInfo.last_name}
+            validators={["required"]}
+            errorMessages={["Last name is requred"]}
+            name="last_name"
+            onChange={handleProfileChange}
+          />
+          <TextValidator
+            id="filled-basic"
+            label="Phone Number"
+            InputLabelProps={{ shrink: true }}
+            variant="filled"
+            value={userInfo && userInfo.phone_number}
+            validators={["required"]}
+            errorMessages={["Phone number is requred"]}
+            name="phone_number"
+            onChange={handleProfileChange}
+          />
+          <Button type="submit">Update</Button>
+          <div className={classes.logoutButtonContainer}>
+            <Button
+              className={classes.logoutButton}
+              onClick={async (e) => {
+                e.preventDefault();
+                await firebase.auth().signOut();
+                history.push("./home");
+              }}
+            >
+              Log out
+            </Button>
+          </div>
+        </ValidatorForm>
+      </ThemeProvider>
     </div>
   );
 }

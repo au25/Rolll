@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  ThemeProvider,
+  makeStyles,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import UserProfile from "./userProfilePage";
 import UserFavorite from "./userFavorite";
@@ -24,15 +28,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   userNavigation_div100Container: {
-    
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
-  userNavigation_renderBodyContainer: {
-    height: "85%",
-  },
+  userNavigation_renderBodyContainer: {},
   userNavigation_navContainer: {
     [theme.breakpoints.down(600)]: {
       width: "100%",
-      height: "15%",
+      height: "12%",
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-around",
