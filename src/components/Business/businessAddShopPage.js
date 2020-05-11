@@ -5,6 +5,7 @@ import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import BusinessNavigation from "./businessNavigation";
 import * as firebase from "firebase";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import "firebase/firestore";
 
 const useStyles = makeStyles({});
