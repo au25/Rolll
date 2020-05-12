@@ -39,6 +39,7 @@ const useStyles = makeStyles({
   },
   renderBodyContainer: {
     height: "600px",
+    overflow: "auto",
   },
   profileIcon: {
     fontSize: "25px",

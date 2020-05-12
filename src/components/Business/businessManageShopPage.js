@@ -21,6 +21,7 @@ import {
   CountryRegionData,
 } from "react-country-region-selector";
 import Button from "@material-ui/core/Button";
+import { CSSTransition } from "react-transition-group";
 import "./businessManageShopPage.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -67,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   deleteShopContainer: {
     display: "flex",
     justifyContent: "flex-end",
-    margin: "0 0 28px 0"
+    margin: "0 0 28px 0",
   },
   deleteShopButton: {
     width: "40%",
@@ -118,6 +119,16 @@ const theme = createMuiTheme({
       root: {
         padding: "0",
         justifyContent: "center",
+      },
+    },
+    MuiExpansionPanelSummary: {
+      root: {
+        height: "70px",
+      },
+      content: {
+        color: "rgba(0, 0, 0, 0.7)",
+        fontSize: "16px",
+        fontFamily: "CoreSans, sans-serif",
       },
     },
   },
@@ -337,6 +348,8 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
   const [countryErrorState, setCountryErrorState] = useState(null);
   const [regionErrorState, setRegionErrorState] = useState(null);
   const [newParentShopInfo, setNewParentShopInfo] = useState();
+  const [showButton, setShowButton] = useState(true);
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
     setNewParentShopInfo(parentShopInfo);
@@ -412,11 +425,29 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
             validateCountryRegion={validateCountryRegion}
           />
         ) : null}
-        <BusinessAddShopComponent
-          userDbInfo={userDbInfo}
-          parentShopInfo={parentShopInfo}
-          setParentShopInfo={setParentShopInfo}
-        />
+        <div>
+          {showMessage ? (
+            <Button onClick={() => setShowMessage(false)}>Close</Button>
+          ) : (
+            <Button onClick={() => setShowMessage(true)}>Add a new shop</Button>
+          )}
+          <CSSTransition
+            in={showMessage}
+            timeout={200}
+            classNames="alert"
+            unmountOnExit
+            onEnter={() => setShowButton(false)}
+            onExited={() => setShowButton(true)}
+          >
+            <div>
+              <BusinessAddShopComponent
+                userDbInfo={userDbInfo}
+                parentShopInfo={parentShopInfo}
+                setParentShopInfo={setParentShopInfo}
+              />
+            </div>
+          </CSSTransition>
+        </div>
       </ThemeProvider>
     </div>
   );
