@@ -1,5 +1,9 @@
 import React, { useEffect, useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import { setupUI } from "../setupUI";
 import firebase from "../../firebase";
 import { AuthContext } from "../../Auth";
@@ -11,35 +15,219 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
+import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  chooseGiftText: {
+    fontSize: "18px",
+    width: "70%",
+    margin: "45px 0 35px 0",
+    display: "flex",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+    fontWeight: "bold",
+  },
+  giftOfferText: {
+    fontSize: "18px",
+    width: "70%",
+    margin: "35px 0 15px 0",
+    display: "flex",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+    fontWeight: "bold",
+  },
+  giftTitle_text: {
+    fontWeight: "bold",
+    margin: "0 0 10px 0",
+  },
+  giftIntro_text: {
+    margin: "0 0 20px 0",
+  },
+  giftInfoContainer: {
+    fontSize: "16px",
+    width: "70%",
+    margin: "12px 0 15px 0",
+    display: "flex",
+    flexDirection: "column",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+  },
+  chooseGiftContainer: {
+    margin: "12px 0 30px 0",
+  },
+  linkContainer: {
+    textDecoration: "none",
+    color: "rgba(0, 0, 0, 0.87)",
+  },
+  imageDescription_container: {
+    border: "3px solid rgb(0, 0, 0, 0.3)",
+    padding: "15px",
+    borderRadius: "5px",
+  },
+  giftImageContainer: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "8px 0"
+  },
+  giftImage: {
+    width: "40%",
+    overflow: "hidden",
+  },
+  giftTitle: {
+    width: "60%",
+    display: "flex",
+    justifyContent: "center",
+  },
+  giftDescription_container: {
+    display: "flex",
+    justifyContent: "space-evenly",
+  },
+  chanceText_container: {
+    margin: "10px 0 0 0",
+  },
+  rewardText_container: {
+    margin: "10px 0 0 0",
+  },
+  chanceText: {
+    margin: "3px 0 0 0",
+  },
+  rewardText: {
+    margin: "3px 0 0 0",
+  },
+  nextButton: {
+    width: "40%",
+    fontSize: "12px",
+    padding: "0",
+    height: "40px",
+    backgroundColor: "lightgreen",
+  },
+  disableButton: {
+    width: "40%",
+    fontSize: "12px",
+    padding: "0",
+    height: "40px",
+    backgroundColor: "lightgray",
+  },
+});
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiNativeSelect: {
+      root: {
+        height: "40px",
+        backgroundColor: "rgba(0, 0, 0, 0.05)",
+      },
+      select: {
+        borderTopLeftRadius: "4px",
+        borderTopRightRadius: "4px",
+        padding: "8px 0 8px 12px",
+      },
+    },
+    MuiFormControl: {
+      root: {
+        width: "70%",
+        margin: "0 0 28px 0",
+      },
+    },
+  },
+});
 
 export default function ({ userDbInfo, parentShopInfo }) {
   const classes = useStyles();
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
-
+  const [durationChosen, setDurationChosen] = useState(false);
+  const [giftChosen, setGiftChosen] = useState(false);
+  const [selectGift, setSelectGift] = useState();
   const [giftDuration, setGiftDuration] = React.useState({
     gift_duration: "",
   });
+  const [activeDiv, setActiveDiv] = useState(null);
 
   const userId = userDbInfo.id;
 
-  console.log("inside renderGift on create gift page");
-  console.log(parentShopInfo);
-
+  /**
+   * Sets gift duration state
+   * Sets gift chosen state for validation
+   */
   const handleGiftDuration = (e) => {
     const { name, value } = e.target;
     setGiftDuration({
       ...giftDuration,
       [name]: value,
     });
-    console.log(name + "   " + value);
+    setDurationChosen(!durationChosen);
   };
 
+  /**
+   * Handle gift click, set validation to chosen and gift state to be passed to next component
+   */
+  const handleGiftClick = (gift) => {
+    console.log(gift);
+    setGiftChosen(!giftChosen);
+    setSelectGift(gift);
+    if (activeDiv === gift.gift_name) {
+      setActiveDiv(null);
+    } else {
+      setActiveDiv(gift.gift_name);
+    }
+  };
+
+  /**
+   * Renders the gift templates
+   */
   const RenderGift = () => {
     return parentShopInfo.gift.map((gift) => (
-      <div>
+      <div className={classes.chooseGiftContainer}>
+        <div className={classes.giftTitle_text}>{gift.gift_name}</div>
+        <div className={classes.giftIntro_text}>{gift.gift_intro}</div>
+        <div
+          className={classes.imageDescription_container}
+          style={{
+            backgroundColor: gift.gift_name === activeDiv ? "#e0eee0" : "#f5f5f5",
+            borderColor: gift.gift_name === activeDiv ? "#3d9140" : "#f5f5f5"
+          }}
+        >
+          <div
+            className={classes.giftImageContainer}
+            onClick={() => handleGiftClick(gift)}
+          >
+            <img className={classes.giftImage} src={gift.image_url} alt="lol" />
+          </div>
+          <div className={classes.giftDescription_container}>
+            <div className={classes.chanceText_container}>
+              {gift.gift_description.chance.map((chance) => {
+                {
+                  return (
+                    <div className={classes.chanceText}>{chance * 100}%</div>
+                  );
+                }
+              })}
+            </div>
+            <div className={classes.rewardText_container}>
+              {gift.gift_description.reward.map((reward) => {
+                {
+                  return <div className={classes.rewardText}>{reward}</div>;
+                }
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    ));
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      <div className={classes.container}>
+        <div className={classes.chooseGiftText}>Choose Gift Duration</div>
         <FormControl className={classes.formControl}>
           <NativeSelect
             className={classes.selectEmpty}
@@ -55,23 +243,25 @@ export default function ({ userDbInfo, parentShopInfo }) {
             <option value={30}>30 Days </option>
           </NativeSelect>
         </FormControl>
-        <Link
-          to={{
-            pathname: "/businessGiftSelectShop",
-            state: { userId, parentShopInfo, gift, giftDuration },
-          }}
-        >
-          <div>{gift.gift_name}</div>
-          <div>gift description</div>
-          <br />
-        </Link>
+        <div className={classes.giftOfferText}> Choose Gift Template</div>
+        <div className={classes.giftInfoContainer}>
+          {parentShopInfo.gift ? <RenderGift /> : null}
+        </div>
+        {/* Validation check to see which button is shown */}
+        {giftChosen && durationChosen && selectGift.gift_name ? (
+          <Link
+            className={classes.linkContainer}
+            to={{
+              pathname: "/businessGiftSelectShop",
+              state: { userId, parentShopInfo, selectGift, giftDuration },
+            }}
+          >
+            <Button className={classes.nextButton}>Next</Button>
+          </Link>
+        ) : (
+          <Button className={classes.disableButton}>Next</Button>
+        )}
       </div>
-    ));
-  };
-
-  return (
-    <div>
-      <div>{parentShopInfo.gift ? <RenderGift /> : null}</div>
-    </div>
+    </ThemeProvider>
   );
 }

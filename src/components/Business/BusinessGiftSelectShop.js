@@ -32,7 +32,7 @@ export default function ({ location }) {
    * Props from parent from <Link> route
    */
   const parentShopInfo = location.state.parentShopInfo;
-  const gift = location.state.gift;
+  const gift = location.state.selectGift;
   const giftDuration = location.state.giftDuration.gift_duration;
   const userId = location.state.userId;
   const db = firebase.firestore();

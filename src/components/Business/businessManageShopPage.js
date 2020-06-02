@@ -77,6 +77,9 @@ const useStyles = makeStyles((theme) => ({
     height: "40px",
     backgroundColor: "indianred",
   },
+  openCloseForm: {
+    margin: "28px 0 0 0",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -427,9 +430,19 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
         ) : null}
         <div>
           {showMessage ? (
-            <Button onClick={() => setShowMessage(false)}>Close</Button>
+            <Button
+              className={classes.openCloseForm}
+              onClick={() => setShowMessage(false)}
+            >
+              Close
+            </Button>
           ) : (
-            <Button onClick={() => setShowMessage(true)}>Add a new shop</Button>
+            <Button
+              className={classes.openCloseForm}
+              onClick={() => setShowMessage(true)}
+            >
+              Add a new shop
+            </Button>
           )}
           <CSSTransition
             in={showMessage}

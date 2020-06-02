@@ -20,7 +20,7 @@ import "firebase/firestore";
 const useStyles = makeStyles({
   addShopText: {
     fontSize: "16px",
-    margin: "40px 0 15px 0",
+    margin: "28px 0 15px 0",
     width: "70%",
     color: "rgba(0, 0, 0, 0.5)",
     fontFamily: "CoreSans, sans-serif",
