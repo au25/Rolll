@@ -4,14 +4,20 @@ import * as firebase from "firebase";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import BusinessSelectShopNavigation from "./businessSelectShopNavigation";
-import Moment from "react-moment";
+import Div100vh from "react-div-100vh";
 import moment from "moment";
 import "moment-timezone";
 
 import { CSSTransition } from "react-transition-group";
 import "./styles.css";
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles({
+  div100Container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+});
 
 export default function ({ location }) {
   const classes = useStyles();
@@ -298,29 +304,29 @@ export default function ({ location }) {
   };
 
   return (
-    <div>
-      <br />
-      Choose your shops to apply
-      <br />
-      {gift.gift_name}
-      <br /> <br />
-      <RenderShop />
-      <CSSTransition
-        in={showShop}
-        timeout={300}
-        classNames="alert"
-        unmountOnExit
-        onEnter={() => setShowGiftAndShop(false)}
-        onExited={() => setShowGiftAndShop(true)}
-      >
-        <div key="lol">
-          <br />
-          {gift.gift_name} <br />
-          {selectShop.shop_name} <br />
-          <div onClick={() => createGift()}>confirm</div>
-        </div>
-      </CSSTransition>
-      <BusinessSelectShopNavigation />
-    </div>
+    <Div100vh className={classes.div100Container}>
+        <br />
+        Choose your shops to apply
+        <br />
+        {gift.gift_name}
+        <br /> <br />
+        <RenderShop />
+        <CSSTransition
+          in={showShop}
+          timeout={300}
+          classNames="alert"
+          unmountOnExit
+          onEnter={() => setShowGiftAndShop(false)}
+          onExited={() => setShowGiftAndShop(true)}
+        >
+          <div key="lol">
+            <br />
+            {gift.gift_name} <br />
+            {selectShop.shop_name} <br />
+            <div onClick={() => createGift()}>confirm</div>
+          </div>
+        </CSSTransition>
+        <BusinessSelectShopNavigation />
+    </Div100vh>
   );
 }

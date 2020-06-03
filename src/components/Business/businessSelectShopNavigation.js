@@ -37,6 +37,19 @@ const useStyles = makeStyles({
   profileIcon: {
     fontSize: "25px",
   },
+  div100Container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  navigationIconContainer: {
+    // borderTop: "1px solid rgba(0, 0, 0, 0.15)",
+    display: "flex",
+    justifyContent: "space-around",
+    alignItems: "center",
+    height: "12%",
+    padding: "0 15px",
+  },
 });
 
 export default function ({ userDbInfo }) {
@@ -45,60 +58,60 @@ export default function ({ userDbInfo }) {
   const [parentShopInfo, setParentShopInfo] = useState({});
   const history = useHistory();
 
-    const handleCreate = () => {
-        const pushState = "create";
-        history.push({
-            pathname: "/businessHome",
-            state: { pushState }
-        })
-    }
+  const handleCreate = () => {
+    const pushState = "create";
+    history.push({
+      pathname: "/businessHome",
+      state: { pushState },
+    });
+  };
 
-    const handleHistory = () => {
-        const pushState = "history";
-        history.push({
-            pathname: "/businessHome",
-            state: { pushState }
-        })
-    }
+  const handleHistory = () => {
+    const pushState = "history";
+    history.push({
+      pathname: "/businessHome",
+      state: { pushState },
+    });
+  };
 
-    const handleShop = () => {
-        const pushState = "shop";
-        history.push({
-            pathname: "/businessHome",
-            state: { pushState }
-        })
-    }
+  const handleShop = () => {
+    const pushState = "shop";
+    history.push({
+      pathname: "/businessHome",
+      state: { pushState },
+    });
+  };
 
-    const handleProfile = () => {
-        const pushState = "profile";
-        history.push({
-            pathname: "/businessHome",
-            state: { pushState }
-        })
-    }
+  const handleProfile = () => {
+    const pushState = "profile";
+    history.push({
+      pathname: "/businessHome",
+      state: { pushState },
+    });
+  };
 
   return (
-    <div>
+      <div className={classes.navigationIconContainer}>
         <FontAwesomeIcon
           icon={faEdit}
           className={classes.profileIcon}
           onClick={() => handleCreate()}
         />
-      <FontAwesomeIcon
-        icon={faClone}
-        className={classes.profileIcon}
-        onClick={() => handleHistory()}
-      />
-      <FontAwesomeIcon
-        icon={faStoreAlt}
-        className={classes.profileIcon}
-        onClick={() => handleShop()}
-      />
-      <FontAwesomeIcon
-        icon={faUserCircle}
-        className={classes.profileIcon}
-        onClick={() => handleProfile()}
-      />
-    </div>
+        <FontAwesomeIcon
+          icon={faClone}
+          className={classes.profileIcon}
+          onClick={() => handleHistory()}
+        />
+        <FontAwesomeIcon
+          icon={faStoreAlt}
+          className={classes.profileIcon}
+          onClick={() => handleShop()}
+        />
+        <FontAwesomeIcon
+          icon={faUserCircle}
+          className={classes.profileIcon}
+          onClick={() => handleProfile()}
+        />
+      </div>
   );
 }
