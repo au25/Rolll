@@ -5,6 +5,7 @@ import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import BusinessSelectShopNavigation from "./businessSelectShopNavigation";
 import Div100vh from "react-div-100vh";
+import Button from "@material-ui/core/Button";
 import moment from "moment";
 import "moment-timezone";
 
@@ -17,6 +18,141 @@ const useStyles = makeStyles({
     flexDirection: "column",
     justifyContent: "space-between",
   },
+  selectShopOuterContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    overflow: "scroll",
+  },
+  selectShopContainer: {
+    display: "flex",
+    width: "70%",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  giftInfo_container: {
+    margin: "48px 0 0 0",
+  },
+  chooseShopText: {
+    fontSize: "16px",
+    width: "100%",
+    margin: "48px 0 26px 0",
+    display: "flex",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+    fontWeight: "bold",
+  },
+  giftImage: {
+    width: "40%",
+    overflow: "hidden",
+  },
+  giftTitle: {
+    width: "60%",
+    display: "flex",
+    justifyContent: "center",
+  },
+  giftTitle_text: {
+    fontSize: "16px",
+    fontWeight: "bold",
+    margin: "0 0 10px 0",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+  },
+  giftIntro_text: {
+    margin: "0 0 20px 0",
+    fontSize: "16px",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+  },
+  giftDescription_container: {
+    display: "flex",
+    justifyContent: "space-evenly",
+  },
+  chanceText_container: {
+    margin: "10px 0 0 0",
+    fontFamily: "CoreSans, sans-serif",
+    fontWeight: "bold",
+    textAlign: "right",
+  },
+  rewardText_container: {
+    margin: "10px 0 0 0",
+  },
+  chanceText: {
+    margin: "3px 0 0 0",
+  },
+  rewardText: {
+    margin: "3px 0 0 0",
+  },
+  imageDescription_container: {
+    border: "3px solid rgb(0, 0, 0, 0.3)",
+    padding: "15px",
+    borderRadius: "5px",
+  },
+  giftImageContainer: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "8px 0",
+  },
+  applyGiftShopContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    margin: "0 0 15px 0",
+  },
+  shopName_text: {
+    width: "60%",
+    fontSize: "16px",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+    display: "flex",
+    justifyContent: "center",
+    textAlign: "center",
+    lineHeight: "21px",
+    padding: "5px",
+  },
+  shopEnabled_message: {
+    fontSize: "14px",
+    color: "red",
+    fontFamily: "CoreSans, sans-serif",
+    margin: "0 0 5px 0",
+  },
+  shopName_disable: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+  shopName_select: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  selectShop_button: {
+    width: "40%",
+    fontSize: "12px",
+    padding: "10px 5px",
+    backgroundColor: "lightgreen",
+  },
+  enableGift_button: {
+    fontSize: "12px",
+    padding: "12px 15px",
+    backgroundColor: "lightgreen",
+    fontSize: "14px",
+  },
+  enableGift_backButton: {
+    margin: "5px 0 0 0",
+  },
+  disableGift_button: {
+    width: "40%",
+    fontSize: "12px",
+    padding: "10px 5px",
+    backgroundColor: "#c70000",
+  },
 });
 
 export default function ({ location }) {
@@ -27,8 +163,8 @@ export default function ({ location }) {
   /**
    * States for showing and hiding gift options and choosing shop
    */
-  const [showGiftAndShop, setShowGiftAndShop] = useState(true);
-  const [showShop, setShowShop] = useState(false);
+  const [showSelection, setShowSelection] = useState(true);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [selectShop, setSelectShop] = useState({});
   const [giftRecord, setGiftRecord] = useState({});
   const [activeGift, setActiveGift] = useState({});
@@ -72,7 +208,7 @@ export default function ({ location }) {
   const handleShopClick = (shop) => {
     console.log("onclick before creating");
     console.log(giftRecord.data());
-    setShowShop(true);
+    setShowConfirmation(true);
     setSelectShop(shop);
   };
 
@@ -150,26 +286,40 @@ export default function ({ location }) {
       return parentShopInfo.shop.map((shop, index) => {
         if (hasActiveGift(shop)) {
           return (
-            <div>
-              {shop.shop_name} has active gift
-              <button
-                onClick={() => {
-                  handleGiftDisable(shop, index);
-                }}
-              >
-                End
-              </button>
-            </div>
+            showSelection && (
+              <div className={classes.applyGiftShopContainer}>
+                <div className={classes.shopEnabled_message}>
+                  This shop already has a gift enabled!
+                </div>
+                <div className={classes.shopName_disable}>
+                  <div className={classes.shopName_text}>{shop.shop_name}</div>
+                  <Button
+                    className={classes.disableGift_button}
+                    onClick={() => {
+                      handleGiftDisable(shop, index);
+                    }}
+                  >
+                    Disable
+                  </Button>
+                </div>
+              </div>
+            )
           );
         } else {
           return (
-            <div
-              onClick={() => {
-                handleShopClick(shop);
-              }}
-            >
-              {shop.shop_name} no active gift
-            </div>
+            showSelection && (
+              <div
+                className={classes.applyGiftShopContainer}
+                onClick={() => {
+                  handleShopClick(shop);
+                }}
+              >
+                <div className={classes.shopName_select}>
+                  <div className={classes.shopName_text}>{shop.shop_name}</div>
+                  <Button className={classes.selectShop_button}>Enable</Button>
+                </div>
+              </div>
+            )
           );
         }
       });
@@ -300,33 +450,84 @@ export default function ({ location }) {
       fetch_giftRecord();
     }
 
-    setShowShop(false);
+    setShowConfirmation(false);
   };
 
   return (
     <Div100vh className={classes.div100Container}>
-        <br />
-        Choose your shops to apply
-        <br />
-        {gift.gift_name}
-        <br /> <br />
-        <RenderShop />
-        <CSSTransition
-          in={showShop}
-          timeout={300}
-          classNames="alert"
-          unmountOnExit
-          onEnter={() => setShowGiftAndShop(false)}
-          onExited={() => setShowGiftAndShop(true)}
-        >
-          <div key="lol">
-            <br />
-            {gift.gift_name} <br />
-            {selectShop.shop_name} <br />
-            <div onClick={() => createGift()}>confirm</div>
+      <div className={classes.selectShopOuterContainer}>
+        <div className={classes.selectShopContainer}>
+          <div className={classes.giftInfo_container}>
+            <div className={classes.chooseGiftContainer}>
+              <div className={classes.giftTitle_text}>{gift.gift_name}</div>
+              <div className={classes.giftIntro_text}>{gift.gift_intro}</div>
+              <div
+                className={classes.imageDescription_container}
+                style={{
+                  backgroundColor: "#e0eee0",
+                  borderColor: "#3d9140",
+                }}
+              >
+                <div className={classes.giftImageContainer}>
+                  <img
+                    className={classes.giftImage}
+                    src={gift.image_url}
+                    alt="lol"
+                  />
+                </div>
+                <div className={classes.giftDescription_container}>
+                  <div className={classes.chanceText_container}>
+                    {gift.gift_description.chance.map((chance) => {
+                      {
+                        return (
+                          <div className={classes.chanceText}>
+                            {chance * 100}%
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                  <div className={classes.rewardText_container}>
+                    {gift.gift_description.reward.map((reward) => {
+                      {
+                        return (
+                          <div className={classes.rewardText}>{reward}</div>
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </CSSTransition>
-        <BusinessSelectShopNavigation />
+          <div className={classes.chooseShopText}>Choose shop to apply:</div>
+          <RenderShop />
+          <CSSTransition
+            in={showConfirmation}
+            timeout={300}
+            classNames="alert"
+            unmountOnExit
+            onEnter={() => setShowSelection(false)}
+            onExited={() => setShowSelection(true)}
+          >
+            <div key="lol">
+              <Button
+                className={classes.enableGift_button}
+                onClick={() => createGift()}
+              >
+                Enable Gift
+              </Button>
+              <Button
+                className={classes.enableGift_backButton}
+                onClick={() => setShowConfirmation(false)}
+              >
+                Back
+              </Button>
+            </div>
+          </CSSTransition>
+        </div>
+      </div>
+      <BusinessSelectShopNavigation />
     </Div100vh>
   );
 }
