@@ -36,9 +36,9 @@ const useStyles = makeStyles({
   chooseShopText: {
     fontSize: "16px",
     width: "100%",
-    margin: "48px 0 26px 0",
+    margin: "40px 0 26px 0",
     display: "flex",
-    color: "rgba(0, 0, 0, 0.5)",
+    color: "rgba(0, 0, 0, 0.6)",
     fontFamily: "CoreSans, sans-serif",
     fontWeight: "bold",
   },
@@ -55,7 +55,7 @@ const useStyles = makeStyles({
     fontSize: "16px",
     fontWeight: "bold",
     margin: "0 0 10px 0",
-    color: "rgba(0, 0, 0, 0.5)",
+    color: "rgba(0, 0, 0, 0.6)",
     fontFamily: "CoreSans, sans-serif",
   },
   giftIntro_text: {
@@ -67,6 +67,7 @@ const useStyles = makeStyles({
   giftDescription_container: {
     display: "flex",
     justifyContent: "space-evenly",
+    padding: "0 15px 0 35px"
   },
   chanceText_container: {
     margin: "10px 0 0 0",
@@ -76,6 +77,7 @@ const useStyles = makeStyles({
   },
   rewardText_container: {
     margin: "10px 0 0 0",
+    fontFamily: "CoreSans, sans-serif",
   },
   chanceText: {
     margin: "3px 0 0 0",
@@ -151,7 +153,7 @@ const useStyles = makeStyles({
     width: "40%",
     fontSize: "12px",
     padding: "10px 5px",
-    backgroundColor: "#c70000",
+    backgroundColor: "#ff8484",
   },
 });
 
