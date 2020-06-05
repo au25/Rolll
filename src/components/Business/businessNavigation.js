@@ -76,8 +76,9 @@ const useStyles = makeStyles({
     margin: "3px 0 0 0",
   },
   shop_icon_image: {
-    width: "80%",
-    margin: "3px 0 0 0",
+    width: "90%",
+    margin: "6px 0 0 0",
+    height: "35px"
   },
   iconTitle: {
     fontFamily: "CoreSans, sans-serif",
@@ -92,14 +93,9 @@ export default function ({ userDbInfo, location }) {
   const [value, setValue] = React.useState("create");
   const [parentShopInfo, setParentShopInfo] = useState({});
 
-  console.log("location stuff");
-  console.log(location);
-
   useEffect(() => {
     setParentShopInfo(userDbInfo.data());
     if (location && location.state) {
-      console.log("inside location stuff");
-      console.log(location);
       if (value == "") {
         setValue("create");
       } else {
@@ -148,6 +144,10 @@ export default function ({ userDbInfo, location }) {
           <div className={classes.image_container}>
             <img
               className={classes.create_icon_image}
+              style={{
+                filter:
+                  value === "create" ? null : "grayscale(1)",
+              }}
               src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2FplainBlue_giftBox.png?alt=media&token=73690a9c-81c8-4d84-88dc-e10a8784fab3"
               onClick={() => setValue("create")}
             />
@@ -158,6 +158,10 @@ export default function ({ userDbInfo, location }) {
           <div className={classes.image_container}>
             <img
               className={classes.history_icon_image}
+              style={{
+                filter:
+                  value === "history" ? null : "grayscale(1)",
+              }}
               src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fhistory_icon.png?alt=media&token=2cf92ec6-bddb-4f92-a2b2-84df39e8e818"
               onClick={() => setValue("history")}
             />
@@ -168,7 +172,11 @@ export default function ({ userDbInfo, location }) {
           <div className={classes.image_container}>
             <img
               className={classes.shop_icon_image}
-              src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fshop.png?alt=media&token=ee1919b4-91bc-4962-9b26-0f3d869e860f"
+              style={{
+                filter:
+                  value === "shop" ? null : "grayscale(1)",
+              }}
+              src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fshop.png?alt=media&token=541c16fe-7ab4-441d-ae67-430c9b4f7a31"
               onClick={() => setValue("shop")}
             />
           </div>
@@ -177,6 +185,10 @@ export default function ({ userDbInfo, location }) {
         <div className={classes.icon_container}>
           <img
             className={classes.profileIcon}
+            style={{
+              filter:
+                value === "profile" ? null : "grayscale(1)",
+            }}
             src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fhistory_icon.png?alt=media&token=2cf92ec6-bddb-4f92-a2b2-84df39e8e818"
             onClick={() => setValue("profile")}
           />
