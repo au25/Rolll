@@ -42,15 +42,32 @@ const useStyles = makeStyles({
     overflow: "auto",
   },
   profileIcon: {
-    fontSize: "25px",
+    width: "100%",
   },
   navigationIconContainer: {
     // borderTop: "1px solid rgba(0, 0, 0, 0.15)",
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
-    height: "12%",
+    height: "14%",
     padding: "0 15px",
+    backgroundColor: "lightgray"
+  },
+  icon_container: {
+    width: "10%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  create_icon_image: {
+    width: "42px"
+  },
+  iconTitle: {
+    fontFamily: "CoreSans, sans-serif",
+    color: "rgba(0, 0, 0, 0.7)",
+    fontSize: "15px",
+    margin: "3px 0 0 0",
   },
 });
 
@@ -111,26 +128,38 @@ export default function ({ userDbInfo, location }) {
         <RenderBody />
       </div>
       <div className={classes.navigationIconContainer}>
-        <FontAwesomeIcon
-          icon={faEdit}
-          className={classes.profileIcon}
-          onClick={() => setValue("create")}
-        />
-        <FontAwesomeIcon
-          icon={faClone}
-          className={classes.profileIcon}
-          onClick={() => setValue("history")}
-        />
-        <FontAwesomeIcon
-          icon={faStoreAlt}
-          className={classes.profileIcon}
-          onClick={() => setValue("shop")}
-        />
-        <FontAwesomeIcon
-          icon={faUserCircle}
-          className={classes.profileIcon}
-          onClick={() => setValue("profile")}
-        />
+        <div className={classes.icon_container}>
+          <img
+            className={classes.create_icon_image}
+            src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2FplainBlue_giftBox.png?alt=media&token=73690a9c-81c8-4d84-88dc-e10a8784fab3"
+            onClick={() => setValue("create")}
+          />
+          <div className={classes.iconTitle}>Create</div>
+        </div>
+        <div className={classes.icon_container}>
+          <img
+            className={classes.profileIcon}
+            src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fhistory_icon.png?alt=media&token=2cf92ec6-bddb-4f92-a2b2-84df39e8e818"
+            onClick={() => setValue("history")}
+          />
+          <div className={classes.iconTitle}>History</div>
+        </div>
+        <div className={classes.icon_container}>
+          <img
+            className={classes.profileIcon}
+            src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fhistory_icon.png?alt=media&token=2cf92ec6-bddb-4f92-a2b2-84df39e8e818"
+            onClick={() => setValue("shop")}
+          />
+          <div className={classes.iconTitle}>Shop</div>
+        </div>
+        <div className={classes.icon_container}>
+          <img
+            className={classes.profileIcon}
+            src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fhistory_icon.png?alt=media&token=2cf92ec6-bddb-4f92-a2b2-84df39e8e818"
+            onClick={() => setValue("profile")}
+          />
+          <div className={classes.iconTitle}>Profile</div>
+        </div>
       </div>
     </Div100vh>
   );
