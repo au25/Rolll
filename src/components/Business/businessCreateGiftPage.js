@@ -94,12 +94,19 @@ const useStyles = makeStyles({
   giftDescription_container: {
     display: "flex",
     justifyContent: "space-evenly",
+    padding: "0 15px 0 35px"
   },
   chanceText_container: {
+    color: "rgba(0, 0, 0, 0.8)",
     margin: "10px 0 0 0",
+    textAlign: "right",
+    fontFamily: "CoreSans, sans-serif",
+    fontWeight: "bold"
   },
   rewardText_container: {
+    color: "rgba(0, 0, 0, 0.8)",
     margin: "10px 0 0 0",
+    fontFamily: "CoreSans, sans-serif",
   },
   chanceText: {
     margin: "3px 0 0 0",

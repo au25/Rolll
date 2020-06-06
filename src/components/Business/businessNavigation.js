@@ -80,6 +80,11 @@ const useStyles = makeStyles({
     margin: "6px 0 0 0",
     height: "35px"
   },
+  profile_icon_image: {
+    width: "100%",
+    margin: "3px 0 0 0",
+    height: "37px"
+  },
   iconTitle: {
     fontFamily: "CoreSans, sans-serif",
     color: "rgba(0, 0, 0, 0.7)",
@@ -184,12 +189,12 @@ export default function ({ userDbInfo, location }) {
         </div>
         <div className={classes.icon_container}>
           <img
-            className={classes.profileIcon}
+            className={classes.profile_icon_image}
             style={{
               filter:
                 value === "profile" ? null : "grayscale(1)",
             }}
-            src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fhistory_icon.png?alt=media&token=2cf92ec6-bddb-4f92-a2b2-84df39e8e818"
+            src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fprofile_icon.png?alt=media&token=2611a18c-502f-47e3-8dac-252adec806cd"
             onClick={() => setValue("profile")}
           />
           <div className={classes.iconTitle}>Profile</div>

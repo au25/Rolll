@@ -156,9 +156,11 @@ const useStyles = makeStyles({
   },
   disableGift_button: {
     width: "40%",
-    fontSize: "12px",
+    fontSize: "13px",
     padding: "10px 5px",
     backgroundColor: "#ff8484",
+    letterSpacing: "1px",
+    textTransform: "none"
   },
 });
 

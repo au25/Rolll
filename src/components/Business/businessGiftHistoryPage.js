@@ -50,6 +50,8 @@ export default function ({ userDbInfo }) {
 
   const RenderGiftHistory = () => {
     if (giftRecord && giftRecord[0]) {
+      console.log("these are the gift records");
+      console.log(giftRecord);
       return giftRecord.map((gift) => <div>{gift.gift_expiry_date}</div>);
     } else return <div>No gift history, start making a gift here</div>;
   };
