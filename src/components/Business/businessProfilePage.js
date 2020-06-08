@@ -19,17 +19,19 @@ const useStyles = makeStyles({
   },
   maangerInfoText: {
     fontSize: "16px",
-    margin: "45px 0 15px 0",
+    fontWeight: "bold",
+    margin: "45px 0 20px 0",
     display: "flex",
     width: "70%",
     alignItems: "center",
-    color: "rgba(0, 0, 0, 0.5)",
+    color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
   },
   formContainer: {
     width: "70%",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
   },
   inputStyle: {
     width: "80%",
@@ -48,7 +50,17 @@ const useStyles = makeStyles({
     fontSize: "12px",
     padding: "0",
     height: "40px",
-    backgroundColor: "indianred",
+    backgroundColor: "rgba(0, 0, 0, 0)",
+  },
+  updateButton: {
+    textTransform: "none",
+    backgroundColor: "#4caf50",
+    color: "rgba(255, 255, 255)",
+    letterSpacing: "1px",
+    fontSize: "16px",
+    width: "50%",
+    margin: " 0 0 12px 0",
+    height: "50px",
   },
 });
 
@@ -57,7 +69,7 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
       },
     },
     MuiInputLabel: {
@@ -67,7 +79,7 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "#4caf50",
         height: "60px",
         margin: "0 0 28px 0",
       },
@@ -132,7 +144,7 @@ export default function ({ userDbInfo }) {
 
   return (
     <div className={classes.businessProfilePageContainer}>
-      <div className={classes.maangerInfoText}>Manager Information</div>
+      <div className={classes.maangerInfoText}>User Info</div>
       <ThemeProvider theme={theme}>
         <ValidatorForm
           className={classes.formContainer}
@@ -187,7 +199,9 @@ export default function ({ userDbInfo }) {
             name="phone_number"
             onChange={handleProfileChange}
           />
-          <Button type="submit">Update</Button>
+          <Button className={classes.updateButton} type="submit">
+            Update
+          </Button>
           <div className={classes.logoutButtonContainer}>
             <Button
               className={classes.logoutButton}

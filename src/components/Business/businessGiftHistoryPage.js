@@ -14,6 +14,15 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
   },
+  recordText: {
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "16px",
+    fontWeight: "bold",
+    color: "rgba(0, 0, 0, 0.7)",
+    width: "70%",
+    margin: "50px 0 10px 0",
+    borderBottom: "1px solid black"
+  },
   giftInfo_innerContainer: {
     width: "70%",
     margin: "15px 0px",
@@ -86,6 +95,7 @@ export default function ({ userDbInfo }) {
 
   return (
     <div className={classes.giftInfo_outerContainer}>
+      <div className={classes.recordText}>Gift Record</div>
       <RenderGiftHistory />
     </div>
   );

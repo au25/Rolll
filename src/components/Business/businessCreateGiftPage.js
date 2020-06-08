@@ -25,22 +25,24 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   chooseGiftText: {
-    fontSize: "18px",
+    fontSize: "16px",
     width: "70%",
     margin: "45px 0 35px 0",
     display: "flex",
-    color: "rgba(0, 0, 0, 0.5)",
+    color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
     fontWeight: "bold",
+    borderBottom: "1px solid black"
   },
   giftOfferText: {
-    fontSize: "18px",
+    fontSize: "16px",
     width: "70%",
     margin: "35px 0 15px 0",
     display: "flex",
-    color: "rgba(0, 0, 0, 0.5)",
+    color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
     fontWeight: "bold",
+    borderBottom: "1px solid black"
   },
   giftTitle_text: {
     fontWeight: "bold",

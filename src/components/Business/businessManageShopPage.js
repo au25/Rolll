@@ -30,8 +30,16 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
+  manageShop_text: {
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "16px",
+    fontWeight: "bold",
+    color: "rgba(0, 0, 0, 0.7)",
+    width: "80%",
+    margin: "50px 0 20px 0",
+  },
   formContainer: {
-    width: "75%",
+    width: "85%",
   },
   countryOuterContainer: {
     margin: "0 0 28px 0",
@@ -118,6 +126,11 @@ const theme = createMuiTheme({
         fontSize: "12px",
       },
     },
+    MuiExpansionPanel: {
+      root: {
+        width: "80%"
+      }
+    },
     MuiExpansionPanelDetails: {
       root: {
         padding: "0",
@@ -134,6 +147,11 @@ const theme = createMuiTheme({
         fontFamily: "CoreSans, sans-serif",
       },
     },
+    MuiPaper: {
+      elevation1: {
+        boxShadow: "none"
+      }
+    }
   },
 });
 
@@ -413,6 +431,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
 
   return (
     <div className={classes.container}>
+      <div className={classes.manageShop_text}>Manage Shop</div>
       {/* Maps a user's shop info */}
       <ThemeProvider theme={theme}>
         {newParentShopInfo && newParentShopInfo.shop ? (
