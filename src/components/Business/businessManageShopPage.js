@@ -40,9 +40,13 @@ const useStyles = makeStyles((theme) => ({
   },
   formContainer: {
     width: "85%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
-  countryOuterContainer: {
+  countryContainer: {
     margin: "0 0 28px 0",
+    width: "100%"
   },
   regionContainer: {
     margin: "0 0 28px 0",
@@ -60,18 +64,19 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
   },
   updateButton: {
-    width: "100%",
+    width: "50%",
     border: "0",
-    height: "60px",
-    backgroundColor: "rgba(0, 0, 0, 0.05) !important",
+    height: "50px",
+    backgroundColor: "#4caf50 !important",
     borderRadius: "0",
-    borderTopLeftRadius: "4px",
-    borderTopRightRadius: "4px",
+    borderRadius: "4px",
     fontSize: "16px",
     outline: "none",
-    color: "rgba(0, 0, 0, 0.6)",
-    padding: "0 0 0 8px",
-    margin: "0 0 28px 0",
+    color: "white",
+    padding: "6px 8px",
+    margin: "0 0 15px 0",
+    textTransform: "none",
+    letterSpacing: "1px"
   },
   deleteShopContainer: {
     display: "flex",
@@ -79,15 +84,26 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 0 28px 0",
   },
   deleteShopButton: {
-    width: "40%",
     fontSize: "12px",
-    padding: "0",
     height: "40px",
-    backgroundColor: "indianred",
   },
   openCloseForm: {
-    margin: "28px 0 0 0",
+    margin: "28px 0 20px 0",
+    fontWeight: "bold",
+    backgroundColor: "#4caf50",
+    color: "white",
+    textTransform: "none",
+    letterSpacing: "1px",
+    padding: "6px 8px",
+    width: "126px",
+    height: "50px"
   },
+  addShop_container: {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+  }
 }));
 
 const theme = createMuiTheme({
@@ -95,7 +111,7 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
       },
     },
     MuiInputLabel: {
@@ -130,18 +146,20 @@ const theme = createMuiTheme({
       root: {
         width: "80%",
         position: "none",
-      }
+      },
     },
     MuiExpansionPanelDetails: {
       root: {
         padding: "0",
         justifyContent: "center",
+        margin: "20px 0 0 0",
       },
     },
     MuiExpansionPanelSummary: {
       root: {
         height: "60px",
-        padding: "0"
+        padding: "0",
+        borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
       },
       content: {
         color: "rgba(0, 0, 0, 0.7)",
@@ -151,15 +169,18 @@ const theme = createMuiTheme({
     },
     MuiPaper: {
       elevation1: {
-        boxShadow: "none"
+        boxShadow: "none",
       },
       root: {
-        backgroundColor: "none"
-      }
-    }
+        backgroundColor: "none",
+      },
+    },
   },
 });
 
+/**
+ * Form outside of export function so input doesnt unfocus after single character change
+ */
 const FormComponent = ({
   classes,
   setParentShopInfo,
@@ -241,31 +262,29 @@ const FormComponent = ({
                   )
                 }
               />
-              <div className={classes.countryOuterContainer}>
-                <div className={classes.countryContainer}>
-                  <CountryDropdown
-                    required
-                    value={shop.shop_country}
-                    onChange={(country) =>
-                      handleCountryChange(
-                        setParentShopInfo,
-                        parentShopInfo,
-                        index,
-                        country
-                      )
-                    }
-                    whitelist={["CA", "US"]}
-                    priorityOptions={["CA", "US"]}
-                    classes="userProfile_selectCountry add_businessManageShop_countryCss"
-                  />
-                </div>
-                <div>
-                  {countryErrorState && shop.shop_country == "" ? (
-                    <div className={classes.countryErrorMessage}>
-                      Select a country
-                    </div>
-                  ) : null}
-                </div>
+              <div className={classes.countryContainer}>
+                <CountryDropdown
+                  required
+                  value={shop.shop_country}
+                  onChange={(country) =>
+                    handleCountryChange(
+                      setParentShopInfo,
+                      parentShopInfo,
+                      index,
+                      country
+                    )
+                  }
+                  whitelist={["CA", "US"]}
+                  priorityOptions={["CA", "US"]}
+                  classes="manageShop_selectCountry add_businessManageShop_countryCss"
+                />
+              </div>
+              <div>
+                {countryErrorState && shop.shop_country == "" ? (
+                  <div className={classes.countryErrorMessage}>
+                    Select a country
+                  </div>
+                ) : null}
               </div>
               <div className={classes.regionContainer}>
                 <RegionDropdown
@@ -282,7 +301,7 @@ const FormComponent = ({
                       region
                     )
                   }
-                  classes="userProfile_selectRegion add_businessManageShop_regionCss"
+                  classes="manageShop_selectRegion add_businessManageShop_regionCss"
                 />
               </div>
               <div>
@@ -452,7 +471,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
             validateCountryRegion={validateCountryRegion}
           />
         ) : null}
-        <div>
+        <div className={classes.addShop_container}>
           {showMessage ? (
             <Button
               className={classes.openCloseForm}
@@ -465,7 +484,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
               className={classes.openCloseForm}
               onClick={() => setShowMessage(true)}
             >
-              Add a new shop
+              Add Shop
             </Button>
           )}
           <CSSTransition

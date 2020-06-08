@@ -21,12 +21,12 @@ const useStyles = makeStyles({
   addShopText: {
     fontSize: "16px",
     margin: "28px 0 15px 0",
-    width: "70%",
-    color: "rgba(0, 0, 0, 0.5)",
+    width: "80%",
+    color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
   },
   outerFormContainer: {
-    width: "70%",
+    width: "80%",
   },
   countryOuterContainer: {
     margin: "0 0 28px 0",
@@ -67,7 +67,7 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
       },
     },
     MuiInputLabel: {
