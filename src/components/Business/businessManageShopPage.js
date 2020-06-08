@@ -128,7 +128,8 @@ const theme = createMuiTheme({
     },
     MuiExpansionPanel: {
       root: {
-        width: "80%"
+        width: "80%",
+        position: "none",
       }
     },
     MuiExpansionPanelDetails: {
@@ -139,7 +140,8 @@ const theme = createMuiTheme({
     },
     MuiExpansionPanelSummary: {
       root: {
-        height: "70px",
+        height: "60px",
+        padding: "0"
       },
       content: {
         color: "rgba(0, 0, 0, 0.7)",
@@ -150,6 +152,9 @@ const theme = createMuiTheme({
     MuiPaper: {
       elevation1: {
         boxShadow: "none"
+      },
+      root: {
+        backgroundColor: "none"
       }
     }
   },
