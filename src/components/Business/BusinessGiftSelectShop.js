@@ -67,7 +67,7 @@ const useStyles = makeStyles({
   giftDescription_container: {
     display: "flex",
     justifyContent: "space-evenly",
-    padding: "0 15px 0 35px"
+    padding: "0 15px 0 35px",
   },
   chanceText_container: {
     margin: "10px 0 0 0",
@@ -143,7 +143,6 @@ const useStyles = makeStyles({
     backgroundColor: "#96d496",
     textTransform: "none",
     letterSpacing: "1px",
-
   },
   enableGift_button: {
     fontSize: "12px",
@@ -160,7 +159,7 @@ const useStyles = makeStyles({
     padding: "10px 5px",
     backgroundColor: "#ff8484",
     letterSpacing: "1px",
-    textTransform: "none"
+    textTransform: "none",
   },
 });
 
@@ -345,9 +344,10 @@ export default function ({ location }) {
 
     const currentTimeStamp = firebase.firestore.Timestamp.now(new Date());
     const gift_creation_date = moment(currentTimeStamp.toDate()).format();
-    const gift_expiry_date = moment(currentTimeStamp.toDate())
+    const add_duration = moment(currentTimeStamp.toDate())
       .add(giftDuration, "days")
       .format();
+    const gift_expiry_date = moment(add_duration).endOf("day").toString();
 
     /**
      * Creates gift in gift collection where user can access

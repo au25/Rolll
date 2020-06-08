@@ -6,7 +6,13 @@ import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import BusinessNavigation from "./businessNavigation";
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles({
+  home_container: {
+    backgroundImage:
+      'url("https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fbackground_35.png?alt=media&token=a5be174a-cd06-4d97-b282-be6b33e71946")',
+    backgroundColor: "rgba(237, 232, 218, 0.7)",
+  },
+});
 
 export default function ({ location }) {
   const classes = useStyles();
@@ -43,10 +49,12 @@ export default function ({ location }) {
   }, [userAuthInfo]);
 
   return (
-    <div>
-      {userDbInfo && userDbInfo.data() ? (
-        <BusinessNavigation userDbInfo={userDbInfo} location={location}/>
-      ) : null}
+    <div className={classes.home_container}>
+      <div className={classes.bgImage_container}>
+        {userDbInfo && userDbInfo.data() ? (
+          <BusinessNavigation userDbInfo={userDbInfo} location={location} />
+        ) : null}
+      </div>
     </div>
   );
 }
