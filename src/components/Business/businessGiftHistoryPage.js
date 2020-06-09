@@ -5,6 +5,7 @@ import * as firebase from "firebase";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import BusinessNavigation from "./businessNavigation";
+import Button from "@material-ui/core/Button";
 import moment from "moment";
 
 const useStyles = makeStyles({
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
     color: "rgba(0, 0, 0, 0.7)",
     width: "70%",
     margin: "50px 0 10px 0",
-    borderBottom: "1px solid black"
+    borderBottom: "1px solid black",
   },
   giftInfo_innerContainer: {
     width: "70%",
@@ -33,8 +34,48 @@ const useStyles = makeStyles({
     padding: "0 0 10px 0",
   },
   shopName_text: {
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
+  giftName_text: {
+    // fontWeight: "bold"
+  },
+  giftCreation_date: {
+    display: "flex",
+  },
+  giftExpiry_date: {
+    display: "flex",
+  },
+  startDate_text: {
+    margin: "0 5px 0 0",
+  },
+  startDate: {
+    fontWeight: "bold",
+  },
+  endDate_text: {
+    margin: "0 5px 0 0",
+  },
+  endDate: {
+    fontWeight: "bold",
+  },
+  disableButton_container: {
+    width: "100%",
+    // display: "flex",
+    // justifyContent: "center",
+    // margin: "10px"
+  },
+  disable_button: {
+    fontSize: "14px",
+    fontWeight: "bold",
+    backgroundColor: "rgba(204, 0, 0, 0.7)",
+    color: "white",
+    textTransform: "none",
+    letterSpacing: "1px",
+    padding: "6px 8px",
+    width: "94px",
+    height: "35px",
+    margin: "10px 0",
+    borderRadius: "0",
+  },
 });
 
 export default function ({ userDbInfo }) {
@@ -46,10 +87,16 @@ export default function ({ userDbInfo }) {
   const db = firebase.firestore();
   const currentTime = firebase.firestore.Timestamp.now(new Date()).toDate();
 
+  /**
+   * Fetch gift records before component mounts
+   */
   useEffect(() => {
     fetch_giftRecord();
   }, []);
 
+  /**
+   * Fetches gift record and populate gift array
+   */
   const fetch_giftRecord = async () => {
     const db_giftRecord = await db
       .collection("businessUser")
@@ -61,13 +108,18 @@ export default function ({ userDbInfo }) {
     db_giftRecord.docs.map((doc) => {
       for (let giftTemplate in doc.data()) {
         doc.data()[giftTemplate].map((gift) => {
-          if (currentTime > moment(gift.gift_expiry_date)) {
-            giftRecordArray.push(gift);
-          }
+          // Adds all gifts
+          giftRecordArray.push(gift);
+
+          // Adds only gifts that expired
+          // if (currentTime > moment(gift.gift_expiry_date)) {
+          //   giftRecordArray.push(gift);
+          // }
         });
       }
     });
 
+    // Sorts the gift, newest at the front
     giftRecordArray.sort(function compareDate(a, b) {
       const dateA = moment(a.gift_expiry_date);
       const dateB = moment(b.gift_expiry_date);
@@ -78,19 +130,54 @@ export default function ({ userDbInfo }) {
 
   const RenderGiftHistory = () => {
     if (giftRecord && giftRecord[0]) {
-      console.log("these are the gift records");
-      console.log(giftRecord);
-      return giftRecord.map((gift) => (
-        <div className={classes.giftInfo_innerContainer}>
-          <div className={classes.shopName_text}>{gift.shop_name}</div>
-          <div className={classes.shopAddress_text}>{gift.shop_address}</div>
-          <div className={classes.shopCity_text}>{gift.shop_city}</div>
-          <div className={classes.giftName_text}>{gift.gift_name}</div>
-          <div className={classes.giftCreation_date}>{moment(gift.gift_creation_date).format("LL")}</div>
-          <div className={classes.giftExpiry_date}>{moment(gift.gift_expiry_date).format("LL")}</div>
-        </div>
-      ));
-    } else return <div>No gift history, start making a gift here</div>;
+      // Renders gift information
+      // If gift has not expire, renders diable button as well
+      return giftRecord.map((gift) =>
+        currentTime < moment(gift.gift_expiry_date) ? (
+          <div className={classes.giftInfo_innerContainer}>
+            <div className={classes.shopName_text}>{gift.shop_name}</div>
+            <div className={classes.shopAddress_text}>{gift.shop_address}</div>
+            <div className={classes.shopCity_text}>{gift.shop_city}</div>
+            < br />
+            <div className={classes.giftName_text}>{gift.gift_name}</div>
+            <div className={classes.giftCreation_date}>
+              <div className={classes.startDate_text}>Start time:</div>
+              <div className={classes.startDate}>
+                {moment(gift.gift_creation_date).format("LL")}
+              </div>
+            </div>
+            <div className={classes.giftExpiry_date}>
+              <div className={classes.endDate_text}>End time:</div>
+              <div className={classes.endDate}>
+                {moment(gift.gift_expiry_date).format("LL")}
+              </div>
+            </div>
+            <div className={classes.disableButton_container}>
+              <Button className={classes.disable_button}>Disable</Button>
+            </div>
+          </div>
+        ) : (
+          <div className={classes.giftInfo_innerContainer}>
+            <div className={classes.shopName_text}>{gift.shop_name}</div>
+            <div className={classes.shopAddress_text}>{gift.shop_address}</div>
+            <div className={classes.shopCity_text}>{gift.shop_city}</div>
+            <div className={classes.giftName_text}>{gift.gift_name}</div>
+            <div className={classes.giftCreation_date}>
+              <div className={classes.startDate_text}>Start time:</div>
+              <div className={classes.startDate}>
+                {moment(gift.gift_creation_date).format("LL")}
+              </div>
+            </div>
+            <div className={classes.giftExpiry_date}>
+              <div className={classes.endDate_text}>End time:</div>
+              <div className={classes.endDate}>
+                {moment(gift.gift_expiry_date).format("LL")}
+              </div>
+            </div>
+          </div>
+        )
+      );
+    } else return <div>No gift record</div>;
   };
 
   return (

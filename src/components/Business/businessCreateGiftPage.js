@@ -58,7 +58,7 @@ const useStyles = makeStyles({
     margin: "12px 0 15px 0",
     display: "flex",
     flexDirection: "column",
-    color: "rgba(0, 0, 0, 0.5)",
+    color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
   },
   chooseGiftAppearContainer: {
@@ -124,32 +124,55 @@ const useStyles = makeStyles({
     margin: "15px 0 0 0",
   },
   giftSelectButton: {
-    width: "40%",
-    fontSize: "12px",
-    padding: "0",
-    height: "40px",
-    backgroundColor: "lightgreen",
+    fontWeight: "bold",
+    backgroundColor: "#4caf50",
+    color: "white",
+    textTransform: "none",
+    letterSpacing: "1px",
+    padding: "6px 8px",
+    width: "126px",
+    height: "50px"
   },
   nextButton: {
-    width: "40%",
-    fontSize: "12px",
-    padding: "0",
-    height: "40px",
-    backgroundColor: "lightgreen",
-    margin: "0 0 25px 0",
+    fontWeight: "bold",
+    backgroundColor: "#4caf50",
+    color: "white",
+    textTransform: "none",
+    letterSpacing: "1px",
+    padding: "6px 8px",
+    width: "126px",
+    height: "50px",
+    margin: "0 0 35px 0"
   },
   disableButton: {
-    width: "40%",
-    fontSize: "12px",
-    padding: "0",
-    height: "40px",
+    fontWeight: "bold",
     backgroundColor: "lightgray",
-    margin: "0 0 25px 0",
+    color: "white",
+    textTransform: "none",
+    letterSpacing: "1px",
+    padding: "6px 8px",
+    width: "126px",
+    height: "50px",
+    margin: "0 0 35px 0"
   },
 });
 
 const theme = createMuiTheme({
   overrides: {
+    MuiButton: {
+      root: {
+        height: "60px",
+        width: "100%",
+        "&:hover": {
+          backgroundColor:
+            "#4caf50",
+          // Reset on touch devices, it doesn't add specificity
+          "@media (hover: none)": {
+            backgroundColor: "#4caf50",
+          },
+        },
+      },
+    },
     MuiNativeSelect: {
       root: {
         height: "40px",
@@ -228,7 +251,7 @@ export default function ({ userDbInfo, parentShopInfo }) {
           style={{
             backgroundColor:
               gift.gift_name === activeDiv ? "#e0eee0" : "#f5f5f5",
-            borderColor: gift.gift_name === activeDiv ? "#3d9140" : "#f5f5f5",
+            borderColor: gift.gift_name === activeDiv ? "#3d9140" : "rgba(0, 0, 0, 0.2)",
           }}
         >
           <div className={classes.giftImageContainer}>
