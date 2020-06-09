@@ -159,7 +159,7 @@ export default function ({ userDbInfo }) {
               onClick={() => handleHistory()}
             />
           </div>
-          <div className={classes.iconTitle}>History</div>
+          <div className={classes.iconTitle}>Record</div>
         </div>
         <div className={classes.icon_container}>
           <div className={classes.image_container}>

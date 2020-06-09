@@ -17,6 +17,9 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
+    backgroundImage:
+      'url("https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fbackground_35.png?alt=media&token=a5be174a-cd06-4d97-b282-be6b33e71946")',
+    backgroundColor: "rgba(237, 232, 218, 0.7)",
   },
   selectShopOuterContainer: {
     width: "100%",
@@ -61,7 +64,7 @@ const useStyles = makeStyles({
   giftIntro_text: {
     margin: "0 0 20px 0",
     fontSize: "16px",
-    color: "rgba(0, 0, 0, 0.5)",
+    color: "rgba(0, 0, 0, 0.6)",
     fontFamily: "CoreSans, sans-serif",
   },
   giftDescription_container: {
@@ -110,7 +113,7 @@ const useStyles = makeStyles({
   shopName_text: {
     width: "60%",
     fontSize: "16px",
-    color: "rgba(0, 0, 0, 0.6)",
+    color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
     display: "flex",
     justifyContent: "center",
@@ -120,7 +123,8 @@ const useStyles = makeStyles({
   },
   shopEnabled_message: {
     fontSize: "14px",
-    color: "red",
+    color: "#4caf50",
+    margin: "0 0 5px 0",
     fontFamily: "CoreSans, sans-serif",
     margin: "0 0 5px 0",
   },
@@ -129,6 +133,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+    height: "52px"
   },
   shopName_select: {
     width: "100%",
@@ -140,26 +145,43 @@ const useStyles = makeStyles({
     width: "40%",
     fontSize: "14px",
     padding: "10px 5px",
-    backgroundColor: "#96d496",
+    backgroundColor: "#4caf50",
+    color: "white",
     textTransform: "none",
     letterSpacing: "1px",
   },
   enableGift_button: {
     fontSize: "12px",
     padding: "12px 15px",
-    backgroundColor: "lightgreen",
+    backgroundColor: "#4caf50",
     fontSize: "14px",
+    color: "white",
+    textTransform: "none",
+    letterSpacing: "1px",
+    height: "50px",
+    width: "126px",
+    padding: "6px 8px",
   },
   enableGift_backButton: {
     margin: "5px 0 0 0",
+    textTransform: "none"
   },
   disableGift_button: {
     width: "40%",
     fontSize: "13px",
     padding: "10px 5px",
-    backgroundColor: "#ff8484",
+    backgroundColor: "rgba(204, 0, 0, 0.7)",
     letterSpacing: "1px",
     textTransform: "none",
+    color: "white"
+  },
+  renderShop_container: {
+    margin: "0 0 25px 0",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
   },
 });
 
@@ -297,7 +319,7 @@ export default function ({ location }) {
             showSelection && (
               <div className={classes.applyGiftShopContainer}>
                 <div className={classes.shopEnabled_message}>
-                  This shop already has a gift enabled!
+                  Gift enabled for this shop.
                 </div>
                 <div className={classes.shopName_disable}>
                   <div className={classes.shopName_text}>{shop.shop_name}</div>
@@ -510,30 +532,32 @@ export default function ({ location }) {
             </div>
           </div>
           <div className={classes.chooseShopText}>Choose shop to apply:</div>
-          <RenderShop />
-          <CSSTransition
-            in={showConfirmation}
-            timeout={300}
-            classNames="alert"
-            unmountOnExit
-            onEnter={() => setShowSelection(false)}
-            onExited={() => setShowSelection(true)}
-          >
-            <div key="lol">
-              <Button
-                className={classes.enableGift_button}
-                onClick={() => createGift()}
-              >
-                Enable Gift
-              </Button>
-              <Button
-                className={classes.enableGift_backButton}
-                onClick={() => setShowConfirmation(false)}
-              >
-                Back
-              </Button>
-            </div>
-          </CSSTransition>
+          <div className={classes.renderShop_container}>
+            <RenderShop />
+            <CSSTransition
+              in={showConfirmation}
+              timeout={300}
+              classNames="alert"
+              unmountOnExit
+              onEnter={() => setShowSelection(false)}
+              onExited={() => setShowSelection(true)}
+            >
+              <div key="lol">
+                <Button
+                  className={classes.enableGift_button}
+                  onClick={() => createGift()}
+                >
+                  Enable Gift
+                </Button>
+                <Button
+                  className={classes.enableGift_backButton}
+                  onClick={() => setShowConfirmation(false)}
+                >
+                  Back
+                </Button>
+              </div>
+            </CSSTransition>
+          </div>
         </div>
       </div>
       <BusinessSelectShopNavigation />
