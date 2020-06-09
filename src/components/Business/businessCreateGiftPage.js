@@ -17,6 +17,7 @@ import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
 import { CSSTransition } from "react-transition-group";
+import "./businessManageShopPage.css";
 
 const useStyles = makeStyles({
   container: {
@@ -152,12 +153,17 @@ const theme = createMuiTheme({
     MuiNativeSelect: {
       root: {
         height: "40px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
       },
       select: {
         borderTopLeftRadius: "4px",
         borderTopRightRadius: "4px",
         padding: "8px 0 8px 12px",
+        height: "40px",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
+        "&:focus": {
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
+        }
       },
     },
     MuiFormControl: {
@@ -281,7 +287,7 @@ export default function ({ userDbInfo, parentShopInfo }) {
         <CSSTransition
           in={showContainer}
           timeout={300}
-          classNames="alert"
+          classNames="gift_template"
           unmountOnExit
           onEnter={() => setShowTemplateContainer(false)}
           onExited={() => setShowTemplateContainer(true)}

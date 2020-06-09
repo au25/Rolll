@@ -103,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
+    width: "100%"
   }
 }));
 
@@ -123,6 +124,14 @@ const theme = createMuiTheme({
       root: {
         height: "60px",
         width: "100%",
+        "&:hover": {
+          backgroundColor:
+            "#4caf50",
+          // Reset on touch devices, it doesn't add specificity
+          "@media (hover: none)": {
+            backgroundColor: "#4caf50",
+          },
+        },
       },
     },
     MuiIconButton: {
@@ -159,7 +168,7 @@ const theme = createMuiTheme({
       root: {
         height: "60px",
         padding: "0",
-        borderBottom: "1px solid rgba(0, 0, 0, 0.5)",
+        borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
       },
       content: {
         color: "rgba(0, 0, 0, 0.7)",

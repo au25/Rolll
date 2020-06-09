@@ -82,8 +82,8 @@ const useStyles = makeStyles({
   },
   profile_icon_image: {
     width: "100%",
-    margin: "3px 0 0 0",
-    height: "37px"
+    margin: "5px 0 0 0",
+    height: "38px"
   },
   iconTitle: {
     fontFamily: "CoreSans, sans-serif",
@@ -171,7 +171,7 @@ export default function ({ userDbInfo, location }) {
               onClick={() => setValue("history")}
             />
           </div>
-          <div className={classes.iconTitle}>History</div>
+          <div className={classes.iconTitle}>Record</div>
         </div>
         <div className={classes.icon_container}>
           <div className={classes.image_container}>

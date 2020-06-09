@@ -71,6 +71,11 @@ const theme = createMuiTheme({
         height: "60px",
         backgroundColor: "rgba(255, 255, 255, 0.7)",
       },
+      input: {
+        "&:disabled": {
+          backgroundColor: "rgba(234, 234, 234)",
+        },
+      },
     },
     MuiInputLabel: {
       filled: {
@@ -82,6 +87,13 @@ const theme = createMuiTheme({
         backgroundColor: "#4caf50",
         height: "60px",
         margin: "0 0 28px 0",
+        "&:hover": {
+          backgroundColor: "#4caf50",
+          // Reset on touch devices, it doesn't add specificity
+          "@media (hover: none)": {
+            backgroundColor: "#4caf50",
+          },
+        },
       },
     },
     MuiIconButton: {
@@ -153,6 +165,8 @@ export default function ({ userDbInfo }) {
           onSubmit={handleProfileSubmit}
         >
           <TextValidator
+            className={classes.emailInput}
+            // disabled="true"
             id="filled-basic"
             label="Email"
             InputLabelProps={{ shrink: true }}

@@ -21,18 +21,21 @@ const useStyles = makeStyles({
   addShopText: {
     fontSize: "16px",
     margin: "28px 0 15px 0",
-    width: "80%",
+    width: "100%",
     color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
+    fontWeight: "bold",
+    // borderBottom: "1px solid rgba(0, 0, 0, 0.7)"
   },
-  outerFormContainer: {
-    width: "80%",
-  },
+  outerFormContainer: {},
+  formContainer: {},
   countryOuterContainer: {
     margin: "0 0 28px 0",
+    width: "100%",
   },
   regionOuterContainer: {
     margin: "0 0 28px 0",
+    width: "100%",
   },
   countryErrorMessage: {
     fontSize: "12.5px",
@@ -46,18 +49,20 @@ const useStyles = makeStyles({
     padding: "5px 0 0 14px",
     fontFamily: "CoreSans, sans-serif",
   },
-  addText: {
+  addButton_container: {
     width: "100%",
-    border: "0",
-    height: "60px",
-    backgroundColor: "rgba(0, 0, 0, 0.05) !important",
-    borderRadius: "0",
-    borderTopLeftRadius: "4px",
-    borderTopRightRadius: "4px",
-    fontSize: "16px",
-    outline: "none",
-    color: "rgba(0, 0, 0, 0.6)",
-    padding: "0 0 0 8px",
+    display: "flex",
+    justifyContent: "center",
+  },
+  addText: {
+    fontWeight: "bold",
+    backgroundColor: "#4caf50",
+    color: "white",
+    textTransform: "none",
+    letterSpacing: "1px",
+    padding: "6px 8px",
+    width: "126px",
+    height: "50px",
     margin: "0 0 28px 0",
   },
 });
@@ -79,6 +84,13 @@ const theme = createMuiTheme({
       root: {
         height: "60px",
         width: "100%",
+        "&:hover": {
+          backgroundColor: "#4caf50",
+          // Reset on touch devices, it doesn't add specificity
+          "@media (hover: none)": {
+            backgroundColor: "#4caf50",
+          },
+        },
       },
     },
     MuiIconButton: {
@@ -123,9 +135,9 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
   const history = useHistory();
 
   const [shopInfo, setShopInfo] = useState({
-    shop_name: "shop name",
-    shop_address: "shop address",
-    shop_city: "shop city",
+    shop_name: "",
+    shop_address: "",
+    shop_city: "",
     shop_country: "",
     shop_region: "",
   });
@@ -230,7 +242,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
                 value={shopInfo.shop_country}
                 whitelist={["CA", "US"]}
                 priorityOptions={["CA", "US"]}
-                classes="userSignup_selectCountry"
+                classes="manageShop_selectCountry"
                 onChange={(country) =>
                   setShopInfo({
                     ...shopInfo,
@@ -255,7 +267,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
                 country={shopInfo.shop_country}
                 value={shopInfo.shop_region}
                 disableWhenEmpty={true}
-                classes="userSignup_selectRegion"
+                classes="manageShop_selectRegion"
                 onChange={(region) =>
                   setShopInfo({
                     ...shopInfo,
@@ -272,13 +284,15 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
               ) : null}
             </div>
           </div>
-          <Button
-            className={classes.addText}
-            type="submit"
-            onClick={validateCountryRegion}
-          >
-            Add
-          </Button>
+          <div className={classes.addButton_container}>
+            <Button
+              className={classes.addText}
+              type="submit"
+              onClick={validateCountryRegion}
+            >
+              Add
+            </Button>
+          </div>
         </ValidatorForm>
       </div>
     </ThemeProvider>
