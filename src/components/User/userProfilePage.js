@@ -28,10 +28,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   yourProfileText: {
-    fontSize: "14px",
-    color: "rgba(0, 0, 0, 0.5)",
+    fontSize: "16px",
+    fontWeight: "bold",
+    margin: "45px 0 20px 0",
+    display: "flex",
+    width: "70%",
+    alignItems: "center",
+    color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
-    padding: "28px 0 14px 0",
   },
   userProfileFormContainer: {
     [theme.breakpoints.down(600)]: {
@@ -131,19 +135,27 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
     fontSize: "14px",
   },
-  updateButtonText: {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
-    margin: "0 0 28px 0"
+  updateButton: {
+    textTransform: "none",
+    backgroundColor: "#4caf50",
+    color: "rgba(255, 255, 255)",
+    letterSpacing: "1px",
+    fontSize: "16px",
+    width: "50%",
+    margin: " 0 0 12px 0",
+    height: "50px",
   },
   logoutButton: {
     width: "40%",
     fontSize: "12px",
     padding: "0",
     height: "40px",
-    backgroundColor: "indianred",
+    backgroundColor: "rgba(0, 0, 0, 0)",
   },
   logoutContainer: {
     display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     justifyContent: "flex-end",
   },
 }));
@@ -153,7 +165,12 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
+      },
+      input: {
+        "&:disabled": {
+          backgroundColor: "rgba(234, 234, 234)",
+        },
       },
     },
     MuiInputLabel: {
@@ -309,10 +326,10 @@ export default function ({ userDbInfo }) {
                 </div>
               ) : null}
             </div>
-            <Button type="submit" className={classes.updateButtonText}>
-              Update
-            </Button>
             <div className={classes.logoutContainer}>
+              <Button type="submit" className={classes.updateButton}>
+                Update
+              </Button>
               <Button
                 className={classes.logoutButton}
                 onClick={(e) => {

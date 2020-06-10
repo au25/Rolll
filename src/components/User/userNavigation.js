@@ -34,9 +34,10 @@ const useStyles = makeStyles((theme) => ({
   },
   userNavigation_renderBodyContainer: {},
   userNavigation_navContainer: {
+    height: "14%",
+    backgroundColor: "#d4dcdc",
+    padding: "0 30px 0 25px",
     [theme.breakpoints.down(600)]: {
-      width: "100%",
-      height: "12%",
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-around",
@@ -45,6 +46,35 @@ const useStyles = makeStyles((theme) => ({
   },
   profileIcon: {
     fontSize: "25px",
+  },
+  icon_container: {
+    width: "10%",
+    height: "60px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image_container: {
+    display: "flex",
+    justifyContent: "center",
+    width: "42px",
+    height: "42px",
+  },
+  giftList_image: {
+    width: "95%",
+    margin: "5px 0 0 0",
+  },
+  profile_icon_image: {
+    width: "100%",
+    margin: "5px 0 0 0",
+    height: "38px",
+  },
+  iconTitle: {
+    fontFamily: "CoreSans, sans-serif",
+    color: "rgba(0, 0, 0, 0.7)",
+    fontSize: "14px",
+    margin: "3px 0 0 0",
   },
 }));
 
@@ -79,21 +109,45 @@ export default function ({ userDbInfo, setUserDbInfo }) {
           <RenderBody />
         </div>
         <div className={classes.userNavigation_navContainer}>
-          <FontAwesomeIcon
-            icon={faHeart}
-            className={classes.profileIcon}
-            onClick={() => setNavigationValue("favorite")}
-          />
-          <FontAwesomeIcon
-            icon={faClone}
-            className={classes.profileIcon}
-            onClick={() => setNavigationValue("giftList")}
-          />
-          <FontAwesomeIcon
-            icon={faUserCircle}
-            className={classes.profileIcon}
-            onClick={() => setNavigationValue("profile")}
-          />
+          <div className={classes.icon_container}>
+            <div className={classes.image_container}>
+              <img
+                className={classes.giftList_image}
+                style={{
+                  filter:
+                    navigationValue === "giftList" ? null : "grayscale(1)",
+                }}
+                src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2FplainBlue_giftBox.png?alt=media&token=73690a9c-81c8-4d84-88dc-e10a8784fab3"
+                onClick={() => setNavigationValue("giftList")}
+              />
+            </div>
+            <div className={classes.iconTitle}>Gift</div>
+          </div>
+          <div className={classes.icon_container}>
+            <div className={classes.image_container}>
+              <img
+                className={classes.giftList_image}
+                style={{
+                  filter:
+                    navigationValue === "giftList" ? null : "grayscale(1)",
+                }}
+                src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2FplainBlue_giftBox.png?alt=media&token=73690a9c-81c8-4d84-88dc-e10a8784fab3"
+                onClick={() => setNavigationValue("giftList")}
+              />
+            </div>
+            <div className={classes.iconTitle}>Gift</div>
+          </div>
+          <div className={classes.icon_container}>
+            <img
+              className={classes.profile_icon_image}
+              style={{
+                filter: navigationValue === "profile" ? null : "grayscale(1)",
+              }}
+              src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fprofile_icon.png?alt=media&token=2611a18c-502f-47e3-8dac-252adec806cd"
+              onClick={() => setNavigationValue("profile")}
+            />
+            <div className={classes.iconTitle}>Profile</div>
+          </div>
         </div>
       </Div100vh>
     </div>
