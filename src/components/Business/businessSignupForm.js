@@ -269,10 +269,26 @@ const SignUp = ({ history }) => {
           is_approve: "false",
           gift: [
             {
-              gift_name: "defaultGift-template1",
+              gift_name: "Essential Template",
+              gift_intro:
+                "This template is suitable for long term usage.  Ideal for attracting and retaining customers!",
+              image_url:
+                "https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fred_gift_box.png?alt=media&token=ace05975-618b-4e8d-b9fd-a7d83736e5eb",
+              gift_description: {
+                chance: [0.02, 0.08, 0.5, 0.4],
+                reward: ["Free Drink", "15% Off", "10% Off", "Try Again"],
+              },
             },
             {
-              gift_name: "defaultGift-template2",
+              gift_name: "Winner Template",
+              gift_intro:
+                "This template is perfect for celebratory events.  Let the community know you are there, make an impact!",
+              image_url:
+                "https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fblue_gift_box2.png?alt=media&token=a1e7a0ab-bf4e-4c07-8ca2-d4a841aa06b9",
+              gift_description: {
+                chance: [0.1, 0.3, 0.6],
+                reward: ["Free Drink", "50% discount", "25% discount"],
+              },
             },
           ],
         });

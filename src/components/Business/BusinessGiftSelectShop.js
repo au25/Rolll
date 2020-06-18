@@ -133,7 +133,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: "52px"
+    height: "52px",
   },
   shopName_select: {
     width: "100%",
@@ -164,7 +164,7 @@ const useStyles = makeStyles({
   },
   enableGift_backButton: {
     margin: "5px 0 0 0",
-    textTransform: "none"
+    textTransform: "none",
   },
   disableGift_button: {
     width: "40%",
@@ -173,7 +173,7 @@ const useStyles = makeStyles({
     backgroundColor: "rgba(204, 0, 0, 0.7)",
     letterSpacing: "1px",
     textTransform: "none",
-    color: "white"
+    color: "white",
   },
   renderShop_container: {
     margin: "0 0 25px 0",
@@ -208,6 +208,9 @@ export default function ({ location }) {
   const giftDuration = location.state.giftDuration.gift_duration;
   const userId = location.state.userId;
   const db = firebase.firestore();
+
+  console.log("this is the selected gift info");
+  console.log(gift);
 
   const fetch_giftRecord = async () => {
     const template_exist = await db
@@ -390,8 +393,8 @@ export default function ({ location }) {
     const giftName = "gift";
 
     /**
-     * If city reference in database exists, update the array
-     * else creates the reference
+     * If city reference in database exists, update the array with the new gift (push)
+     * Else creates the reference and push gift inside
      */
     if (cityRefSnapshop.exists) {
       cityRef.update({
@@ -405,6 +408,9 @@ export default function ({ location }) {
           shop_address: selectShop.shop_address,
           shop_name: selectShop.shop_name,
           shop_city: selectShop.shop_city,
+          gift_description: gift.gift_description,
+          gift_intro: gift.gift_intro,
+          image_url: gift.image_url,
         }),
       });
     } else {
@@ -419,6 +425,9 @@ export default function ({ location }) {
           shop_address: selectShop.shop_address,
           shop_name: selectShop.shop_name,
           shop_city: selectShop.shop_city,
+          gift_description: gift.gift_description,
+          gift_intro: gift.gift_intro,
+          image_url: gift.image_url,
         }),
       });
     }

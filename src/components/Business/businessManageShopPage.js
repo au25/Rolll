@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
   countryContainer: {
     margin: "0 0 28px 0",
-    width: "100%"
+    width: "100%",
   },
   regionContainer: {
     margin: "0 0 28px 0",
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "6px 8px",
     margin: "0 0 15px 0",
     textTransform: "none",
-    letterSpacing: "1px"
+    letterSpacing: "1px",
   },
   deleteShopContainer: {
     display: "flex",
@@ -96,15 +96,16 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: "1px",
     padding: "6px 8px",
     width: "126px",
-    height: "50px"
+    height: "50px",
   },
   addShop_container: {
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
-    width: "100%"
-  }
+    width: "80%",
+    borderTop: "1px solid rgba(0, 0, 0, 0.2)",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -125,8 +126,7 @@ const theme = createMuiTheme({
         height: "60px",
         width: "100%",
         "&:hover": {
-          backgroundColor:
-            "#4caf50",
+          backgroundColor: "#4caf50",
           // Reset on touch devices, it doesn't add specificity
           "@media (hover: none)": {
             backgroundColor: "#4caf50",
