@@ -5,6 +5,9 @@ import Gift from "../gift";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 const useStyles = makeStyles({
   outerContaniner: {
@@ -26,6 +29,13 @@ const useStyles = makeStyles({
     color: "rgba(0, 0, 0, 0.8)",
     fontFamily: "CoreSans, sans-serif",
   },
+  shopInfo_container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    backgroundColor: "rgba(173, 216, 230, 0.8)",
+    padding: "10px 0 5px 0",
+  },
   shopName_text: {
     fontSize: "16px",
     fontWeight: "bold",
@@ -44,14 +54,16 @@ const useStyles = makeStyles({
     flexDirection: "column",
   },
   imageDescription_container: {
-    border: "2px solid rgb(0, 0, 0, 0.2)",
+    // border: "2px solid rgb(0, 0, 0, 0.2)",
     padding: "5px 10px",
     borderRadius: "3px",
     height: "135px",
-    backgroundColor: "rgba(224, 238, 225, 0.6)",
+    // backgroundColor: "rgba(224, 238, 225, 0.6)",
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
+    background:
+      "linear-gradient(to right, rgba(254, 239, 186, 0.4), rgba(0, 0, 0, 0.05))",
   },
   giftImageContainer: {
     width: "90px",
@@ -60,9 +72,29 @@ const useStyles = makeStyles({
     justifyContent: "center",
     margin: "8px 0",
   },
+  '@keyframes shake': {
+    "0%": { transform: "translate(1px, 1px) rotate(0deg)" },
+    "10%": { transform: "translate(-1px, -2px) rotate(-1deg)" },
+    "20%": { transform: "translate(-3px, 0px) rotate(1deg)" },
+    "30%": { transform: "translate(3px, 2px) rotate(0deg)" },
+    "40%": { transform: "translate(1px, -1px) rotate(1deg)" },
+    "50%": { transform: "translate(-1px, 2px) rotate(-1deg)" },
+    "60%": { transform: "translate(-3px, 1px) rotate(0deg)" },
+    "70%": { transform: "translate(3px, 1px) rotate(-1deg)" },
+    "80%": { transform: "translate(-1px, -1px) rotate(1deg)" },
+    "90%": { transform: "translate(1px, 2px) rotate(0deg)" },
+    "100%": { transform: "translate(1px, -2px) rotate(-1deg)" }
+  },
   giftImage: {
     width: "100%",
     overflow: "hidden",
+    "&:active:hover": {
+      backgroundColor: "yellow",
+      animation: "$shake 500ms",
+      // animationDuration: "500ms",
+      // animationTimingFunction: "linear",
+      animationIterationCount: "infinite",
+    },
   },
   giftDescription_container: {
     display: "flex",
@@ -92,19 +124,21 @@ const useStyles = makeStyles({
     justifyContent: "flex-end",
     alignItems: "flex-end",
     padding: "0 5px 0 0",
-    margin: "2px 0 0 0"
+    margin: "2px 0 0 0",
   },
   expire_text: {
     fontFamily: "CoreSans, sans-serif",
-    fontSize: "14px",
-    margin: "0 10px 0 0",
+    fontSize: "12px",
+    margin: "0 8px 0 0",
+    color: "rgba(0, 0, 0, 0.7)",
+    fontWeight: "bold",
   },
   expireTime_text: {
     fontFamily: "CoreSans, sans-serif",
     fontSize: "14px",
     margin: "0 5px 0 0",
     fontWeight: "bold",
-    color: "rgba(0, 0, 0, 0.5)"
+    color: "rgba(0, 0, 0, 0.5)",
   },
 });
 
@@ -184,10 +218,19 @@ export default function ({ userDbInfo, setUserDbInfo }) {
         if (currentTime.isBefore(cityGift.gift_expiry_date)) {
           return userGiftIdMap.has(cityGift.gift_id) ? null : ( // </div> //   <br /> //   <div>Claimed</div> //   <div>{cityGift.shop_name}</div> //   <br /> // <div>
             <div className={classes.giftContainer}>
-              <div className={classes.shopName_text}>{cityGift.shop_name}</div>
-              <div className={classes.shopAddress_text}>
-                {cityGift.shop_address}
+              {/* <ExpansionPanel>
+                <ExpansionPanelSummary> */}
+              <div className={classes.shopInfo_container}>
+                <div className={classes.shopName_text}>
+                  {cityGift.shop_name}
+                </div>
+                <div className={classes.shopAddress_text}>
+                  {cityGift.shop_address}
+                </div>
               </div>
+              {/* </ExpansionPanelSummary>
+                <ExpansionPanelDetails></ExpansionPanelDetails>
+              </ExpansionPanel> */}
               <div className={classes.imageDescription_container}>
                 <div className={classes.giftImageContainer}>
                   <img
@@ -239,7 +282,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
 
   return (
     <div className={classes.outerContaniner}>
-      <div className={classes.gift_text}>Gift for you</div>
+      {/* <div className={classes.gift_text}>Gift for you</div> */}
       <RenderGift />
     </div>
   );
