@@ -72,6 +72,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     margin: "8px 0",
     "&:active:hover": {
+      width: "110px",
       animation: "$shake 500ms",
       // animationDuration: "500ms",
       // animationTimingFunction: "linear",
@@ -205,6 +206,15 @@ export default function ({ userDbInfo, setUserDbInfo }) {
       });
   };
 
+  const handleGiftMouseDown = (e) => {
+    let openGiftPercent = 0;
+    console.log(e.type);
+    while(e.type === "mousedown"){
+      // openGiftPercent += 1;
+      // console.log(openGiftPercent);
+    }
+  };
+
   /**
    * Render gifts based on location, if claimed and expiry
    */
@@ -233,7 +243,10 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                 <ExpansionPanelDetails></ExpansionPanelDetails>
               </ExpansionPanel> */}
               <div className={classes.imageDescription_container}>
-                <div className={classes.giftImageContainer}>
+                <div
+                  className={classes.giftImageContainer}
+                  onMouseDown={(e) => handleGiftMouseDown(e)}
+                >
                   <img
                     className={classes.giftImage}
                     src={cityGift.image_url}
@@ -265,7 +278,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
               </div>
               <div
                 className={classes.expiring_container}
-                onClick={() => claimGift(cityGift)}
+                // onClick={() => claimGift(cityGift)}
               >
                 <div className={classes.expire_text}>Expires</div>
                 <div className={classes.expireTime_text}>
