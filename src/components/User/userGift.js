@@ -71,8 +71,14 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     margin: "8px 0",
+    "&:active:hover": {
+      animation: "$shake 500ms",
+      // animationDuration: "500ms",
+      // animationTimingFunction: "linear",
+      animationIterationCount: "infinite",
+    },
   },
-  '@keyframes shake': {
+  "@keyframes shake": {
     "0%": { transform: "translate(1px, 1px) rotate(0deg)" },
     "10%": { transform: "translate(-1px, -2px) rotate(-1deg)" },
     "20%": { transform: "translate(-3px, 0px) rotate(1deg)" },
@@ -83,18 +89,13 @@ const useStyles = makeStyles({
     "70%": { transform: "translate(3px, 1px) rotate(-1deg)" },
     "80%": { transform: "translate(-1px, -1px) rotate(1deg)" },
     "90%": { transform: "translate(1px, 2px) rotate(0deg)" },
-    "100%": { transform: "translate(1px, -2px) rotate(-1deg)" }
+    "100%": { transform: "translate(1px, -2px) rotate(-1deg)" },
   },
   giftImage: {
+    // pointerEvents: "none",
     width: "100%",
     overflow: "hidden",
-    "&:active:hover": {
-      backgroundColor: "yellow",
-      animation: "$shake 500ms",
-      // animationDuration: "500ms",
-      // animationTimingFunction: "linear",
-      animationIterationCount: "infinite",
-    },
+    pointerEvents: "none",
   },
   giftDescription_container: {
     display: "flex",
