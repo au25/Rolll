@@ -154,7 +154,8 @@ let openGiftPercent = 0;
 
 let timer = null;
 
-const progressIncrease = (setShakeshake, progressArray, setProgressArray, index) => {
+const progressIncrease = (setActiveGiftIndex, progressArray, setProgressArray, index) => {
+  setActiveGiftIndex(null);
   openGiftPercent += 3;
   let progressArrayCopy = [...progressArray];
   progressArrayCopy[index] = openGiftPercent;
@@ -164,7 +165,8 @@ const progressIncrease = (setShakeshake, progressArray, setProgressArray, index)
   // setShakeshake(true);
   if (openGiftPercent >= 100) {
     clearInterval(timer);
-    setShakeshake(true);
+    // setShakeshake(true);
+    setActiveGiftIndex(index);
     openGiftPercent = 0;
   }
 };
@@ -178,6 +180,8 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   const [userGiftIdMap, setUserGiftIdMap] = useState();
   const [shakeshake, setShakeshake] = useState(false);
   const [progressArray, setProgressArray] = useState([]);
+  const [activeGiftIndex, setActiveGiftIndex] = useState(null);
+
 
   const db = firebase.firestore();
   // console.log(userDbInfo && userDbInfo.data());
@@ -238,7 +242,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     console.log(e.type);
     console.log(index);
     timer = setInterval(function () {
-      progressIncrease(setShakeshake, progressArray, setProgressArray, index);
+      progressIncrease(setActiveGiftIndex, progressArray, setProgressArray, index);
     }, 10);
   };
 
@@ -279,11 +283,11 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                   {cityGift.shop_address}
                 </div>
               </div>
-              <LinearProgress id={index} variant="determinate" value={progressArray[index]} />
+              <LinearProgress variant="determinate" value={progressArray[index]} />
               <div className={classes.imageDescription_container}>
-                <div>{progressArray[index]}</div>
+                {/* <div>{progressArray[index]}</div> */}
                 <div
-                  className={shakeshake ? classes.shakeCSS : classes.giftImageContainer}
+                  className={index == activeGiftIndex ? classes.shakeCSS : classes.giftImageContainer}
                   onTouchStart={(e) => handleGiftMouseDown(e, index)}
                   onMouseUp={(e) => handleGiftMouseUp(e)}
                 >
