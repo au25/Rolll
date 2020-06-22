@@ -72,12 +72,8 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     margin: "8px 0",
-    // "&:active": {
+    // "&:active:hover": {
     //   width: "110px",
-    //   animation: "$shake 500ms",
-    //   // animationDuration: "500ms",
-    //   // animationTimingFunction: "linear",
-    //   animationIterationCount: "infinite",
     // },
   },
   shakeCSS: {
@@ -158,14 +154,17 @@ let openGiftPercent = 0;
 
 let timer = null;
 
-const progressIncrease = (setProgress, setShakeshake) => {
+const progressIncrease = (setShakeshake, progressArray, setProgressArray, index) => {
   openGiftPercent += 1;
-  setProgress(openGiftPercent);
+  let progressArrayCopy = [...progressArray];
+  progressArrayCopy[index] = openGiftPercent;
+  setProgressArray(progressArrayCopy);
   console.log("inside progressIncrease");
   console.log(openGiftPercent);
-  setShakeshake(true);
+  // setShakeshake(true);
   if (openGiftPercent == 100) {
     clearInterval(timer);
+    setShakeshake(true);
     openGiftPercent = 0;
   }
 };
@@ -177,12 +176,12 @@ export default function ({ userDbInfo, setUserDbInfo }) {
 
   const [cityGiftRecord, setCityGiftRecord] = useState();
   const [userGiftIdMap, setUserGiftIdMap] = useState();
-  const [progress, setProgress] = useState(0);
   const [shakeshake, setShakeshake] = useState(false);
+  const [progressArray, setProgressArray] = useState([]);
 
   const db = firebase.firestore();
-  console.log(userDbInfo && userDbInfo.data());
-  console.log(cityGiftRecord && cityGiftRecord);
+  // console.log(userDbInfo && userDbInfo.data());
+  // console.log(cityGiftRecord && cityGiftRecord);
 
   useEffect(() => {
     fetchCityRecord();
@@ -201,6 +200,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
         .doc(userDbInfo.data().user_city)
         .get();
 
+      createProgressArray(cityRef.data());
       setCityGiftRecord(cityRef.data());
     }
   };
@@ -213,7 +213,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
         userGiftIdMap.set(userGift.gift_id, "gift_id");
       });
     }
-    console.log(userGiftIdMap);
+    // console.log(userGiftIdMap);
     setUserGiftIdMap(userGiftIdMap);
   };
 
@@ -234,18 +234,28 @@ export default function ({ userDbInfo, setUserDbInfo }) {
       });
   };
 
-  const handleGiftMouseDown = (e) => {
+  const handleGiftMouseDown = (e, index) => {
     console.log(e.type);
+    console.log(index);
     timer = setInterval(function () {
-      progressIncrease(setProgress, setShakeshake);
+      progressIncrease(setShakeshake, progressArray, setProgressArray, index);
     }, 10);
   };
 
   const handleGiftMouseUp = () => {
     clearInterval(timer);
-    setShakeshake(false);
+    // setShakeshake(false);
+    openGiftPercent = 0;
     console.log("mouse up");
   };
+
+  const createProgressArray = (giftRecordIteration) => {
+    console.log("this is the progress array");
+    for(let i=0; i < giftRecordIteration.gift.length; i++){
+      setProgressArray(progressArray => [...progressArray, 0]);
+    }
+    console.log(progressArray);
+  }
 
   /**
    * Render gifts based on location, if claimed and expiry
@@ -257,12 +267,10 @@ export default function ({ userDbInfo, setUserDbInfo }) {
 
     if (cityGiftRecord && cityGiftRecord.gift) {
       // cityGiftRecord is from gift collection
-      return cityGiftRecord.gift.map((cityGift) => {
+      return cityGiftRecord.gift.map((cityGift, index) => {
         if (currentTime.isBefore(cityGift.gift_expiry_date)) {
-          return userGiftIdMap.has(cityGift.gift_id) ? null : ( // </div> //   <br /> //   <div>Claimed</div> //   <div>{cityGift.shop_name}</div> //   <br /> // <div>
+          return userGiftIdMap.has(cityGift.gift_id) ? null : (
             <div className={classes.giftContainer}>
-              {/* <ExpansionPanel>
-                <ExpansionPanelSummary> */}
               <div className={classes.shopInfo_container}>
                 <div className={classes.shopName_text}>
                   {cityGift.shop_name}
@@ -271,18 +279,13 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                   {cityGift.shop_address}
                 </div>
               </div>
-              {/* </ExpansionPanelSummary>
-                <ExpansionPanelDetails></ExpansionPanelDetails>
-              </ExpansionPanel> */}
-              <LinearProgress variant="determinate" value={openGiftPercent} />
+              <LinearProgress id={index} variant="determinate" value={progressArray[index]} />
               <div className={classes.imageDescription_container}>
-                {/* <div>{openGiftPercent}</div> */}
+                <div>{progressArray[index]}</div>
                 <div
                   className={shakeshake ? classes.shakeCSS : classes.giftImageContainer}
-                  // onMouseDown={(e) => handleGiftMouseDown(e)}
-                  onTouchStart={(e) => handleGiftMouseDown(e)}
+                  onTouchStart={(e) => handleGiftMouseDown(e, index)}
                   onMouseUp={(e) => handleGiftMouseUp(e)}
-                  // onTouchEnd={(e) => handleGiftMouseUp(e)}
                 >
                   <img
                     className={classes.giftImage}
