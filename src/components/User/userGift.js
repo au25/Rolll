@@ -155,14 +155,14 @@ let openGiftPercent = 0;
 let timer = null;
 
 const progressIncrease = (setShakeshake, progressArray, setProgressArray, index) => {
-  openGiftPercent += 1;
+  openGiftPercent += 3;
   let progressArrayCopy = [...progressArray];
   progressArrayCopy[index] = openGiftPercent;
   setProgressArray(progressArrayCopy);
   console.log("inside progressIncrease");
   console.log(openGiftPercent);
   // setShakeshake(true);
-  if (openGiftPercent == 100) {
+  if (openGiftPercent >= 100) {
     clearInterval(timer);
     setShakeshake(true);
     openGiftPercent = 0;
