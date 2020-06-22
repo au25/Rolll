@@ -72,29 +72,38 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     margin: "8px 0",
-    "&:active:hover": {
-      width: "110px",
-      animation: "$shake 500ms",
-      // animationDuration: "500ms",
-      // animationTimingFunction: "linear",
-      animationIterationCount: "infinite",
-    },
+    // "&:active": {
+    //   width: "110px",
+    //   animation: "$shake 500ms",
+    //   // animationDuration: "500ms",
+    //   // animationTimingFunction: "linear",
+    //   animationIterationCount: "infinite",
+    // },
+  },
+  shakeCSS: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "8px 0",
+    width: "110px",
+    animation: "$shake 500ms",
+    animationIterationCount: "infinite",
   },
   "@keyframes shake": {
     "0%": { transform: "translate(1px, 1px) rotate(0deg)" },
-    "10%": { transform: "translate(-1px, -2px) rotate(-1deg)" },
-    "20%": { transform: "translate(-3px, 0px) rotate(1deg)" },
+    "10%": { transform: "translate(-1px, -2px) rotate(-5deg)" },
+    "20%": { transform: "translate(-3px, 0px) rotate(5deg)" },
     "30%": { transform: "translate(3px, 2px) rotate(0deg)" },
-    "40%": { transform: "translate(1px, -1px) rotate(1deg)" },
-    "50%": { transform: "translate(-1px, 2px) rotate(-1deg)" },
+    "40%": { transform: "translate(1px, -1px) rotate(5deg)" },
+    "50%": { transform: "translate(-1px, 2px) rotate(-5deg)" },
     "60%": { transform: "translate(-3px, 1px) rotate(0deg)" },
-    "70%": { transform: "translate(3px, 1px) rotate(-1deg)" },
-    "80%": { transform: "translate(-1px, -1px) rotate(1deg)" },
+    "70%": { transform: "translate(3px, 1px) rotate(-5deg)" },
+    "80%": { transform: "translate(-1px, -1px) rotate(5deg)" },
     "90%": { transform: "translate(1px, 2px) rotate(0deg)" },
-    "100%": { transform: "translate(1px, -2px) rotate(-1deg)" },
+    "100%": { transform: "translate(1px, -2px) rotate(-5deg)" },
   },
   giftImage: {
-    // pointerEvents: "none",
+    pointerEvents: "none",
     width: "100%",
     overflow: "hidden",
     pointerEvents: "none",
@@ -149,12 +158,14 @@ let openGiftPercent = 0;
 
 let timer = null;
 
-const progressIncrease = (setProgress) => {
+const progressIncrease = (setProgress, setShakeshake) => {
   openGiftPercent += 1;
   setProgress(openGiftPercent);
   console.log("inside progressIncrease");
   console.log(openGiftPercent);
+  setShakeshake(true);
   if (openGiftPercent == 100) {
+    clearInterval(timer);
     openGiftPercent = 0;
   }
 };
@@ -167,6 +178,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   const [cityGiftRecord, setCityGiftRecord] = useState();
   const [userGiftIdMap, setUserGiftIdMap] = useState();
   const [progress, setProgress] = useState(0);
+  const [shakeshake, setShakeshake] = useState(false);
 
   const db = firebase.firestore();
   console.log(userDbInfo && userDbInfo.data());
@@ -225,12 +237,13 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   const handleGiftMouseDown = (e) => {
     console.log(e.type);
     timer = setInterval(function () {
-      progressIncrease(setProgress);
+      progressIncrease(setProgress, setShakeshake);
     }, 10);
   };
 
   const handleGiftMouseUp = () => {
     clearInterval(timer);
+    setShakeshake(false);
     console.log("mouse up");
   };
 
@@ -261,14 +274,14 @@ export default function ({ userDbInfo, setUserDbInfo }) {
               {/* </ExpansionPanelSummary>
                 <ExpansionPanelDetails></ExpansionPanelDetails>
               </ExpansionPanel> */}
-              <LinearProgress variant="determinate" value={progress} />
+              <LinearProgress variant="determinate" value={openGiftPercent} />
               <div className={classes.imageDescription_container}>
-                <div>{openGiftPercent}</div>
+                {/* <div>{openGiftPercent}</div> */}
                 <div
-                  className={classes.giftImageContainer}
+                  className={shakeshake ? classes.shakeCSS : classes.giftImageContainer}
                   // onMouseDown={(e) => handleGiftMouseDown(e)}
-                  onMouseUp={(e) => handleGiftMouseUp(e)}
                   onTouchStart={(e) => handleGiftMouseDown(e)}
+                  onMouseUp={(e) => handleGiftMouseUp(e)}
                   // onTouchEnd={(e) => handleGiftMouseUp(e)}
                 >
                   <img
