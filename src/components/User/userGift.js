@@ -8,7 +8,7 @@ import moment from "moment";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import LinearProgress from '@material-ui/core/LinearProgress';
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const useStyles = makeStyles({
   outerContaniner: {
@@ -152,6 +152,7 @@ let timer = null;
 const progressIncrease = (setProgress) => {
   openGiftPercent += 1;
   setProgress(openGiftPercent);
+  console.log("inside progressIncrease");
   console.log(openGiftPercent);
   if (openGiftPercent == 100) {
     openGiftPercent = 0;
@@ -168,7 +169,6 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   const [progress, setProgress] = useState(0);
 
   const db = firebase.firestore();
-  console.log("inside default function");
   console.log(userDbInfo && userDbInfo.data());
   console.log(cityGiftRecord && cityGiftRecord);
 
@@ -261,12 +261,15 @@ export default function ({ userDbInfo, setUserDbInfo }) {
               {/* </ExpansionPanelSummary>
                 <ExpansionPanelDetails></ExpansionPanelDetails>
               </ExpansionPanel> */}
-              <LinearProgress variant="determinate" value={progress}/>
+              <LinearProgress variant="determinate" value={progress} />
               <div className={classes.imageDescription_container}>
+                <div>{openGiftPercent}</div>
                 <div
                   className={classes.giftImageContainer}
-                  onMouseDown={(e) => handleGiftMouseDown(e)}
+                  // onMouseDown={(e) => handleGiftMouseDown(e)}
                   onMouseUp={(e) => handleGiftMouseUp(e)}
+                  onTouchStart={(e) => handleGiftMouseDown(e)}
+                  // onTouchEnd={(e) => handleGiftMouseUp(e)}
                 >
                   <img
                     className={classes.giftImage}
