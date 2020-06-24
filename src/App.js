@@ -13,6 +13,8 @@ import AdminHomePage from "./components/Admin/adminHomePage";
 
 // User imports
 import UserHome from "./components/User/userHome";
+import UserGiftResult from "./components/User/userGiftResult";
+import UserGiftRecord from "./components/User/userGiftRecord";
 
 // Business imports
 import BusinessInfo from "./components/Business/businessInfoPage";
@@ -34,6 +36,8 @@ function App() {
 
           {/* User Routes */}
           <Route path="/userHome" component={UserHome} />
+          <Route path="/giftResult" component={UserGiftResult} />
+          <Route path="/giftRecord" component={UserGiftRecord} />
 
           {/* Business Routes */}
           <Route path="/businessInfo" component={BusinessInfo} />

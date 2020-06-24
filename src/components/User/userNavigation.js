@@ -7,6 +7,7 @@ import {
 import { useHistory } from "react-router-dom";
 import UserProfile from "./userProfilePage";
 import UserFavorite from "./userFavorite";
+import UserGiftRecord from "./userGiftRecord";
 import UserGiftList from "./userGift";
 import Div100vh from "react-div-100vh";
 
@@ -94,8 +95,8 @@ export default function ({ userDbInfo, setUserDbInfo }) {
         <UserGiftList userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} />
       );
     }
-    if (navigationValue == "favorite") {
-      return <UserFavorite userDbInfo={userDbInfo} />;
+    if (navigationValue == "giftRecord") {
+      return <UserGiftRecord userDbInfo={userDbInfo} />;
     }
     if (navigationValue == "profile") {
       return <UserProfile userDbInfo={userDbInfo} />;
@@ -115,13 +116,13 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                 className={classes.giftList_image}
                 style={{
                   filter:
-                    navigationValue === "giftList" ? null : "grayscale(1)",
+                    navigationValue === "giftRecord" ? null : "grayscale(1)",
                 }}
                 src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2FplainBlue_giftBox.png?alt=media&token=73690a9c-81c8-4d84-88dc-e10a8784fab3"
-                onClick={() => setNavigationValue("giftList")}
+                onClick={() => setNavigationValue("giftRecord")}
               />
             </div>
-            <div className={classes.iconTitle}>Gift</div>
+            <div className={classes.iconTitle}>Record</div>
           </div>
           <div className={classes.icon_container}>
             <div className={classes.image_container}>

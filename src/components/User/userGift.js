@@ -150,22 +150,27 @@ const useStyles = makeStyles({
   },
 });
 
+/**
+ * setInterval function that increases the gift open percentage while onTouchStart (gift is held down)
+ * When gift percentage is > 100, the gift will go shake shake
+ */
 let openGiftPercent = 0;
-
 let timer = null;
 
-const progressIncrease = (setActiveGiftIndex, progressArray, setProgressArray, index) => {
+const progressIncrease = (
+  setActiveGiftIndex,
+  progressArray,
+  setProgressArray,
+  index
+) => {
   setActiveGiftIndex(null);
   openGiftPercent += 3;
   let progressArrayCopy = [...progressArray];
   progressArrayCopy[index] = openGiftPercent;
   setProgressArray(progressArrayCopy);
-  console.log("inside progressIncrease");
   console.log(openGiftPercent);
-  // setShakeshake(true);
   if (openGiftPercent >= 100) {
     clearInterval(timer);
-    // setShakeshake(true);
     setActiveGiftIndex(index);
     openGiftPercent = 0;
   }
@@ -178,10 +183,10 @@ export default function ({ userDbInfo, setUserDbInfo }) {
 
   const [cityGiftRecord, setCityGiftRecord] = useState();
   const [userGiftIdMap, setUserGiftIdMap] = useState();
-  const [shakeshake, setShakeshake] = useState(false);
   const [progressArray, setProgressArray] = useState([]);
   const [activeGiftIndex, setActiveGiftIndex] = useState(null);
-
+  const [giftReadyOpenIndex, setGiftReadyOpenIndex] = useState(null);
+  const [giftRewardArray, setGiftRewardArray] = useState([]);
 
   const db = firebase.firestore();
   // console.log(userDbInfo && userDbInfo.data());
@@ -204,7 +209,9 @@ export default function ({ userDbInfo, setUserDbInfo }) {
         .doc(userDbInfo.data().user_city)
         .get();
 
+      // Array to hold the progress of each gift
       createProgressArray(cityRef.data());
+      //
       setCityGiftRecord(cityRef.data());
     }
   };
@@ -228,7 +235,14 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     console.log("claiming gift");
 
     let newUserGiftArray = userDbInfo.data().claimedGift;
-    newUserGiftArray.push(gift);
+    let rollNumber = Math.floor(Math.random() * 100 + 1);
+    let giftCopy = {
+      ...gift,
+      roll: rollNumber,
+      reward: giftRewardArray[rollNumber],
+    };
+    newUserGiftArray.push(giftCopy);
+    console.log(giftRewardArray);
     await db
       .collection("user")
       .doc(userDbInfo.id)
@@ -236,30 +250,57 @@ export default function ({ userDbInfo, setUserDbInfo }) {
         ...userDbInfo.data(),
         claimedGift: newUserGiftArray,
       });
+
+    setGiftRewardArray([]);
+
+    history.push({pathname: "/giftResult", state: {giftCopy}});
   };
 
+  /**
+   * Fires onTouchStart, when gift is pressed
+   */
   const handleGiftMouseDown = (e, index) => {
-    console.log(e.type);
-    console.log(index);
+    setGiftReadyOpenIndex(null);
     timer = setInterval(function () {
-      progressIncrease(setActiveGiftIndex, progressArray, setProgressArray, index);
+      progressIncrease(
+        setActiveGiftIndex,
+        progressArray,
+        setProgressArray,
+        index
+      );
     }, 10);
   };
 
-  const handleGiftMouseUp = () => {
+  const handleGiftMouseUp = (e, index, gift) => {
     clearInterval(timer);
-    // setShakeshake(false);
     openGiftPercent = 0;
+    if (activeGiftIndex == index) {
+      // Create the array for rewards
+      let giftRewardArrayCopy = [];
+      for (let j = 0; j < gift.gift_description.chance.length; j++) {
+        for (let k = 0; k < gift.gift_description.chance[j] * 100; k++) {
+          giftRewardArrayCopy.push(gift.gift_description.reward[j]);
+        }
+      }
+      setGiftRewardArray(giftRewardArrayCopy);
+
+      // Waits for animation, 500ms, before gift can be opened
+      setTimeout(function () {
+        setGiftReadyOpenIndex(index);
+        console.log("gift ready to be open");
+      }, 500);
+    }
     console.log("mouse up");
   };
 
+  /**
+   * Creates the progressArray state
+   */
   const createProgressArray = (giftRecordIteration) => {
-    console.log("this is the progress array");
-    for(let i=0; i < giftRecordIteration.gift.length; i++){
-      setProgressArray(progressArray => [...progressArray, 0]);
+    for (let i = 0; i < giftRecordIteration.gift.length; i++) {
+      setProgressArray((progressArray) => [...progressArray, 0]);
     }
-    console.log(progressArray);
-  }
+  };
 
   /**
    * Render gifts based on location, if claimed and expiry
@@ -283,20 +324,47 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                   {cityGift.shop_address}
                 </div>
               </div>
-              <LinearProgress variant="determinate" value={progressArray[index]} />
+              <LinearProgress
+                variant="determinate"
+                value={progressArray[index]}
+              />
               <div className={classes.imageDescription_container}>
-                {/* <div>{progressArray[index]}</div> */}
-                <div
-                  className={index == activeGiftIndex ? classes.shakeCSS : classes.giftImageContainer}
-                  onTouchStart={(e) => handleGiftMouseDown(e, index)}
-                  onMouseUp={(e) => handleGiftMouseUp(e)}
-                >
-                  <img
-                    className={classes.giftImage}
-                    src={cityGift.image_url}
-                    alt="lol"
-                  />
-                </div>
+                {/* If gift is shaking and ready to be opened */}
+                {index == giftReadyOpenIndex ? (
+                  <div
+                    className={
+                      index == giftReadyOpenIndex
+                        ? classes.shakeCSS
+                        : classes.giftImageContainer
+                    }
+                    onTouchStart={() => {
+                      claimGift(cityGift);
+                    }}
+                  >
+                    <img
+                      className={classes.giftImage}
+                      src={cityGift.image_url}
+                      alt="lol"
+                    />
+                  </div>
+                ) : (
+                  // Push gift to charge progress bar
+                  <div
+                    className={
+                      index == activeGiftIndex
+                        ? classes.shakeCSS
+                        : classes.giftImageContainer
+                    }
+                    onTouchStart={(e) => handleGiftMouseDown(e, index)}
+                    onMouseUp={(e) => handleGiftMouseUp(e, index, cityGift)}
+                  >
+                    <img
+                      className={classes.giftImage}
+                      src={cityGift.image_url}
+                      alt="lol"
+                    />
+                  </div>
+                )}
                 <div className={classes.giftDescription_container}>
                   <div className={classes.chanceText_container}>
                     {cityGift.gift_description.chance.map((chance) => {
