@@ -288,7 +288,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
       setTimeout(function () {
         setGiftReadyOpenIndex(index);
         console.log("gift ready to be open");
-      }, 500);
+      }, 300);
     }
     console.log("mouse up");
   };
