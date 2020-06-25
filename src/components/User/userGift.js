@@ -174,6 +174,7 @@ const progressIncrease = (
   if (openGiftPercent >= 100) {
     clearInterval(timer);
     setActiveGiftIndex(index);
+    progressArrayCopy[index] = 100;
     openGiftPercent = 0;
   }
 };
@@ -245,17 +246,17 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     };
     newUserGiftArray.push(giftCopy);
     console.log(giftRewardArray);
-    // await db
-    //   .collection("user")
-    //   .doc(userDbInfo.id)
-    //   .set({
-    //     ...userDbInfo.data(),
-    //     claimedGift: newUserGiftArray,
-    //   });
+    await db
+      .collection("user")
+      .doc(userDbInfo.id)
+      .set({
+        ...userDbInfo.data(),
+        claimedGift: newUserGiftArray,
+      });
 
     setGiftRewardArray([]);
 
-    // history.push({pathname: "/giftResult", state: {giftCopy}});
+    history.push({pathname: "/giftResult", state: {giftCopy}});
   };
 
   /**
