@@ -166,7 +166,9 @@ const progressIncrease = (
   setActiveGiftIndex(null);
   openGiftPercent += 3;
   let progressArrayCopy = [...progressArray];
-  progressArrayCopy[index] = openGiftPercent;
+  if(progressArrayCopy[index] < 100){
+    progressArrayCopy[index] = openGiftPercent;
+  }
   setProgressArray(progressArrayCopy);
   console.log(openGiftPercent);
   if (openGiftPercent >= 100) {
@@ -243,17 +245,17 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     };
     newUserGiftArray.push(giftCopy);
     console.log(giftRewardArray);
-    await db
-      .collection("user")
-      .doc(userDbInfo.id)
-      .set({
-        ...userDbInfo.data(),
-        claimedGift: newUserGiftArray,
-      });
+    // await db
+    //   .collection("user")
+    //   .doc(userDbInfo.id)
+    //   .set({
+    //     ...userDbInfo.data(),
+    //     claimedGift: newUserGiftArray,
+    //   });
 
     setGiftRewardArray([]);
 
-    history.push({pathname: "/giftResult", state: {giftCopy}});
+    // history.push({pathname: "/giftResult", state: {giftCopy}});
   };
 
   /**
