@@ -164,7 +164,7 @@ const progressIncrease = (
   index
 ) => {
   setActiveGiftIndex(null);
-  openGiftPercent += 3.33;
+  openGiftPercent += 5;
   let progressArrayCopy = [...progressArray];
   if(progressArrayCopy[index] < 100){
     progressArrayCopy[index] = openGiftPercent;
