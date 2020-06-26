@@ -164,7 +164,7 @@ const progressIncrease = (
   index
 ) => {
   setActiveGiftIndex(null);
-  openGiftPercent += 2.5;
+  openGiftPercent += 3.33;
   let progressArrayCopy = [...progressArray];
   if(progressArrayCopy[index] < 100){
     progressArrayCopy[index] = openGiftPercent;
@@ -291,7 +291,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
       setTimeout(function () {
         setGiftReadyOpenIndex(index);
         console.log("gift ready to be open");
-      }, 300);
+      }, 100);
     }
     console.log("mouse up");
   };
