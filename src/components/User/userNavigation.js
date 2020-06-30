@@ -33,7 +33,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
   },
-  userNavigation_renderBodyContainer: {},
+  userNavigation_renderBodyContainer: {
+    overflow: "auto"
+  },
   userNavigation_navContainer: {
     height: "14%",
     backgroundColor: "#d4dcdc",

@@ -276,7 +276,7 @@ export default function ({ location }) {
         return false;
       };
 
-      const handleGiftDisable = (shop, index) => {
+      const handleGiftDisable = async (shop, index) => {
         console.log("disable");
 
         const giftRecordArray = giftRecord.data()[gift.gift_name];
@@ -294,9 +294,11 @@ export default function ({ location }) {
                 giftRecordArray[i].gift_expiry_date = moment(
                   firebase.firestore.Timestamp.now(new Date()).toDate()
                 ).format();
-                console.log(giftRecord.data());
-                console.log(gift.gift_name);
-                console.log(giftRecordArray);
+                // console.log(giftRecord.data());
+                // console.log(gift.gift_name);
+                // console.log(giftRecordArray);
+                console.log("this is shop");
+                console.log(shop);
 
                 db.collection("businessUser")
                   .doc(userId)
@@ -306,6 +308,30 @@ export default function ({ location }) {
                     ...giftRecord.data(),
                     [gift.gift_name]: giftRecordArray,
                   });
+
+                const cityRef = db
+                  .collection("gift")
+                  .doc(shop.shop_country)
+                  .collection(shop.shop_region)
+                  .doc(shop.shop_city);
+                const cityRefSnapshop = await cityRef.get();
+                console.log(cityRefSnapshop.data());
+                let claimedGifts = cityRefSnapshop.data().gift;
+
+                console.log("before change");
+                console.log(claimedGifts);
+
+                for (let j = claimedGifts.length -1; j >= 0; j--) {
+                  if (claimedGifts[j].gift_id == giftRecordArray[i].gift_id) {
+                    console.log("changing expiry date");
+                    claimedGifts[j].gift_expiry_date = moment(
+                      firebase.firestore.Timestamp.now(new Date()).toDate()
+                    ).format();
+                  }
+                }
+                console.log("new claimed gift array");
+                console.log(claimedGifts);
+                cityRef.set({claimedGifts});
               }
             }
           }

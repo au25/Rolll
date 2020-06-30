@@ -161,21 +161,24 @@ const progressIncrease = (
   setActiveGiftIndex,
   progressArray,
   setProgressArray,
-  index
+  index,
+  claimGift,
+  gift
 ) => {
-  setActiveGiftIndex(null);
-  openGiftPercent += 5;
+  // setActiveGiftIndex(null);
+  openGiftPercent += 2.5;
   let progressArrayCopy = [...progressArray];
-  if(progressArrayCopy[index] < 100){
+  if (progressArrayCopy[index] < 100) {
     progressArrayCopy[index] = openGiftPercent;
   }
   setProgressArray(progressArrayCopy);
   console.log(openGiftPercent);
   if (openGiftPercent >= 100) {
     clearInterval(timer);
-    setActiveGiftIndex(index);
-    progressArrayCopy[index] = 100;
+    // setActiveGiftIndex(index);
+    // progressArrayCopy[index] = 100;
     openGiftPercent = 0;
+    claimGift(gift);
   }
 };
 
@@ -192,8 +195,6 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   const [giftRewardArray, setGiftRewardArray] = useState([]);
 
   const db = firebase.firestore();
-  // console.log(userDbInfo && userDbInfo.data());
-  // console.log(cityGiftRecord && cityGiftRecord);
 
   useEffect(() => {
     fetchCityRecord();
@@ -227,7 +228,6 @@ export default function ({ userDbInfo, setUserDbInfo }) {
         userGiftIdMap.set(userGift.gift_id, "gift_id");
       });
     }
-    // console.log(userGiftIdMap);
     setUserGiftIdMap(userGiftIdMap);
   };
 
@@ -237,39 +237,55 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   const claimGift = async (gift) => {
     console.log("claiming gift");
 
+    // Creates the array for gift rewards
+    let giftRewardArrayCopy = [];
+    for (let j = 0; j < gift.gift_description.chance.length; j++) {
+      for (let k = 0; k < gift.gift_description.chance[j] * 100; k++) {
+        giftRewardArrayCopy.push(gift.gift_description.reward[j]);
+      }
+    }
+    setGiftRewardArray(giftRewardArrayCopy);
+
     let newUserGiftArray = userDbInfo.data().claimedGift;
     let rollNumber = Math.floor(Math.random() * 100 + 1);
     let giftCopy = {
       ...gift,
       roll: rollNumber,
-      reward: giftRewardArray[rollNumber],
+      reward: giftRewardArrayCopy[rollNumber],
+      gift_open_timeStamp: firebase.firestore.Timestamp.now(
+        new Date()
+      ).toDate(),
     };
+    console.log(giftCopy);
     newUserGiftArray.push(giftCopy);
-    console.log(giftRewardArray);
-    await db
-      .collection("user")
-      .doc(userDbInfo.id)
-      .set({
-        ...userDbInfo.data(),
-        claimedGift: newUserGiftArray,
-      });
+    // await db
+    //   .collection("user")
+    //   .doc(userDbInfo.id)
+    //   .set({
+    //     ...userDbInfo.data(),
+    //     claimedGift: newUserGiftArray,
+    //   });
 
     setGiftRewardArray([]);
 
-    history.push({pathname: "/giftResult", state: {giftCopy}});
+    history.push({ pathname: "/giftResult", state: { giftCopy } });
   };
 
   /**
    * Fires onTouchStart, when gift is pressed
    */
-  const handleGiftMouseDown = (e, index) => {
+  const handleGiftMouseDown = (e, index, gift) => {
+    console.log("mouse down");
+    setActiveGiftIndex(index);
     setGiftReadyOpenIndex(null);
     timer = setInterval(function () {
       progressIncrease(
         setActiveGiftIndex,
         progressArray,
         setProgressArray,
-        index
+        index,
+        claimGift,
+        gift
       );
     }, 10);
   };
@@ -277,22 +293,6 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   const handleGiftMouseUp = (e, index, gift) => {
     clearInterval(timer);
     openGiftPercent = 0;
-    if (activeGiftIndex == index) {
-      // Create the array for rewards
-      let giftRewardArrayCopy = [];
-      for (let j = 0; j < gift.gift_description.chance.length; j++) {
-        for (let k = 0; k < gift.gift_description.chance[j] * 100; k++) {
-          giftRewardArrayCopy.push(gift.gift_description.reward[j]);
-        }
-      }
-      setGiftRewardArray(giftRewardArrayCopy);
-
-      // Waits for animation, 500ms, before gift can be opened
-      setTimeout(function () {
-        setGiftReadyOpenIndex(index);
-        console.log("gift ready to be open");
-      }, 100);
-    }
     console.log("mouse up");
   };
 
@@ -358,7 +358,9 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                         ? classes.shakeCSS
                         : classes.giftImageContainer
                     }
-                    onTouchStart={(e) => handleGiftMouseDown(e, index)}
+                    onTouchStart={(e) =>
+                      handleGiftMouseDown(e, index, cityGift)
+                    }
                     onMouseUp={(e) => handleGiftMouseUp(e, index, cityGift)}
                   >
                     <img
