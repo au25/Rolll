@@ -24,17 +24,30 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     fontFamily: "CoreSans, sans-serif",
+    justifyContent: "center",
+    alignItems: "center",
   },
   reward_text: {
     display: "flex",
     justifyContent: "center",
     fontSize: "40px",
     textTransform: "uppercase",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    width: "70%",
+    height: "175px",
+    alignItems: "center",
+    textAlign: "center",
   },
   countdown_text: {
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+  },
+  countdown_container: {
+    display: "flex"
+  },
+  storeRights_text: {
+    width: "70%",
+    textAlign: "center",
   }
 }));
 
@@ -89,9 +102,9 @@ export default function ({ userDbInfo, location }) {
                     precision={3}
                     renderer={(props) => {
                       return !props.completed ? (
-                        <div>
-                          <div>Expires</div>
-                          <div>
+                        <div className={classes.countdown_container}>
+                          <div className={classes.expire_text}>Expires</div>
+                          <div className={classes.countdown_text}>
                             {props.minutes}:{props.seconds}
                           </div>
                         </div>
@@ -114,7 +127,7 @@ export default function ({ userDbInfo, location }) {
               <IconButton>
                 <DeleteIcon />
               </IconButton>
-              <div>
+              <div className={classes.storeRights_text}>
                 The store reserves the right to refeuse redemption of this gift.
               </div>
               <div>Report</div>
