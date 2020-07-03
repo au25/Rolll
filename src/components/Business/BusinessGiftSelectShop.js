@@ -256,7 +256,7 @@ export default function ({ location }) {
       const hasActiveGift = (shop) => {
         // checks to see if giftRecord collection exists
         if (giftRecord.exists) {
-          const giftRecordArray = giftRecord.data()[gift.gift_name];
+          const giftRecordArray = giftRecord.data()[gift.gift_name]; // Bracket notation, same as . notation but dynamic for parem
           const currentTime = moment(
             firebase.firestore.Timestamp.now(new Date()).toDate()
           );
@@ -321,7 +321,7 @@ export default function ({ location }) {
                 console.log("before change");
                 console.log(claimedGifts);
 
-                for (let j = claimedGifts.length -1; j >= 0; j--) {
+                for (let j = claimedGifts.length - 1; j >= 0; j--) {
                   if (claimedGifts[j].gift_id == giftRecordArray[i].gift_id) {
                     console.log("changing expiry date");
                     claimedGifts[j].gift_expiry_date = moment(
@@ -331,7 +331,7 @@ export default function ({ location }) {
                 }
                 console.log("new claimed gift array");
                 console.log(claimedGifts);
-                cityRef.set({claimedGifts});
+                cityRef.set({ gift: claimedGifts });
               }
             }
           }

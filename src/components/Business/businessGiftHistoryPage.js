@@ -128,6 +128,58 @@ export default function ({ userDbInfo }) {
     setGiftRecord(giftRecordArray);
   };
 
+  /**
+   * Disables the gift on shop side and public gift side
+   */
+  const disableGift = async (gift) => {
+    // Get gift array from shop that needs to be updated
+    const giftArrayRef = db
+      .collection("businessUser")
+      .doc(userDbInfo.id)
+      .collection("giftRecord")
+      .doc(gift.gift_name);
+    const giftArray = await giftArrayRef.get();
+    const giftArrayCopy = giftArray.data()[gift.gift_name];
+    for (let i = giftArrayCopy.length - 1; i >= 0; i--) {
+      if (giftArrayCopy[i].gift_id == gift.gift_id) {
+        console.log("updating array at index: " + i);
+        giftArrayCopy[i].gift_expiry_date = moment(
+          firebase.firestore.Timestamp.now(new Date()).toDate()
+        ).format();
+      }
+    }
+    console.log({ [gift.gift_name]: giftArrayCopy });
+    console.log(giftArray.data());
+    giftArrayRef.set({ [gift.gift_name]: giftArrayCopy });
+
+    // Updating array of gift in location
+    // Gets shop information first to cross match address to ensure gift belongs to that shop
+    const businessUser_ref = db.collection("businessUser").doc(userDbInfo.id);
+    const businessUser_info = await businessUser_ref.get();
+    const shopArray = businessUser_info.data().shop;
+
+    for (let k = 0; k < shopArray.length; k++) {
+      if (shopArray[k].shop_address == gift.shop_address) {
+        const shopLocation_ref = db
+          .collection("gift")
+          .doc(shopArray[k].shop_country)
+          .collection(shopArray[k].shop_region)
+          .doc(shopArray[k].shop_city);
+        const cityRefSnapshop = await shopLocation_ref.get();
+        let claimedGifts = cityRefSnapshop.data().gift;
+
+        for (let j = claimedGifts.length - 1; j >= 0; j--) {
+          if (claimedGifts[j].gift_id == gift.gift_id) {
+            claimedGifts[j].gift_expiry_date = moment(
+              firebase.firestore.Timestamp.now(new Date()).toDate()
+            ).format();
+          }
+        }
+        shopLocation_ref.set({ gift: claimedGifts });
+      }
+    }
+  };
+
   const RenderGiftHistory = () => {
     if (giftRecord && giftRecord[0]) {
       // Renders gift information
@@ -138,7 +190,7 @@ export default function ({ userDbInfo }) {
             <div className={classes.shopName_text}>{gift.shop_name}</div>
             <div className={classes.shopAddress_text}>{gift.shop_address}</div>
             <div className={classes.shopCity_text}>{gift.shop_city}</div>
-            < br />
+            <br />
             <div className={classes.giftName_text}>{gift.gift_name}</div>
             <div className={classes.giftCreation_date}>
               <div className={classes.startDate_text}>Start time:</div>
@@ -153,7 +205,12 @@ export default function ({ userDbInfo }) {
               </div>
             </div>
             <div className={classes.disableButton_container}>
-              <Button className={classes.disable_button}>Disable</Button>
+              <Button
+                className={classes.disable_button}
+                onClick={() => disableGift(gift)}
+              >
+                Disable
+              </Button>
             </div>
           </div>
         ) : (
