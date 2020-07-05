@@ -16,6 +16,7 @@ import Div100vh from "react-div-100vh";
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    pointerEvents: "none",
     width: "100%",
     height: "100%",
     backgroundImage:

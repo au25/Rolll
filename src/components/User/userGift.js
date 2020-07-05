@@ -102,7 +102,6 @@ const useStyles = makeStyles({
     pointerEvents: "none",
     width: "100%",
     overflow: "hidden",
-    pointerEvents: "none",
   },
   giftDescription_container: {
     display: "flex",
@@ -166,7 +165,7 @@ const progressIncrease = (
   gift
 ) => {
   // setActiveGiftIndex(null);
-  openGiftPercent += 2.5;
+  openGiftPercent += 1;
   let progressArrayCopy = [...progressArray];
   if (progressArrayCopy[index] < 100) {
     progressArrayCopy[index] = openGiftPercent;
@@ -275,25 +274,32 @@ export default function ({ userDbInfo, setUserDbInfo }) {
    * Fires onTouchStart, when gift is pressed
    */
   const handleGiftMouseDown = (e, index, gift) => {
+    // e.preventDefault();
     console.log("mouse down");
     setActiveGiftIndex(index);
-    setGiftReadyOpenIndex(null);
-    timer = setInterval(function () {
-      progressIncrease(
-        setActiveGiftIndex,
-        progressArray,
-        setProgressArray,
-        index,
-        claimGift,
-        gift
-      );
-    }, 10);
+    setGiftReadyOpenIndex(index);
+    // timer = setInterval(function () {
+    //   progressIncrease(
+    //     setActiveGiftIndex,
+    //     progressArray,
+    //     setProgressArray,
+    //     index,
+    //     claimGift,
+    //     gift
+    //   );
+    // }, 10);
   };
 
   const handleGiftMouseUp = (e, index, gift) => {
     clearInterval(timer);
     openGiftPercent = 0;
     console.log("mouse up");
+  };
+
+  const clearGiftProgress = () => {
+    console.log("scrolling");
+    clearInterval(timer);
+    openGiftPercent = 0;
   };
 
   /**
@@ -318,7 +324,12 @@ export default function ({ userDbInfo, setUserDbInfo }) {
       return cityGiftRecord.gift.map((cityGift, index) => {
         if (currentTime.isBefore(cityGift.gift_expiry_date)) {
           return userGiftIdMap.has(cityGift.gift_id) ? null : (
-            <div className={classes.giftContainer}>
+            <div
+              className={classes.giftContainer}
+              onTouchMove={() => {
+                clearGiftProgress(cityGift);
+              }}
+            >
               <div className={classes.shopInfo_container}>
                 <div className={classes.shopName_text}>
                   {cityGift.shop_name}
@@ -331,7 +342,9 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                 variant="determinate"
                 value={progressArray[index]}
               />
-              <div className={classes.imageDescription_container}>
+              <div
+                className={classes.imageDescription_container}
+              >
                 {/* If gift is shaking and ready to be opened */}
                 {index == giftReadyOpenIndex ? (
                   <div
