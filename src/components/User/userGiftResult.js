@@ -13,10 +13,10 @@ import Countdown from "react-countdown";
 import IconButton from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Div100vh from "react-div-100vh";
+import gift from "../gift";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    pointerEvents: "none",
     width: "100%",
     height: "100%",
     backgroundImage:
@@ -39,17 +39,26 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     textAlign: "center",
   },
-  countdown_text: {
+  expire_text: {
+    // margin: "0 10px 0 0"
+  },
+  countdown_outerContainer: {
     display: "flex",
+    width: "70%",
     justifyContent: "center",
   },
   countdown_container: {
-    display: "flex"
+    display: "flex",
+    width: "45%",
+    justifyContent: "space-evenly",
   },
+  countdown_text: {},
+  expired_text: {},
   storeRights_text: {
     width: "70%",
     textAlign: "center",
-  }
+    fontSize: "13px",
+  },
 }));
 
 const theme = createMuiTheme({});
@@ -62,6 +71,8 @@ export default function ({ userDbInfo, location }) {
   const [userInfo, setUserInfo] = useState({});
   const [giftResult, setGiftResult] = useState();
   const [expire, setExpire] = useState(false);
+  const [rewardText, setRewardText] = useState();
+  const [expireFlag, setExpireFlag] = useState(true);
 
   useEffect(() => {
     if (userDbInfo && userDbInfo.data()) {
@@ -69,19 +80,29 @@ export default function ({ userDbInfo, location }) {
     }
     console.log("this is the gift result page");
     console.log(location.state.giftCopy);
-    console.log(
-      new Date(
-        moment(location.state.giftCopy.gift_open_timeStamp.seconds)
-          .add(10, "minutes")
-          .format()
-      )
-    );
     setGiftResult(location.state.giftCopy);
   }, []);
 
   const countdownComplete = () => {
-    console.log("setting expire to true");
-    setExpire(true);
+    console.log("timer expired");
+  };
+
+  const countDown = (props) => {
+    if (props.completed && expireFlag) {
+      setExpireFlag(false);
+      console.log("countdown completed");
+      console.log(giftResult);
+      // const expiredGiftInfo = {...giftResult}
+      setGiftResult({ ...giftResult, reward: "Expired" });
+    }
+    return (
+      <div className={classes.countdown_container}>
+        <div className={classes.expire_text}>Expires</div>
+        <div className={classes.countdown_text}>
+          {props.minutes}:{props.seconds}
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -91,34 +112,19 @@ export default function ({ userDbInfo, location }) {
           {giftResult && giftResult.reward ? (
             <>
               <div className={classes.reward_text}>{giftResult.reward}</div>
-              <div className={classes.countdown_text}>
-                {!expire ? (
-                  <Countdown
-                    date={
-                      new Date(
-                        moment(giftResult.gift_open_timeStamp).add(1, "minutes")
-                      )
-                    }
-                    // onComplete={countdownComplete}
-                    precision={3}
-                    renderer={(props) => {
-                      return !props.completed ? (
-                        <div className={classes.countdown_container}>
-                          <div className={classes.expire_text}>Expires</div>
-                          <div className={classes.countdown_text}>
-                            {props.minutes}:{props.seconds}
-                          </div>
-                        </div>
-                      ) : (
-                        <div>
-                          <div>Gift expired</div>
-                        </div>
-                      );
-                    }}
-                  />
-                ) : (
-                  <div>Gift has expired</div>
-                )}
+              <div className={classes.countdown_outerContainer}>
+                <Countdown
+                  date={
+                    new Date(
+                      moment(giftResult.gift_open_timeStamp).add(5, "seconds")
+                    )
+                  }
+                  // onComplete={countdownComplete}
+                  precision={3}
+                  renderer={(props) => {
+                    return countDown(props);
+                  }}
+                />
               </div>
               {/* <div>
                 {moment(giftResult.gift_open_timeStamp)
