@@ -12,8 +12,10 @@ import { useHistory } from "react-router-dom";
 import Countdown from "react-countdown";
 import IconButton from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Div100vh from "react-div-100vh";
 import gift from "../gift";
+import "./giftAnimation.css";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -25,19 +27,17 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     fontFamily: "CoreSans, sans-serif",
-    justifyContent: "center",
     alignItems: "center",
   },
   reward_text: {
     display: "flex",
     justifyContent: "center",
     fontSize: "40px",
-    textTransform: "uppercase",
     fontWeight: "bold",
-    width: "70%",
     height: "175px",
     alignItems: "center",
     textAlign: "center",
+    margin: "0 0 0 0",
   },
   expire_text: {
     // margin: "0 10px 0 0"
@@ -58,6 +58,11 @@ const useStyles = makeStyles((theme) => ({
     width: "70%",
     textAlign: "center",
     fontSize: "13px",
+    margin: "25% 0 0 0",
+  },
+  xIcon: {
+    fontSize: "40px",
+    margin: "10% 0 0 0",
   },
 }));
 
@@ -90,9 +95,6 @@ export default function ({ userDbInfo, location }) {
   const countDown = (props) => {
     if (props.completed && expireFlag) {
       setExpireFlag(false);
-      console.log("countdown completed");
-      console.log(giftResult);
-      // const expiredGiftInfo = {...giftResult}
       setGiftResult({ ...giftResult, reward: "Expired" });
     }
     return (
@@ -111,33 +113,31 @@ export default function ({ userDbInfo, location }) {
         <ThemeProvider theme={theme}>
           {giftResult && giftResult.reward ? (
             <>
-              <div className={classes.reward_text}>{giftResult.reward}</div>
+            <div className="h1_container">
+              <div
+                // className="block-reveal"
+                className={`${classes.reward_text} ${"block-reveal"}`}
+              >
+                {giftResult.reward}
+              </div>
+              </div>
               <div className={classes.countdown_outerContainer}>
                 <Countdown
                   date={
                     new Date(
-                      moment(giftResult.gift_open_timeStamp).add(5, "seconds")
+                      moment(giftResult.gift_open_timeStamp).add(10, "seconds")
                     )
                   }
-                  // onComplete={countdownComplete}
                   precision={3}
                   renderer={(props) => {
                     return countDown(props);
                   }}
                 />
               </div>
-              {/* <div>
-                {moment(giftResult.gift_open_timeStamp)
-                  .add(10, "minutes")
-                  .format("MMMM Do YYYY, h:mm:ss a")}
-              </div> */}
-              <IconButton>
-                <DeleteIcon />
-              </IconButton>
               <div className={classes.storeRights_text}>
-                The store reserves the right to refeuse redemption of this gift.
+                Show this to the cashier before it expires, ask nicely! :)
               </div>
-              <div>Report</div>
+              <Button>Dashboard</Button>
             </>
           ) : (
             <div>no result</div>
