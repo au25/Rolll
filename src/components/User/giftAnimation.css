@@ -92,15 +92,8 @@ p {
   }
 }
 
-.abs-site-link {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  color: hsla(0, 0%, 0%, 0.6);
-  font-size: 16px;
-}
-
 .h1_container {
   --td: 1.2s;
   margin: 50% 0 0 0;
+  width: 70%;
 }

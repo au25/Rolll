@@ -49,24 +49,53 @@ const useStyles = makeStyles((theme) => ({
   },
   countdown_container: {
     display: "flex",
-    width: "45%",
+    width: "100%",
     justifyContent: "space-evenly",
+    backgroundColor: "rgba(255, 255, 255)",
+    fontSize: "24px",
+    height: "40px",
+    alignItems: "center"
   },
   countdown_text: {},
   expired_text: {},
   storeRights_text: {
     width: "70%",
     textAlign: "center",
-    fontSize: "13px",
-    margin: "25% 0 0 0",
+    fontSize: "14px",
+    margin: "3% 0 0 0",
   },
   xIcon: {
     fontSize: "40px",
     margin: "10% 0 0 0",
   },
+  dashboard_button: {
+    textTransform: "none",
+    backgroundColor: "#4caf50",
+    color: "rgba(255, 255, 255)",
+    letterSpacing: "1px",
+    fontSize: "16px",
+    width: "50%",
+    margin: "20% 0 0 0",
+    height: "50px",
+  }
 }));
 
-const theme = createMuiTheme({});
+const theme = createMuiTheme({
+  overrides: {
+    MuiButton: {
+      root: {
+        height: "60px",
+        width: "100%",
+      },
+    },
+    MuiIconButton: {
+      edgeEnd: {
+        height: "60px",
+        borderRadius: "0",
+      },
+    },
+  },
+});
 
 export default function ({ userDbInfo, location }) {
   const { currentUser } = useContext(AuthContext);
@@ -99,7 +128,7 @@ export default function ({ userDbInfo, location }) {
     }
     return (
       <div className={classes.countdown_container}>
-        <div className={classes.expire_text}>Expires</div>
+        {/* <div className={classes.expire_text}>Time </div> */}
         <div className={classes.countdown_text}>
           {props.minutes}:{props.seconds}
         </div>
@@ -109,41 +138,46 @@ export default function ({ userDbInfo, location }) {
 
   return (
     <Div100vh>
-      <div className={classes.container}>
-        <ThemeProvider theme={theme}>
-          {giftResult && giftResult.reward ? (
-            <>
-            <div className="h1_container">
-              <div
-                // className="block-reveal"
-                className={`${classes.reward_text} ${"block-reveal"}`}
-              >
-                {giftResult.reward}
-              </div>
-              </div>
-              <div className={classes.countdown_outerContainer}>
-                <Countdown
-                  date={
-                    new Date(
-                      moment(giftResult.gift_open_timeStamp).add(10, "seconds")
-                    )
-                  }
-                  precision={3}
-                  renderer={(props) => {
-                    return countDown(props);
-                  }}
-                />
-              </div>
-              <div className={classes.storeRights_text}>
-                Show this to the cashier before it expires, ask nicely! :)
-              </div>
-              <Button>Dashboard</Button>
-            </>
-          ) : (
-            <div>no result</div>
-          )}
-        </ThemeProvider>
-      </div>
+      <ThemeProvider theme={theme}>
+        <div className={classes.container}>
+          <ThemeProvider theme={theme}>
+            {giftResult && giftResult.reward ? (
+              <>
+                <div className="h1_container">
+                  <div
+                    // className="block-reveal"
+                    className={`${classes.reward_text} ${"block-reveal"}`}
+                  >
+                    {giftResult.reward}
+                  </div>
+                </div>
+                <div className={classes.countdown_outerContainer}>
+                  <Countdown
+                    date={
+                      new Date(
+                        moment(giftResult.gift_open_timeStamp).add(
+                          10,
+                          "seconds"
+                        )
+                      )
+                    }
+                    precision={3}
+                    renderer={(props) => {
+                      return countDown(props);
+                    }}
+                  />
+                </div>
+                <div className={classes.storeRights_text}>
+                  Show cashier before it expires! :)
+                </div>
+                <Button className={classes.dashboard_button}>Dashboard</Button>
+              </>
+            ) : (
+              <div>no result</div>
+            )}
+          </ThemeProvider>
+        </div>
+      </ThemeProvider>
     </Div100vh>
   );
 }
