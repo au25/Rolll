@@ -29,6 +29,20 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
     alignItems: "center",
   },
+  shopName_text: {
+    width: "70%",
+    display: "flex",
+    justifyContent: "center",
+    margin: "20% 0 0 0",
+    fontSize: "14px",
+  },
+  shopAddress_text: {
+    width: "70%",
+    display: "flex",
+    justifyContent: "center",
+    margin: "1% 0 0 0",
+    fontSize: "14px",
+  },
   reward_text: {
     display: "flex",
     justifyContent: "center",
@@ -51,10 +65,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     justifyContent: "space-evenly",
-    backgroundColor: "rgba(255, 255, 255)",
+    backgroundColor: "rgba(255, 255, 255, 0.6)",
     fontSize: "24px",
     height: "40px",
-    alignItems: "center"
+    alignItems: "center",
   },
   countdown_text: {},
   expired_text: {},
@@ -74,10 +88,10 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(255, 255, 255)",
     letterSpacing: "1px",
     fontSize: "16px",
-    width: "50%",
+    width: "45%",
     margin: "20% 0 0 0",
-    height: "50px",
-  }
+    height: "45px",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -143,6 +157,12 @@ export default function ({ userDbInfo, location }) {
           <ThemeProvider theme={theme}>
             {giftResult && giftResult.reward ? (
               <>
+                <div className={classes.shopName_text}>
+                  {giftResult.shop_name}
+                </div>
+                <div className={classes.shopAddress_text}>
+                  {giftResult.shop_address}
+                </div>
                 <div className="h1_container">
                   <div
                     // className="block-reveal"
