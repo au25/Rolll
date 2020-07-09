@@ -338,10 +338,10 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                   {cityGift.shop_address}
                 </div>
               </div>
-              <LinearProgress
+              {/* <LinearProgress
                 variant="determinate"
                 value={progressArray[index]}
-              />
+              /> */}
               <div
                 className={classes.imageDescription_container}
               >

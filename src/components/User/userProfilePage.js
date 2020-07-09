@@ -332,9 +332,9 @@ export default function ({ userDbInfo }) {
               </Button>
               <Button
                 className={classes.logoutButton}
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault();
-                  firebase.auth().signOut();
+                  await firebase.auth().signOut();
                   history.push("/home");
                 }}
               >

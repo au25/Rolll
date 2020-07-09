@@ -42,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     margin: "1% 0 0 0",
     fontSize: "14px",
+    padding: "0 0 10px 0",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.4)",
   },
   reward_text: {
     display: "flex",
@@ -150,6 +152,10 @@ export default function ({ userDbInfo, location }) {
     );
   };
 
+  const toRecord = () => {
+    history.push({ pathname: "/userHome", state: { navigationValue: "giftRecord" } });
+  };
+
   return (
     <Div100vh>
       <ThemeProvider theme={theme}>
@@ -190,7 +196,12 @@ export default function ({ userDbInfo, location }) {
                 <div className={classes.storeRights_text}>
                   Show cashier before it expires! :)
                 </div>
-                <Button className={classes.dashboard_button}>Dashboard</Button>
+                <Button
+                  onTouchStart={() => toRecord()}
+                  className={classes.dashboard_button}
+                >
+                  Record
+                </Button>
               </>
             ) : (
               <div>no result</div>

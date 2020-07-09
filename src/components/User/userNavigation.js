@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   userNavigation_renderBodyContainer: {
-    overflow: "auto"
+    overflow: "auto",
   },
   userNavigation_navContainer: {
     height: "14%",
@@ -81,13 +81,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ({ userDbInfo, setUserDbInfo }) {
+export default function ({ userDbInfo, setUserDbInfo, location }) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [parentShopInfo, setParentShopInfo] = useState({});
   const [navigationValue, setNavigationValue] = useState("giftList");
   const history = useHistory();
 
+  useEffect(() => {
+    console.log(location);
+    if(location && location.location.state){
+      setNavigationValue(location.location.state.navigationValue);
+    }
+  }, []);
+
+
+  // console.log("this is location");
+  // console.log(location);
   /**
    * Renders body content based on value of icon clicked
    */

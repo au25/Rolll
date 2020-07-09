@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function () {
+export default function (location) {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
   const classes = useStyles();
@@ -52,7 +52,7 @@ export default function () {
 
   return (
     <div className={classes.userHome_container}>
-      <UserNavigation userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} />
+      <UserNavigation userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} location={location}/>
     </div>
   );
 }
