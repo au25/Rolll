@@ -240,7 +240,10 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     let giftRewardArrayCopy = [];
     for (let j = 0; j < gift.gift_description.chance.length; j++) {
       for (let k = 0; k < gift.gift_description.chance[j] * 100; k++) {
-        giftRewardArrayCopy.push(gift.gift_description.reward[j]);
+        giftRewardArrayCopy.push({
+          reward: gift.gift_description.reward[j],
+          expireTime: gift.gift_description.expire_time[j],
+        });
       }
     }
     setGiftRewardArray(giftRewardArrayCopy);
@@ -250,20 +253,24 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     let giftCopy = {
       ...gift,
       roll: rollNumber,
-      reward: giftRewardArrayCopy[rollNumber],
+      reward: giftRewardArrayCopy[rollNumber].reward,
       gift_open_timeStamp: firebase.firestore.Timestamp.now(
         new Date()
       ).toDate(),
+      gift_expiry_date: moment()
+        .add(giftRewardArrayCopy[rollNumber].expireTime, "minutes")
+        .toString(),
     };
+    console.log("1 day expiry");
     console.log(giftCopy);
     newUserGiftArray.push(giftCopy);
-    // await db
-    //   .collection("user")
-    //   .doc(userDbInfo.id)
-    //   .set({
-    //     ...userDbInfo.data(),
-    //     claimedGift: newUserGiftArray,
-    //   });
+    await db
+      .collection("user")
+      .doc(userDbInfo.id)
+      .set({
+        ...userDbInfo.data(),
+        claimedGift: newUserGiftArray,
+      });
 
     setGiftRewardArray([]);
 
@@ -320,6 +327,8 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     );
 
     if (cityGiftRecord && cityGiftRecord.gift) {
+      console.log("this is city gift record");
+      console.log(cityGiftRecord);
       // cityGiftRecord is from gift collection
       return cityGiftRecord.gift.map((cityGift, index) => {
         if (currentTime.isBefore(cityGift.gift_expiry_date)) {
@@ -342,9 +351,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
                 variant="determinate"
                 value={progressArray[index]}
               /> */}
-              <div
-                className={classes.imageDescription_container}
-              >
+              <div className={classes.imageDescription_container}>
                 {/* If gift is shaking and ready to be opened */}
                 {index == giftReadyOpenIndex ? (
                   <div

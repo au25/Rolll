@@ -146,7 +146,7 @@ export default function ({ userDbInfo, location }) {
       <div className={classes.countdown_container}>
         {/* <div className={classes.expire_text}>Time </div> */}
         <div className={classes.countdown_text}>
-          {props.minutes}:{props.seconds}
+          {props.days}:{props.hours}:{props.minutes}:{props.seconds}
         </div>
       </div>
     );
@@ -186,6 +186,8 @@ export default function ({ userDbInfo, location }) {
                           "seconds"
                         )
                       )
+                      // Uncomment to set gift expiry time accordingly
+                      // moment(giftResult.gift_expiry_date)
                     }
                     precision={3}
                     renderer={(props) => {
