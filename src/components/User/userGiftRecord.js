@@ -10,7 +10,34 @@ import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  record_text: {
+    color: "rgba(0, 0, 0, 0.7)",
+    width: "70%",
+    margin: "50px 0 10px 0",
+    fontSize: "16px",
+    fontFamily: "CoreSans, sans-serif",
+    fontWeight: "bold",
+    borderBottom: "1px solid black"
+  },
+  renderGift_container: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  giftInfo_container: {
+    width: "70%",
+    fontFamily: "CoreSans, sans-serif",
+    color: "rgba(0, 0, 0, 0.7)",
+    fontSize: "14px",
+    padding: "0 0 10px 0",
+    borderBottom: "1px solid black",
+    margin: "15px 0px",
+  },
+  shopName_text: {
+    fontWeight: "bold",
+  }
+}));
 
 const theme = createMuiTheme({});
 
@@ -59,12 +86,18 @@ export default function ({ userDbInfo }) {
       }
       if (claimedGift[0]) {
         return claimedGift.map((gift) => (
-          <div>
-            <div>{gift.shop_name}</div>
+          <div className={classes.giftInfo_container}>
+            <div className={classes.shopName_text}>{gift.shop_name}</div>
             <div>{gift.shop_address}</div>
             <div>{gift.shop_city}</div>
-            {currentTime < gift.gift_expiry_date ? <div>Expired</div> : <div>Active</div> }
-            <div>{gift.gift_expiry_date}</div>
+            <br />
+            {currentTime < gift.gift_expiry_date ? (
+              <div >Expired</div>
+            ) : (
+              <div className={classes.active_text}>Active</div>
+            )}
+            <div>{gift.reward}</div>
+            {/* <div>{gift.gift_expiry_date}</div> */}
           </div>
         ));
       }
@@ -76,8 +109,10 @@ export default function ({ userDbInfo }) {
   return (
     <div className={classes.container}>
       <ThemeProvider theme={theme}>
-        <div>Record</div>
-        <RenderGiftRecord />
+        <div className={classes.renderGift_container}>
+        <div className={classes.record_text}>Record</div>
+          <RenderGiftRecord />
+        </div>
       </ThemeProvider>
     </div>
   );
