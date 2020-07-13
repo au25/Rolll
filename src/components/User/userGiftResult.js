@@ -130,6 +130,7 @@ export default function ({ userDbInfo, location }) {
     }
     console.log("this is the gift result page");
     console.log(location.state.giftCopy);
+    console.log(location.state.giftCopy);
     setGiftResult(location.state.giftCopy);
   }, []);
 
@@ -180,14 +181,14 @@ export default function ({ userDbInfo, location }) {
                 <div className={classes.countdown_outerContainer}>
                   <Countdown
                     date={
-                      new Date(
-                        moment(giftResult.gift_open_timeStamp).add(
-                          10,
-                          "seconds"
-                        )
-                      )
+                      // new Date(
+                      //   moment(giftResult.gift_open_timeStamp).add(
+                      //     10,
+                      //     "seconds"
+                      //   )
+                      // )
                       // Uncomment to set gift expiry time accordingly
-                      // moment(giftResult.gift_expiry_date)
+                      moment(giftResult.gift_expiry_date)
                     }
                     precision={3}
                     renderer={(props) => {

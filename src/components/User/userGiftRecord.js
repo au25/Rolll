@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
     fontFamily: "CoreSans, sans-serif",
     fontWeight: "bold",
-    borderBottom: "1px solid black"
+    borderBottom: "1px solid black",
   },
   renderGift_container: {
     display: "flex",
@@ -36,7 +36,54 @@ const useStyles = makeStyles((theme) => ({
   },
   shopName_text: {
     fontWeight: "bold",
-  }
+  },
+  statusPrize_container: {
+    display: "flex",
+  },
+  expirePrize_container: {},
+  expireReward_text: {
+    fontWeight: "bold",
+    margin: "0 0 5px 0",
+  },
+  expire_text: {
+    color: "white",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "94px",
+    height: "35px",
+    padding: "6px 8px",
+    fontSize: "14px",
+    fontWeight: "bold",
+    borderRadius: "0",
+    letterSpacing: "1px",
+    textTransform: "none",
+    backgroundColor: "rgba(204, 0, 0, 0.7)",
+  },
+  activePrize_outerContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  active_text: {
+    fontWeight: "bold",
+  },
+  reward_text: {
+    margin: "0 0 0 5px",
+    fontWeight: "bold",
+  },
+  view_button: {
+    color: "white",
+    height: "35px",
+    margin: "10px 0",
+    padding: "6px 8px",
+    fontSize: "14px",
+    fontWeight: "bold",
+    borderRadius: "0",
+    letterSpacing: "1px",
+    textTransform: "none",
+    backgroundColor: "#4caf50",
+  },
 }));
 
 const theme = createMuiTheme({});
@@ -79,6 +126,10 @@ export default function ({ userDbInfo }) {
     setClaimedGift(giftRecordArray);
   };
 
+  const toGiftResult = (gift) => {
+    history.push({ pathname: "/giftResult", state: { giftCopy: gift } });
+  };
+
   const RenderGiftRecord = () => {
     if (claimedGift) {
       if (claimedGift.length == 0) {
@@ -91,12 +142,25 @@ export default function ({ userDbInfo }) {
             <div>{gift.shop_address}</div>
             <div>{gift.shop_city}</div>
             <br />
-            {currentTime < gift.gift_expiry_date ? (
-              <div >Expired</div>
+            {currentTime > moment(gift.gift_expiry_date) ? (
+              <div className={classes.expirePrize_container}>
+                <div className={classes.expireReward_text}>{gift.reward}</div>
+                <div className={classes.expire_text}>Expired</div>
+              </div>
             ) : (
-              <div className={classes.active_text}>Active</div>
+              <div className={classes.activePrize_outerContainer}>
+                <div className={classes.statusPrize_container}>
+                  {/* <div className={classes.active_text}>Active</div> */}
+                  <div className={classes.reward_text}>{gift.reward}</div>
+                </div>
+                <Button
+                  className={classes.view_button}
+                  onTouchStart={() => toGiftResult(gift)}
+                >
+                  View
+                </Button>
+              </div>
             )}
-            <div>{gift.reward}</div>
             {/* <div>{gift.gift_expiry_date}</div> */}
           </div>
         ));
@@ -110,7 +174,7 @@ export default function ({ userDbInfo }) {
     <div className={classes.container}>
       <ThemeProvider theme={theme}>
         <div className={classes.renderGift_container}>
-        <div className={classes.record_text}>Record</div>
+          <div className={classes.record_text}>Record</div>
           <RenderGiftRecord />
         </div>
       </ThemeProvider>
