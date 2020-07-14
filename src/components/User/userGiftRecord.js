@@ -41,9 +41,23 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   expirePrize_container: {},
+  start_container: {
+    display: "flex",
+  },
+  end_container: {
+    display: "flex",
+    margin: "0 0 5px 0"
+  },
+  start_text: {
+    fontWeight: "bold",
+    margin: "0 5px 0 0",
+  },
+  end_text: {
+    fontWeight: "bold",
+    margin: "0 5px 0 0",
+  },
   expireReward_text: {
     fontWeight: "bold",
-    margin: "0 0 5px 0",
   },
   expire_text: {
     color: "white",
@@ -53,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
     width: "94px",
     height: "35px",
     padding: "6px 8px",
+    margin: "0 0 5px 0",
     fontSize: "14px",
     fontWeight: "bold",
     borderRadius: "0",
@@ -61,21 +76,19 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(204, 0, 0, 0.7)",
   },
   activePrize_outerContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
   },
   active_text: {
     fontWeight: "bold",
   },
   reward_text: {
-    margin: "0 0 0 5px",
+    // margin: "0 0 0 5px",
     fontWeight: "bold",
+    fontSize: "14px",
   },
   view_button: {
     color: "white",
     height: "35px",
-    margin: "10px 0",
+    margin: "0 0 5px 0",
     padding: "6px 8px",
     fontSize: "14px",
     fontWeight: "bold",
@@ -145,6 +158,20 @@ export default function ({ userDbInfo }) {
             {currentTime > moment(gift.gift_expiry_date) ? (
               <div className={classes.expirePrize_container}>
                 <div className={classes.expireReward_text}>{gift.reward}</div>
+                <div className={classes.start_container}>
+                  <div className={classes.start_text}>Start:</div>
+                  <div className={classes.startTime_text}>
+                    {moment
+                      .unix(gift.gift_open_timeStamp.seconds)
+                      .format("lll")}
+                  </div>
+                </div>
+                <div className={classes.end_container}>
+                  <div className={classes.end_text}>End: </div>
+                  <div className={classes.endTime_text}>
+                    {moment(gift.gift_expiry_date).format("lll")}
+                  </div>
+                </div>
                 <div className={classes.expire_text}>Expired</div>
               </div>
             ) : (
@@ -152,6 +179,20 @@ export default function ({ userDbInfo }) {
                 <div className={classes.statusPrize_container}>
                   {/* <div className={classes.active_text}>Active</div> */}
                   <div className={classes.reward_text}>{gift.reward}</div>
+                </div>
+                <div className={classes.start_container}>
+                  <div className={classes.start_text}>Start:</div>
+                  <div className={classes.startTime_text}>
+                    {moment
+                      .unix(gift.gift_open_timeStamp.seconds)
+                      .format("lll")}
+                  </div>
+                </div>
+                <div className={classes.end_container}>
+                  <div className={classes.end_text}>End: </div>
+                  <div className={classes.endTime_text}>
+                    {moment(gift.gift_expiry_date).format("lll")}
+                  </div>
                 </div>
                 <Button
                   className={classes.view_button}
