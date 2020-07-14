@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   userNavigation_renderBodyContainer: {
+    height: "86%",
     overflow: "auto",
   },
   userNavigation_navContainer: {

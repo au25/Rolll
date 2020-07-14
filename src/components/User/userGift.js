@@ -10,7 +10,7 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   outerContaniner: {
     width: "100%",
     display: "flex",
@@ -147,7 +147,13 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     color: "rgba(0, 0, 0, 0.5)",
   },
-});
+  linearProgress: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 
 /**
  * setInterval function that increases the gift open percentage while onTouchStart (gift is held down)
@@ -326,7 +332,8 @@ export default function ({ userDbInfo, setUserDbInfo }) {
       firebase.firestore.Timestamp.now(new Date()).toDate()
     );
 
-    if (cityGiftRecord && cityGiftRecord.gift) {
+    // if (cityGiftRecord && cityGiftRecord.gift) {
+      if(false){
       console.log("this is city gift record");
       console.log(cityGiftRecord);
       // cityGiftRecord is from gift collection
@@ -428,7 +435,15 @@ export default function ({ userDbInfo, setUserDbInfo }) {
           );
         }
       });
-    } else return <div>lol</div>;
+    } else
+      return (
+        <div>
+          <div>Loading...</div>
+          <div className={classes.linearProgress}>
+            <LinearProgress color="secondary" />
+          </div>
+        </div>
+      );
   };
 
   return (
