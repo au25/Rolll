@@ -1,6 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import * as firebase from "firebase";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  ThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import Gift from "../gift";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
@@ -13,6 +17,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 const useStyles = makeStyles((theme) => ({
   outerContaniner: {
     width: "100%",
+    height: "100%",
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
@@ -20,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   giftContainer: {
     width: "80%",
+    height: "100%",
     margin: "0 0 30px",
   },
   gift_text: {
@@ -148,12 +154,37 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(0, 0, 0, 0.5)",
   },
   linearProgress: {
-    width: "100%",
-    "& > * + *": {
-      marginTop: theme.spacing(2),
+    width: "130%",
+    // "& > * + *": {
+    //   marginTop: theme.spacing(2),
+    // },
+  },
+  loading_container: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo_image: {
+    width: "100px",
+    margin: "0 0 10px 0",
+    opacity: "50%"
+  }
+}));
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiLinearProgress: {
+      colorSecondary: {
+        backgroundColor: "none",
+      },
+      barColorSecondary: {
+        backgroundColor: "#c2d6d6"
+      }
     },
   },
-}));
+});
 
 /**
  * setInterval function that increases the gift open percentage while onTouchStart (gift is held down)
@@ -333,7 +364,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     );
 
     // if (cityGiftRecord && cityGiftRecord.gift) {
-      if(false){
+    if (false) {
       console.log("this is city gift record");
       console.log(cityGiftRecord);
       // cityGiftRecord is from gift collection
@@ -437,8 +468,13 @@ export default function ({ userDbInfo, setUserDbInfo }) {
       });
     } else
       return (
-        <div>
-          <div>Loading...</div>
+        <div className={classes.loading_container}>
+          <div className={classes.logo_container}>
+            <img
+              className={classes.logo_image}
+              src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Frolll_logo_2.png?alt=media&token=505ecac4-fd7b-412c-9463-b2ae39f2af37"
+            />
+          </div>
           <div className={classes.linearProgress}>
             <LinearProgress color="secondary" />
           </div>
@@ -448,8 +484,10 @@ export default function ({ userDbInfo, setUserDbInfo }) {
 
   return (
     <div className={classes.outerContaniner}>
-      {/* <div className={classes.gift_text}>Gift for you</div> */}
-      <RenderGift />
+      <ThemeProvider theme={theme}>
+        {/* <div className={classes.gift_text}>Gift for you</div> */}
+        <RenderGift />
+      </ThemeProvider>
     </div>
   );
 }
