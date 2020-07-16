@@ -169,7 +169,12 @@ const useStyles = makeStyles((theme) => ({
   logo_image: {
     width: "100px",
     margin: "0 0 10px 0",
-    opacity: "50%"
+    opacity: "50%",
+  },
+  allGiftsClaimed_text: {
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "15px",
+    color: "rgba(0, 0, 0, 0.6)",
   }
 }));
 
@@ -180,8 +185,8 @@ const theme = createMuiTheme({
         backgroundColor: "none",
       },
       barColorSecondary: {
-        backgroundColor: "#c2d6d6"
-      }
+        backgroundColor: "#c2d6d6",
+      },
     },
   },
 });
@@ -362,110 +367,153 @@ export default function ({ userDbInfo, setUserDbInfo }) {
     const currentTime = moment(
       firebase.firestore.Timestamp.now(new Date()).toDate()
     );
+    console.log(userGiftIdMap);
+    if (userGiftIdMap) {
+      console.log(userGiftIdMap.size);
+      console.log(userGiftIdMap);
+    }
 
-    // if (cityGiftRecord && cityGiftRecord.gift) {
-    if (false) {
-      console.log("this is city gift record");
+    if (cityGiftRecord && cityGiftRecord.gift) {
       console.log(cityGiftRecord);
-      // cityGiftRecord is from gift collection
-      return cityGiftRecord.gift.map((cityGift, index) => {
-        if (currentTime.isBefore(cityGift.gift_expiry_date)) {
-          return userGiftIdMap.has(cityGift.gift_id) ? null : (
-            <div
-              className={classes.giftContainer}
-              onTouchMove={() => {
-                clearGiftProgress(cityGift);
-              }}
-            >
-              <div className={classes.shopInfo_container}>
-                <div className={classes.shopName_text}>
-                  {cityGift.shop_name}
-                </div>
-                <div className={classes.shopAddress_text}>
-                  {cityGift.shop_address}
-                </div>
-              </div>
-              {/* <LinearProgress
-                variant="determinate"
-                value={progressArray[index]}
-              /> */}
-              <div className={classes.imageDescription_container}>
-                {/* If gift is shaking and ready to be opened */}
-                {index == giftReadyOpenIndex ? (
+    }
+
+    let nonExpiredGiftCounter = 0;
+    let nonExpiredGiftClaimedCounter = 0;
+    const counterNull = () => {
+      return null;
+    };
+
+    if (cityGiftRecord) {
+      // if (false) {
+      if (cityGiftRecord.gift.length == 0) {
+        return <div>No gift Available.</div>;
+      }
+      if (cityGiftRecord.gift) {
+        //
+        cityGiftRecord.gift.map((cityGift, index) => {
+          if (currentTime.isBefore(cityGift.gift_expiry_date)) {
+            nonExpiredGiftCounter++;
+            if (userGiftIdMap.has(cityGift.gift_id)) {
+              nonExpiredGiftClaimedCounter++;
+            }
+          }
+        });
+        console.log("gift available: " + nonExpiredGiftCounter);
+        console.log("gift claimed: " + nonExpiredGiftClaimedCounter);
+        // cityGiftRecord is from gift collection
+        if (nonExpiredGiftCounter != nonExpiredGiftClaimedCounter) {
+          return cityGiftRecord.gift.map((cityGift, index) => {
+            if (currentTime.isBefore(cityGift.gift_expiry_date)) {
+              nonExpiredGiftCounter++;
+              return userGiftIdMap.has(cityGift.gift_id) ? (
+                counterNull()
+              ) : (
+                <div
+                  className={classes.giftContainer}
+                  onTouchMove={() => {
+                    clearGiftProgress(cityGift);
+                  }}
+                >
+                  <div className={classes.shopInfo_container}>
+                    <div className={classes.shopName_text}>
+                      {cityGift.shop_name}
+                    </div>
+                    <div className={classes.shopAddress_text}>
+                      {cityGift.shop_address}
+                    </div>
+                  </div>
+                  <div className={classes.imageDescription_container}>
+                    {/* If gift is shaking and ready to be opened */}
+                    {index == giftReadyOpenIndex ? (
+                      <div
+                        className={
+                          index == giftReadyOpenIndex
+                            ? classes.shakeCSS
+                            : classes.giftImageContainer
+                        }
+                        onTouchStart={() => {
+                          claimGift(cityGift);
+                        }}
+                      >
+                        <img
+                          className={classes.giftImage}
+                          src={cityGift.image_url}
+                          alt="lol"
+                        />
+                      </div>
+                    ) : (
+                      // Push gift to charge progress bar
+                      <div
+                        className={
+                          index == activeGiftIndex
+                            ? classes.shakeCSS
+                            : classes.giftImageContainer
+                        }
+                        onTouchStart={(e) =>
+                          handleGiftMouseDown(e, index, cityGift)
+                        }
+                        onMouseUp={(e) => handleGiftMouseUp(e, index, cityGift)}
+                      >
+                        <img
+                          className={classes.giftImage}
+                          src={cityGift.image_url}
+                          alt="lol"
+                        />
+                      </div>
+                    )}
+                    <div className={classes.giftDescription_container}>
+                      <div className={classes.chanceText_container}>
+                        {cityGift.gift_description.chance.map((chance) => {
+                          {
+                            return (
+                              <div className={classes.chanceText}>
+                                {chance * 100}%
+                              </div>
+                            );
+                          }
+                        })}
+                      </div>
+                      <div className={classes.rewardText_container}>
+                        {cityGift.gift_description.reward.map((reward) => {
+                          {
+                            return (
+                              <div className={classes.rewardText}>{reward}</div>
+                            );
+                          }
+                        })}
+                      </div>
+                    </div>
+                  </div>
                   <div
-                    className={
-                      index == giftReadyOpenIndex
-                        ? classes.shakeCSS
-                        : classes.giftImageContainer
-                    }
-                    onTouchStart={() => {
-                      claimGift(cityGift);
-                    }}
+                    className={classes.expiring_container}
+                    // onClick={() => claimGift(cityGift)}
                   >
-                    <img
-                      className={classes.giftImage}
-                      src={cityGift.image_url}
-                      alt="lol"
-                    />
-                  </div>
-                ) : (
-                  // Push gift to charge progress bar
-                  <div
-                    className={
-                      index == activeGiftIndex
-                        ? classes.shakeCSS
-                        : classes.giftImageContainer
-                    }
-                    onTouchStart={(e) =>
-                      handleGiftMouseDown(e, index, cityGift)
-                    }
-                    onMouseUp={(e) => handleGiftMouseUp(e, index, cityGift)}
-                  >
-                    <img
-                      className={classes.giftImage}
-                      src={cityGift.image_url}
-                      alt="lol"
-                    />
-                  </div>
-                )}
-                <div className={classes.giftDescription_container}>
-                  <div className={classes.chanceText_container}>
-                    {cityGift.gift_description.chance.map((chance) => {
-                      {
-                        return (
-                          <div className={classes.chanceText}>
-                            {chance * 100}%
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
-                  <div className={classes.rewardText_container}>
-                    {cityGift.gift_description.reward.map((reward) => {
-                      {
-                        return (
-                          <div className={classes.rewardText}>{reward}</div>
-                        );
-                      }
-                    })}
+                    <div className={classes.expire_text}>Expires</div>
+                    <div className={classes.expireTime_text}>
+                      {moment(cityGift.gift_expiry_date)
+                        .add("days", 1)
+                        .format("LL")}
+                    </div>
                   </div>
                 </div>
+              );
+            }
+          });
+        } else
+          return (
+            <div className={classes.loading_container}>
+              <div className={classes.logo_container}>
+                <img
+                  className={classes.logo_image}
+                  src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Frolll_logo_2.png?alt=media&token=505ecac4-fd7b-412c-9463-b2ae39f2af37"
+                />
               </div>
-              <div
-                className={classes.expiring_container}
-                // onClick={() => claimGift(cityGift)}
-              >
-                <div className={classes.expire_text}>Expires</div>
-                <div className={classes.expireTime_text}>
-                  {moment(cityGift.gift_expiry_date)
-                    .add("days", 1)
-                    .format("LL")}
-                </div>
+              <div className={classes.allGiftsClaimed_text}>
+                No gifts available, come back later!
               </div>
             </div>
           );
-        }
-      });
+      }
     } else
       return (
         <div className={classes.loading_container}>
@@ -475,9 +523,9 @@ export default function ({ userDbInfo, setUserDbInfo }) {
               src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Frolll_logo_2.png?alt=media&token=505ecac4-fd7b-412c-9463-b2ae39f2af37"
             />
           </div>
-          <div className={classes.linearProgress}>
-            <LinearProgress color="secondary" />
-          </div>
+          {/* <div className={classes.linearProgress}> */}
+          {/* <LinearProgress color="secondary" /> */}
+          {/* </div> */}
         </div>
       );
   };
