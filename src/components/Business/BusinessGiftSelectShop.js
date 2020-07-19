@@ -294,12 +294,7 @@ export default function ({ location }) {
                 giftRecordArray[i].gift_expiry_date = moment(
                   firebase.firestore.Timestamp.now(new Date()).toDate()
                 ).format();
-                // console.log(giftRecord.data());
-                // console.log(gift.gift_name);
-                // console.log(giftRecordArray);
-                console.log("this is shop");
-                console.log(shop);
-
+                
                 db.collection("businessUser")
                   .doc(userId)
                   .collection("giftRecord")
@@ -412,7 +407,9 @@ export default function ({ location }) {
       .collection("gift")
       .doc(selectShop.shop_country)
       .collection(selectShop.shop_region)
-      .doc(selectShop.shop_city);
+      .doc(selectShop.shop_city)
+      .collection("area")
+      .doc(selectShop.shop_area);
     const cityRefSnapshop = await cityRef.get();
     console.log(cityRefSnapshop);
 
@@ -437,6 +434,7 @@ export default function ({ location }) {
           gift_description: gift.gift_description,
           gift_intro: gift.gift_intro,
           image_url: gift.image_url,
+          shop_area: selectShop.shop_area,
         }),
       });
     } else {
@@ -454,6 +452,7 @@ export default function ({ location }) {
           gift_description: gift.gift_description,
           gift_intro: gift.gift_intro,
           image_url: gift.image_url,
+          shop_area: selectShop.shop_area,
         }),
       });
     }
@@ -487,6 +486,7 @@ export default function ({ location }) {
             shop_address: selectShop.shop_address,
             shop_name: selectShop.shop_name,
             shop_city: selectShop.shop_city,
+            shop_area: selectShop.shop_area,
           }),
         });
       fetch_giftRecord();
@@ -510,6 +510,7 @@ export default function ({ location }) {
           shop_address: selectShop.shop_address,
           shop_name: selectShop.shop_name,
           shop_city: selectShop.shop_city,
+          shop_area: selectShop.shop_area,
         }),
       });
       console.log("new gift record created");

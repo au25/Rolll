@@ -175,7 +175,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
     fontSize: "15px",
     color: "rgba(0, 0, 0, 0.6)",
-  }
+  },
 }));
 
 const theme = createMuiTheme({
@@ -195,33 +195,33 @@ const theme = createMuiTheme({
  * setInterval function that increases the gift open percentage while onTouchStart (gift is held down)
  * When gift percentage is > 100, the gift will go shake shake
  */
-let openGiftPercent = 0;
-let timer = null;
+// let openGiftPercent = 0;
+// let timer = null;
 
-const progressIncrease = (
-  setActiveGiftIndex,
-  progressArray,
-  setProgressArray,
-  index,
-  claimGift,
-  gift
-) => {
-  // setActiveGiftIndex(null);
-  openGiftPercent += 1;
-  let progressArrayCopy = [...progressArray];
-  if (progressArrayCopy[index] < 100) {
-    progressArrayCopy[index] = openGiftPercent;
-  }
-  setProgressArray(progressArrayCopy);
-  console.log(openGiftPercent);
-  if (openGiftPercent >= 100) {
-    clearInterval(timer);
-    // setActiveGiftIndex(index);
-    // progressArrayCopy[index] = 100;
-    openGiftPercent = 0;
-    claimGift(gift);
-  }
-};
+// const progressIncrease = (
+//   setActiveGiftIndex,
+//   progressArray,
+//   setProgressArray,
+//   index,
+//   claimGift,
+//   gift
+// ) => {
+//   // setActiveGiftIndex(null);
+//   openGiftPercent += 1;
+//   let progressArrayCopy = [...progressArray];
+//   if (progressArrayCopy[index] < 100) {
+//     progressArrayCopy[index] = openGiftPercent;
+//   }
+//   setProgressArray(progressArrayCopy);
+//   console.log(openGiftPercent);
+//   if (openGiftPercent >= 100) {
+//     clearInterval(timer);
+//     // setActiveGiftIndex(index);
+//     // progressArrayCopy[index] = 100;
+//     openGiftPercent = 0;
+//     claimGift(gift);
+//   }
+// };
 
 export default function ({ userDbInfo, setUserDbInfo }) {
   const { currentUser } = useContext(AuthContext);
@@ -230,7 +230,7 @@ export default function ({ userDbInfo, setUserDbInfo }) {
 
   const [cityGiftRecord, setCityGiftRecord] = useState();
   const [userGiftIdMap, setUserGiftIdMap] = useState();
-  const [progressArray, setProgressArray] = useState([]);
+  // const [progressArray, setProgressArray] = useState([]);
   const [activeGiftIndex, setActiveGiftIndex] = useState(null);
   const [giftReadyOpenIndex, setGiftReadyOpenIndex] = useState(null);
   const [giftRewardArray, setGiftRewardArray] = useState([]);
@@ -238,39 +238,39 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   const db = firebase.firestore();
 
   useEffect(() => {
+    /**
+     * Fetches the gift record from a city and saves it as state
+     */
+    const fetchCityRecord = async () => {
+      if (userDbInfo && userDbInfo.data()) {
+        const cityRef = await db
+          .collection("gift")
+          .doc(userDbInfo.data().user_country)
+          .collection(userDbInfo.data().user_region)
+          .doc(userDbInfo.data().user_city)
+          .collection("area")
+          .doc(userDbInfo.data().user_cityArea)
+          .get();
+
+        // Array to hold the progress of each gift
+        // createProgressArray(cityRef.data());
+        //
+        setCityGiftRecord(cityRef.data());
+      }
+    };
     fetchCityRecord();
+    const userGiftRef = () => {
+      let userGiftIdMap = new Map();
+
+      if (userDbInfo && userDbInfo.data()) {
+        userDbInfo.data().claimedGift.map((userGift) => {
+          userGiftIdMap.set(userGift.gift_id, "gift_id");
+        });
+      }
+      setUserGiftIdMap(userGiftIdMap);
+    };
     userGiftRef();
   }, []);
-
-  /**
-   * Fetches the gift record from a city and saves it as state
-   */
-  const fetchCityRecord = async () => {
-    if (userDbInfo && userDbInfo.data()) {
-      const cityRef = await db
-        .collection("gift")
-        .doc(userDbInfo.data().user_country)
-        .collection(userDbInfo.data().user_region)
-        .doc(userDbInfo.data().user_city)
-        .get();
-
-      // Array to hold the progress of each gift
-      createProgressArray(cityRef.data());
-      //
-      setCityGiftRecord(cityRef.data());
-    }
-  };
-
-  const userGiftRef = () => {
-    let userGiftIdMap = new Map();
-
-    if (userDbInfo && userDbInfo.data()) {
-      userDbInfo.data().claimedGift.map((userGift) => {
-        userGiftIdMap.set(userGift.gift_id, "gift_id");
-      });
-    }
-    setUserGiftIdMap(userGiftIdMap);
-  };
 
   /**
    * User claims the gift by adding an entry to the database
@@ -340,25 +340,25 @@ export default function ({ userDbInfo, setUserDbInfo }) {
   };
 
   const handleGiftMouseUp = (e, index, gift) => {
-    clearInterval(timer);
-    openGiftPercent = 0;
+    // clearInterval(timer);
+    // openGiftPercent = 0;
     console.log("mouse up");
   };
 
   const clearGiftProgress = () => {
     console.log("scrolling");
-    clearInterval(timer);
-    openGiftPercent = 0;
+    // clearInterval(timer);
+    // openGiftPercent = 0;
   };
 
   /**
    * Creates the progressArray state
    */
-  const createProgressArray = (giftRecordIteration) => {
-    for (let i = 0; i < giftRecordIteration.gift.length; i++) {
-      setProgressArray((progressArray) => [...progressArray, 0]);
-    }
-  };
+  // const createProgressArray = (giftRecordIteration) => {
+  //   for (let i = 0; i < giftRecordIteration.gift.length; i++) {
+  //     setProgressArray((progressArray) => [...progressArray, 0]);
+  //   }
+  // };
 
   /**
    * Render gifts based on location, if claimed and expiry

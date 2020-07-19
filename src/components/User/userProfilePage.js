@@ -6,6 +6,11 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import NativeSelect from "@material-ui/core/NativeSelect";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
@@ -158,6 +163,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "flex-end",
   },
+  citySelect_input: {
+    // margin: "10px 0 0 0"
+  },
 }));
 
 const theme = createMuiTheme({
@@ -165,7 +173,6 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(255, 255, 255, 0.7)",
       },
       input: {
         "&:disabled": {
@@ -194,6 +201,11 @@ const theme = createMuiTheme({
       root: {
         width: "100%",
         margin: "0 0 28px 0",
+        height: "60px",
+        transition: "background-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
+        borderTopLeftRadius: "4px",
+        borderTopRightRadius: "4px",
       },
     },
     MuiFormHelperText: {
@@ -201,22 +213,86 @@ const theme = createMuiTheme({
         fontSize: "12px",
       },
     },
+    MuiNativeSelect: {
+      root: {
+        margin: "15px 0 10px 0",
+        padding: "0 0 0 11px",
+      },
+    },
   },
 });
 
-export default function ({ userDbInfo }) {
+export default function ({ userDbInfo, countryInfo }) {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
   const classes = useStyles();
 
   const [userInfo, setUserInfo] = useState({});
-  const [countryErrorState, setCountryErrorState] = useState(null);
-  const [regionErrorState, setRegionErrorState] = useState(null);
+  const [locationInfo, setLocationInfo] = useState();
+  const [selectDisable, setSelectDisable] = useState({
+    cityDisable: false,
+    cityAreaDisable: false,
+  });
+
+  const db = firebase.firestore();
+  let countryArray = [];
+  let regionArray = [];
+  let cityArray = [];
+  let cityAreaArray = [];
 
   useEffect(() => {
     if (userDbInfo && userDbInfo.data()) {
       setUserInfo(userDbInfo.data());
     }
+    const fetchCountryInfo = async () => {
+      console.log("this is the profile page");
+      if (countryInfo) {
+        countryInfo.docs.map((country) => countryArray.push(country.id));
+        let regionCollection = await db
+          .collection("country")
+          .doc(userDbInfo.data().user_country)
+          .collection("region")
+          .get();
+        regionCollection.docs.map((region) => regionArray.push(region.id));
+        let cityCollection = await db
+          .collection("country")
+          .doc(userDbInfo.data().user_country)
+          .collection("region")
+          .doc(userDbInfo.data().user_region)
+          .collection("city")
+          .get();
+        cityCollection.docs.map((city) => cityArray.push(city.id));
+        let cityAreaCollection = await db
+          .collection("country")
+          .doc(userDbInfo.data().user_country)
+          .collection("region")
+          .doc(userDbInfo.data().user_region)
+          .collection("city")
+          .doc(userDbInfo.data().user_city)
+          .collection("area")
+          .get();
+        cityAreaCollection.docs.map((cityArea) =>
+          cityAreaArray.push(cityArea.id)
+        );
+      }
+      setLocationInfo({
+        ...locationInfo,
+        countryArray: countryArray,
+        regionArray: regionArray,
+        cityArray: cityArray,
+        cityAreaArray: cityAreaArray,
+      });
+      console.log(countryArray);
+      console.log(regionArray);
+      console.log(cityArray);
+      console.log(cityAreaArray);
+
+      console.log("mapping city array");
+      cityArray.map((city) => console.log(city));
+      // let region123 = await db.collection("country").doc(userDbInfo.data().user_country).listCollections();
+      // console.log(region123);
+    };
+    fetchCountryInfo();
   }, []);
 
   /**
@@ -241,7 +317,106 @@ export default function ({ userDbInfo }) {
     db.collection("user").doc(userDbInfo.id).set(userInfo);
   };
 
-  return (
+  /**
+   * Series of event handlers for cityArea, city, region and country
+   * Dynamically generates lower tier inputs, ex. country -> region -> city -> cityArea
+   */
+  const handlecityAreaChange = (e) => {
+    console.log("lol");
+    setUserInfo({
+      ...userInfo,
+      user_cityArea: e.target.value,
+    });
+  };
+
+  const handleCityChange = async (e) => {
+    setUserInfo({
+      ...userInfo,
+      user_cityArea: "",
+      user_city: e.target.value,
+    });
+
+    let cityAreaCollection = await db
+      .collection("country")
+      .doc(userInfo.user_country)
+      .collection("region")
+      .doc(userInfo.user_region)
+      .collection("city")
+      .doc(e.target.value)
+      .collection("area")
+      .get();
+
+    let newCityAreaArray = [];
+    cityAreaCollection.docs.map((cityArea) =>
+      newCityAreaArray.push(cityArea.id)
+    );
+    setLocationInfo({ ...locationInfo, cityAreaArray: newCityAreaArray });
+    setSelectDisable({
+      ...selectDisable,
+      cityAreaDisable: false,
+    })
+  };
+
+  const handleRegionChange = async (e) => {
+    setUserInfo({
+      ...userInfo,
+      user_cityArea: "",
+      user_city: "",
+      user_region: e.target.value,
+    });
+
+    let cityCollection = await db
+      .collection("country")
+      .doc(userInfo.user_country)
+      .collection("region")
+      .doc(e.target.value)
+      .collection("city")
+      .get();
+
+    let newCityArray = [];
+    cityCollection.docs.map((city) => newCityArray.push(city.id));
+    setLocationInfo({
+      ...locationInfo,
+      cityArray: newCityArray,
+      cityAreaArray: [],
+    });
+    setSelectDisable({
+      ...selectDisable,
+      cityDisable: false,
+    })
+  };
+
+  const handleCountryChange = async (e) => {
+    setUserInfo({
+      ...userInfo,
+      user_cityArea: "",
+      user_city: "",
+      user_region: "",
+      user_country: e.target.value,
+    });
+
+    let regionCollection = await db
+      .collection("country")
+      .doc(e.target.value)
+      .collection("region")
+      .get();
+
+    let newRegionArray = [];
+    regionCollection.docs.map((region) => newRegionArray.push(region.id));
+    setLocationInfo({
+      ...locationInfo,
+      regionArray: newRegionArray,
+      cityArray: [],
+      cityAreaArray: [],
+    });
+    setSelectDisable({
+      ...selectDisable,
+      cityDisable: true,
+      cityAreaDisable: true
+    })
+  };
+
+  return locationInfo ? (
     <div className={classes.container}>
       <ThemeProvider theme={theme}>
         <ValidatorForm
@@ -266,66 +441,76 @@ export default function ({ userDbInfo }) {
               setUserInfo({ ...userInfo, user_email: e.target.value })
             }
           />
-          <TextValidator
-            id="filled-basic"
-            label="City"
-            variant="filled"
-            InputLabelProps={{ shrink: true }}
-            value={userInfo.user_city}
-            validators={["required"]}
-            errorMessages={["City is requred"]}
-            onChange={(e) =>
-              setUserInfo({ ...userInfo, user_city: e.target.value })
-            }
-          />
-          <div className={classes.countryOuterContainer}>
-            <div className={classes.countryContainer}>
-              <CountryDropdown
-                required
-                value={userInfo.user_country}
-                onChange={(country) =>
-                  setUserInfo({
-                    ...userInfo,
-                    user_country: country,
-                  })
-                }
-                whitelist={["CA", "US"]}
-                priorityOptions={["CA", "US"]}
-                classes="userProfile_selectCountry"
-              />
-            </div>
-            <div>
-              {countryErrorState && userInfo.user_country == "" ? (
-                <div className={classes.countryErrorMessage}>
-                  Select a country
-                </div>
-              ) : null}
-            </div>
-          </div>
+          {/* <TextValidator
+          id="filled-basic"
+          label="City"
+          variant="filled"
+          InputLabelProps={{ shrink: true }}
+          value={userInfo.user_city}
+          validators={["required"]}
+          errorMessages={["City is requred"]}
+          onChange={(e) =>
+            setUserInfo({ ...userInfo, user_city: e.target.value })
+          }
+        /> */}
+          <FormControl variant="filled" className={classes.formControl}>
+            <InputLabel>Area</InputLabel>
+            <NativeSelect
+              disabled={selectDisable.cityAreaDisable}
+              className={classes.citySelect_input}
+              defaultValue={userInfo.user_cityArea}
+              value={userInfo.user_cityArea}
+              onChange={(e) => handlecityAreaChange(e)}
+            >
+              <option value="" disabled></option>
+              {locationInfo.cityAreaArray.map((cityArea) => {
+                return <option value={cityArea}>{cityArea}</option>;
+              })}
+            </NativeSelect>
+          </FormControl>
+          <FormControl variant="filled" className={classes.formControl}>
+            <InputLabel>City</InputLabel>
+            <NativeSelect
+              disabled={selectDisable.cityDisable}
+              className={classes.citySelect_input}
+              defaultValue={userInfo.user_city}
+              value={userInfo.user_city}
+              onChange={(e) => handleCityChange(e)}
+            >
+              <option value="" disabled></option>
+              {locationInfo.cityArray.map((city) => {
+                return <option value={city}>{city}</option>;
+              })}
+            </NativeSelect>
+          </FormControl>
+          <FormControl variant="filled" className={classes.formControl}>
+            <InputLabel>Region</InputLabel>
+            <NativeSelect
+              className={classes.citySelect_input}
+              // defaultValue={userInfo.user_region}
+              value={userInfo.user_region}
+              onChange={(e) => handleRegionChange(e)}
+            >
+              <option value="" disabled></option>
+              {locationInfo.regionArray.map((region) => {
+                return <option value={region}>{region}</option>;
+              })}
+            </NativeSelect>
+          </FormControl>
+          <FormControl variant="filled" className={classes.formControl}>
+            <InputLabel>Country</InputLabel>
+            <NativeSelect
+              className={classes.citySelect_input}
+              defaultValue={userInfo.user_country}
+              value={userInfo.user_country}
+              onChange={(e) => handleCountryChange(e)}
+            >
+              {locationInfo.countryArray.map((country) => {
+                return <option value={country}>{country}</option>;
+              })}
+            </NativeSelect>
+          </FormControl>
           <div className={classes.regionOuterContainer}>
-            <div className={classes.regionContainer}>
-              <RegionDropdown
-                required
-                disableWhenEmpty={true}
-                country={userInfo.user_country}
-                value={userInfo.user_region}
-                disableWhenEmpty={true}
-                onChange={(region) =>
-                  setUserInfo({
-                    ...userInfo,
-                    user_region: region,
-                  })
-                }
-                classes="userProfile_selectRegion"
-              />
-            </div>
-            <div>
-              {regionErrorState && userInfo.user_region == "" ? (
-                <div className={classes.regionErrorMessage}>
-                  Select a region
-                </div>
-              ) : null}
-            </div>
             <div className={classes.logoutContainer}>
               <Button type="submit" className={classes.updateButton}>
                 Update
@@ -345,5 +530,5 @@ export default function ({ userDbInfo }) {
         </ValidatorForm>
       </ThemeProvider>
     </div>
-  );
+  ) : null;
 }

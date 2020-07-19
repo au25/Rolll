@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ({ userDbInfo, setUserDbInfo, location }) {
+export default function ({ userDbInfo, setUserDbInfo, location, countryInfo }) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [parentShopInfo, setParentShopInfo] = useState({});
@@ -90,7 +90,6 @@ export default function ({ userDbInfo, setUserDbInfo, location }) {
   const history = useHistory();
 
   useEffect(() => {
-    console.log(location);
     if(location && location.location.state){
       setNavigationValue(location.location.state.navigationValue);
     }
@@ -112,7 +111,7 @@ export default function ({ userDbInfo, setUserDbInfo, location }) {
       return <UserGiftRecord userDbInfo={userDbInfo} />;
     }
     if (navigationValue == "profile") {
-      return <UserProfile userDbInfo={userDbInfo} />;
+      return <UserProfile userDbInfo={userDbInfo} countryInfo={countryInfo}/>;
     }
   };
 

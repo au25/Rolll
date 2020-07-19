@@ -28,6 +28,7 @@ export default function (location) {
 
   const [userAuthInfo, setUserAuthnfo] = useState();
   const [userDbInfo, setUserDbInfo] = useState();
+  const [countryInfo, setCountryInfo] = useState();
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user != null) {
@@ -39,20 +40,29 @@ export default function (location) {
    * Sets initial state of userDbInfo and shopInfo
    */
   useEffect(() => {
-    async function fetchUserInfo() {
+    async function fetchInfo() {
       if (userAuthInfo && userAuthInfo.uid) {
         const db = firebase.firestore();
         const user = await db.collection("user").doc(userAuthInfo.uid).get();
+        const countryData = await db.collection("country").get();
+        // const ok = await countryData.doc("Canada").collection("British Columbia").doc("City").get();
+        // console.log(ok.data());
         setUserDbInfo(user);
+        setCountryInfo(countryData);
         console.log(user);
       }
     }
-    fetchUserInfo();
+    fetchInfo();
   }, [userAuthInfo]);
 
   return (
     <div className={classes.userHome_container}>
-      <UserNavigation userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} location={location}/>
+      <UserNavigation
+        userDbInfo={userDbInfo}
+        setUserDbInfo={setUserDbInfo}
+        location={location}
+        countryInfo={countryInfo}
+      />
     </div>
   );
 }
