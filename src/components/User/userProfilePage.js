@@ -166,6 +166,12 @@ const useStyles = makeStyles((theme) => ({
   citySelect_input: {
     // margin: "10px 0 0 0"
   },
+  location_errorText: {
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "13px",
+    color: "rgba(204, 0, 0, 1)",
+    margin: "3px 0 0px 0px",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -189,6 +195,10 @@ const theme = createMuiTheme({
       root: {
         height: "60px",
         width: "100%",
+        "&$disabled": {
+          color: "white",
+          backgroundColor: "rgba(0, 0, 0, 0.5)"
+        },
       },
     },
     MuiIconButton: {
@@ -219,6 +229,11 @@ const theme = createMuiTheme({
         padding: "0 0 0 11px",
       },
     },
+    Mui: {
+      disabled: {
+        color: "red !important",
+      },
+    },
   },
 });
 
@@ -232,6 +247,12 @@ export default function ({ userDbInfo, countryInfo }) {
   const [selectDisable, setSelectDisable] = useState({
     cityDisable: false,
     cityAreaDisable: false,
+  });
+  const [locationValid, setLocationValid] = useState({
+    cityArea: true,
+    city: true,
+    region: true,
+    country: true,
   });
 
   const db = firebase.firestore();
@@ -327,6 +348,10 @@ export default function ({ userDbInfo, countryInfo }) {
       ...userInfo,
       user_cityArea: e.target.value,
     });
+    setLocationValid({
+      ...locationValid,
+      cityArea: true,
+    });
   };
 
   const handleCityChange = async (e) => {
@@ -354,7 +379,12 @@ export default function ({ userDbInfo, countryInfo }) {
     setSelectDisable({
       ...selectDisable,
       cityAreaDisable: false,
-    })
+    });
+    setLocationValid({
+      ...locationValid,
+      cityArea: false,
+      city: true,
+    });
   };
 
   const handleRegionChange = async (e) => {
@@ -383,7 +413,13 @@ export default function ({ userDbInfo, countryInfo }) {
     setSelectDisable({
       ...selectDisable,
       cityDisable: false,
-    })
+    });
+    setLocationValid({
+      ...locationValid,
+      cityArea: false,
+      city: false,
+      region: true,
+    });
   };
 
   const handleCountryChange = async (e) => {
@@ -412,8 +448,14 @@ export default function ({ userDbInfo, countryInfo }) {
     setSelectDisable({
       ...selectDisable,
       cityDisable: true,
-      cityAreaDisable: true
-    })
+      cityAreaDisable: true,
+    });
+    setLocationValid({
+      ...locationValid,
+      cityArea: false,
+      city: false,
+      region: false,
+    });
   };
 
   return locationInfo ? (
@@ -441,18 +483,6 @@ export default function ({ userDbInfo, countryInfo }) {
               setUserInfo({ ...userInfo, user_email: e.target.value })
             }
           />
-          {/* <TextValidator
-          id="filled-basic"
-          label="City"
-          variant="filled"
-          InputLabelProps={{ shrink: true }}
-          value={userInfo.user_city}
-          validators={["required"]}
-          errorMessages={["City is requred"]}
-          onChange={(e) =>
-            setUserInfo({ ...userInfo, user_city: e.target.value })
-          }
-        /> */}
           <FormControl variant="filled" className={classes.formControl}>
             <InputLabel>Area</InputLabel>
             <NativeSelect
@@ -467,6 +497,9 @@ export default function ({ userDbInfo, countryInfo }) {
                 return <option value={cityArea}>{cityArea}</option>;
               })}
             </NativeSelect>
+            {locationValid.cityArea ? null : (
+              <div className={classes.location_errorText}>Select an area</div>
+            )}
           </FormControl>
           <FormControl variant="filled" className={classes.formControl}>
             <InputLabel>City</InputLabel>
@@ -482,6 +515,9 @@ export default function ({ userDbInfo, countryInfo }) {
                 return <option value={city}>{city}</option>;
               })}
             </NativeSelect>
+            {locationValid.city ? null : (
+              <div className={classes.location_errorText}>Select a City</div>
+            )}
           </FormControl>
           <FormControl variant="filled" className={classes.formControl}>
             <InputLabel>Region</InputLabel>
@@ -496,6 +532,9 @@ export default function ({ userDbInfo, countryInfo }) {
                 return <option value={region}>{region}</option>;
               })}
             </NativeSelect>
+            {locationValid.region ? null : (
+              <div className={classes.location_errorText}>Select a Region</div>
+            )}
           </FormControl>
           <FormControl variant="filled" className={classes.formControl}>
             <InputLabel>Country</InputLabel>
@@ -512,7 +551,18 @@ export default function ({ userDbInfo, countryInfo }) {
           </FormControl>
           <div className={classes.regionOuterContainer}>
             <div className={classes.logoutContainer}>
-              <Button type="submit" className={classes.updateButton}>
+              <Button
+                type="submit"
+                className={classes.updateButton}
+                disabled={
+                  !(
+                    locationValid.cityArea &&
+                    locationValid.city &&
+                    locationValid.region &&
+                    locationValid.country
+                  )
+                }
+              >
                 Update
               </Button>
               <Button
