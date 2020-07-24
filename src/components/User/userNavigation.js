@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ({ userDbInfo, setUserDbInfo, location, countryInfo }) {
+export default function ({ userDbInfo, setUserDbInfo, location, countryInfo, userAuthInfo }) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [parentShopInfo, setParentShopInfo] = useState({});
@@ -104,7 +104,7 @@ export default function ({ userDbInfo, setUserDbInfo, location, countryInfo }) {
   const RenderBody = () => {
     if (navigationValue == "giftList") {
       return (
-        <UserGiftList userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} />
+        <UserGiftList userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} userAuthInfo={userAuthInfo}/>
       );
     }
     if (navigationValue == "giftRecord") {

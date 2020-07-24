@@ -62,6 +62,7 @@ export default function (location) {
         setUserDbInfo={setUserDbInfo}
         location={location}
         countryInfo={countryInfo}
+        userAuthInfo={userAuthInfo}
       />
     </div>
   );

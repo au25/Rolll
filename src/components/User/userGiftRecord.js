@@ -123,7 +123,7 @@ export default function ({ userDbInfo }) {
     // Push all gift record to an array
     let giftRecordArray = [];
     for (let giftRecord in userDbInfo.data().claimedGift) {
-      console.log(userDbInfo.data().claimedGift[giftRecord]);
+      // console.log(userDbInfo.data().claimedGift[giftRecord]);
       giftRecordArray.push(userDbInfo.data().claimedGift[giftRecord]);
     }
 
@@ -134,8 +134,8 @@ export default function ({ userDbInfo }) {
       return dateB - dateA;
     });
 
-    console.log("this is the sorted recrod array");
-    console.log(giftRecordArray);
+    // console.log("this is the sorted recrod array");
+    // console.log(giftRecordArray);
     setClaimedGift(giftRecordArray);
   };
 

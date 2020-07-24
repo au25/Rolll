@@ -223,7 +223,7 @@ const theme = createMuiTheme({
 //   }
 // };
 
-export default function ({ userDbInfo, setUserDbInfo }) {
+export default function ({ userDbInfo, setUserDbInfo, userAuthInfo }) {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
   const classes = useStyles();
@@ -243,18 +243,21 @@ export default function ({ userDbInfo, setUserDbInfo }) {
      */
     const fetchCityRecord = async () => {
       if (userDbInfo && userDbInfo.data()) {
+        const user = await db.collection("user").doc(userAuthInfo.uid).get();
+        console.log("fetching city record in user gift page");
         const cityRef = await db
           .collection("gift")
-          .doc(userDbInfo.data().user_country)
+          .doc(user.data().user_country)
           .collection(userDbInfo.data().user_region)
-          .doc(userDbInfo.data().user_city)
+          .doc(user.data().user_city)
           .collection("area")
-          .doc(userDbInfo.data().user_cityArea)
+          .doc(user.data().user_cityArea)
           .get();
 
         // Array to hold the progress of each gift
         // createProgressArray(cityRef.data());
         //
+        console.log(cityRef.data());
         setCityGiftRecord(cityRef.data());
       }
     };
@@ -303,8 +306,8 @@ export default function ({ userDbInfo, setUserDbInfo }) {
         .add(giftRewardArrayCopy[rollNumber].expireTime, "minutes")
         .toString(),
     };
-    console.log("1 day expiry");
-    console.log(giftCopy);
+    // console.log("1 day expiry");
+    // console.log(giftCopy);
     newUserGiftArray.push(giftCopy);
     await db
       .collection("user")

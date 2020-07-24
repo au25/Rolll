@@ -266,7 +266,7 @@ export default function ({ userDbInfo, countryInfo }) {
       setUserInfo(userDbInfo.data());
     }
     const fetchCountryInfo = async () => {
-      console.log("this is the profile page");
+      // console.log("this is the profile page");
       if (countryInfo) {
         countryInfo.docs.map((country) => countryArray.push(country.id));
         let regionCollection = await db
@@ -303,13 +303,13 @@ export default function ({ userDbInfo, countryInfo }) {
         cityArray: cityArray,
         cityAreaArray: cityAreaArray,
       });
-      console.log(countryArray);
-      console.log(regionArray);
-      console.log(cityArray);
-      console.log(cityAreaArray);
+      // console.log(countryArray);
+      // console.log(regionArray);
+      // console.log(cityArray);
+      // console.log(cityAreaArray);
 
-      console.log("mapping city array");
-      cityArray.map((city) => console.log(city));
+      // console.log("mapping city array");
+      // cityArray.map((city) => console.log(city));
       // let region123 = await db.collection("country").doc(userDbInfo.data().user_country).listCollections();
       // console.log(region123);
     };
@@ -334,7 +334,7 @@ export default function ({ userDbInfo, countryInfo }) {
     e.preventDefault();
 
     const db = firebase.firestore();
-    console.log(userInfo);
+    // console.log(userInfo);
     db.collection("user").doc(userDbInfo.id).set(userInfo);
   };
 
@@ -343,7 +343,7 @@ export default function ({ userDbInfo, countryInfo }) {
    * Dynamically generates lower tier inputs, ex. country -> region -> city -> cityArea
    */
   const handlecityAreaChange = (e) => {
-    console.log("lol");
+    // console.log("lol");
     setUserInfo({
       ...userInfo,
       user_cityArea: e.target.value,
