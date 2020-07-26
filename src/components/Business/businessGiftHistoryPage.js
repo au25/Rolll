@@ -164,7 +164,9 @@ export default function ({ userDbInfo }) {
           .collection("gift")
           .doc(shopArray[k].shop_country)
           .collection(shopArray[k].shop_region)
-          .doc(shopArray[k].shop_city);
+          .doc(shopArray[k].shop_city)
+          .collection("area")
+          .doc(shopArray[k].shop_area);
         const cityRefSnapshop = await shopLocation_ref.get();
         let claimedGifts = cityRefSnapshop.data().gift;
 

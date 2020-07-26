@@ -13,6 +13,10 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import NativeSelect from "@material-ui/core/NativeSelect";
 
 const useStyles = makeStyles((theme) => ({
   outerContaniner: {
@@ -176,16 +180,23 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "15px",
     color: "rgba(0, 0, 0, 0.6)",
   },
+  cityAreaSelect_container: {
+    margin: "25px 0 20px 0",
+    width: "80%",
+  },
 }));
 
 const theme = createMuiTheme({
   overrides: {
-    MuiLinearProgress: {
-      colorSecondary: {
-        backgroundColor: "none",
+    MuiFormControl: {
+      root: {
+        width: "70%",
       },
-      barColorSecondary: {
-        backgroundColor: "#c2d6d6",
+    },
+    MuiNativeSelect: {
+      root: {
+        padding: "0 0 0 11px",
+        height: "40px"
       },
     },
   },
@@ -223,21 +234,43 @@ const theme = createMuiTheme({
 //   }
 // };
 
-export default function ({ userDbInfo, setUserDbInfo, userAuthInfo }) {
+export default function ({
+  userDbInfo,
+  setUserDbInfo,
+  userAuthInfo,
+  countryInfo,
+}) {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
   const classes = useStyles();
 
+  const [userInfo, setUserInfo] = useState();
   const [cityGiftRecord, setCityGiftRecord] = useState();
   const [userGiftIdMap, setUserGiftIdMap] = useState();
   // const [progressArray, setProgressArray] = useState([]);
   const [activeGiftIndex, setActiveGiftIndex] = useState(null);
   const [giftReadyOpenIndex, setGiftReadyOpenIndex] = useState(null);
   const [giftRewardArray, setGiftRewardArray] = useState([]);
+  const [locationValid, setLocationValid] = useState({
+    cityArea: true,
+    city: true,
+    region: true,
+    country: true,
+  });
+  const [selectDisable, setSelectDisable] = useState({
+    cityDisable: false,
+    cityAreaDisable: false,
+  });
+  const [locationInfo, setLocationInfo] = useState();
 
   const db = firebase.firestore();
+  let cityArray = [];
+  let cityAreaArray = [];
 
   useEffect(() => {
+    if (userDbInfo && userDbInfo.data()) {
+      setUserInfo(userDbInfo.data());
+    }
     /**
      * Fetches the gift record from a city and saves it as state
      */
@@ -273,6 +306,47 @@ export default function ({ userDbInfo, setUserDbInfo, userAuthInfo }) {
       setUserGiftIdMap(userGiftIdMap);
     };
     userGiftRef();
+
+    const fetchCountryInfo = async () => {
+      // console.log("this is the profile page");
+      if (countryInfo) {
+        // countryInfo.docs.map((country) => countryArray.push(country.id));
+        // let regionCollection = await db
+        //   .collection("country")
+        //   .doc(userDbInfo.data().user_country)
+        //   .collection("region")
+        //   .get();
+        // regionCollection.docs.map((region) => regionArray.push(region.id));
+        let cityCollection = await db
+          .collection("country")
+          .doc(userDbInfo.data().user_country)
+          .collection("region")
+          .doc(userDbInfo.data().user_region)
+          .collection("city")
+          .get();
+        cityCollection.docs.map((city) => cityArray.push(city.id));
+        let cityAreaCollection = await db
+          .collection("country")
+          .doc(userDbInfo.data().user_country)
+          .collection("region")
+          .doc(userDbInfo.data().user_region)
+          .collection("city")
+          .doc(userDbInfo.data().user_city)
+          .collection("area")
+          .get();
+        cityAreaCollection.docs.map((cityArea) =>
+          cityAreaArray.push(cityArea.id)
+        );
+      }
+      setLocationInfo({
+        ...locationInfo,
+        // countryArray: countryArray,
+        // regionArray: regionArray,
+        cityArray: cityArray,
+        cityAreaArray: cityAreaArray,
+      });
+    };
+    fetchCountryInfo();
   }, []);
 
   /**
@@ -533,12 +607,73 @@ export default function ({ userDbInfo, setUserDbInfo, userAuthInfo }) {
       );
   };
 
-  return (
+  const handleCityAreaChange = async (e) => {
+    setCityGiftRecord({ gift: [] });
+    e.persist();
+    setUserInfo({ ...userInfo, user_cityArea: e.target.value });
+    const user = await db.collection("user").doc(userAuthInfo.uid).get();
+    console.log(user.data());
+    console.log(e.target.value);
+    setUserInfo({ ...userInfo, user_cityArea: e.target.value });
+    const cityRef = await db
+      .collection("gift")
+      .doc(user.data().user_country)
+      .collection(user.data().user_region)
+      .doc(user.data().user_city)
+      .collection("area")
+      .doc(e.target.value)
+      .get();
+
+    console.log("this is city gift record");
+    console.log(cityRef.data());
+    setCityGiftRecord(cityRef.data());
+  };
+
+  return userInfo && locationInfo ? (
     <div className={classes.outerContaniner}>
       <ThemeProvider theme={theme}>
-        {/* <div className={classes.gift_text}>Gift for you</div> */}
+        <div className={classes.cityAreaSelect_container}>
+          <FormControl variant="filled" className={classes.formControl}>
+            <InputLabel>Area</InputLabel>
+            <NativeSelect
+              disabled={selectDisable.cityAreaDisable}
+              className={classes.citySelect_input}
+              defaultValue={userInfo.user_cityArea}
+              value={userInfo.user_cityArea}
+              onChange={(e) => handleCityAreaChange(e)}
+            >
+              <option value="" disabled></option>
+              {locationInfo.cityAreaArray.map((cityArea) => {
+                return <option value={cityArea}>{cityArea}</option>;
+              })}
+            </NativeSelect>
+            {locationValid.cityArea ? null : (
+              <div className={classes.location_errorText}>Select an area</div>
+            )}
+          </FormControl>
+        </div>
+        {/* <FormControl variant="filled" className={classes.formControl}>
+          <InputLabel>City</InputLabel>
+          <NativeSelect
+            disabled={selectDisable.cityDisable}
+            className={classes.citySelect_input}
+            defaultValue={userInfo.user_city}
+            value={userInfo.user_city}
+            // onChange={(e) => handleCityChange(e)}
+          >
+            <option value="" disabled></option>
+            {locationInfo.cityArray.map((city) => {
+              return <option value={city}>{city}</option>;
+            })}
+          </NativeSelect>
+          {locationValid.city ? null : (
+            <div className={classes.location_errorText}>Select a City</div>
+          )}
+        </FormControl> */}
         <RenderGift />
       </ThemeProvider>
     </div>
+  ) : (
+    <div>lol</div>
   );
 }

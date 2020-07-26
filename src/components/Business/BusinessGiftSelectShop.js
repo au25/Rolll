@@ -294,7 +294,8 @@ export default function ({ location }) {
                 giftRecordArray[i].gift_expiry_date = moment(
                   firebase.firestore.Timestamp.now(new Date()).toDate()
                 ).format();
-                
+
+                // Changes expiry date in business user
                 db.collection("businessUser")
                   .doc(userId)
                   .collection("giftRecord")
@@ -304,14 +305,23 @@ export default function ({ location }) {
                     [gift.gift_name]: giftRecordArray,
                   });
 
+                // Changes expiry date in gift Collection - city and cityArea
+                const cityAreaRef = db
+                  .collection("gift")
+                  .doc(shop.shop_country)
+                  .collection(shop.shop_region)
+                  .doc(shop.shop_city)
+                  .collection("area")
+                  .doc(shop.shop_area);
+                const cityRefSnapshop = await cityAreaRef.get();
+                console.log(cityRefSnapshop.data());
+                let claimedGifts = cityRefSnapshop.data().gift;
+
                 const cityRef = db
                   .collection("gift")
                   .doc(shop.shop_country)
                   .collection(shop.shop_region)
                   .doc(shop.shop_city);
-                const cityRefSnapshop = await cityRef.get();
-                console.log(cityRefSnapshop.data());
-                let claimedGifts = cityRefSnapshop.data().gift;
 
                 console.log("before change");
                 console.log(claimedGifts);
@@ -326,7 +336,8 @@ export default function ({ location }) {
                 }
                 console.log("new claimed gift array");
                 console.log(claimedGifts);
-                cityRef.set({ gift: claimedGifts });
+                await cityAreaRef.set({ gift: claimedGifts });
+                await cityRef.set({ gift: claimedGifts });
               }
             }
           }
@@ -403,24 +414,33 @@ export default function ({ location }) {
     console.log("this is the select shop info");
     console.log(selectShop);
 
-    const cityRef = db
+    const cityAreaRef = db
       .collection("gift")
       .doc(selectShop.shop_country)
       .collection(selectShop.shop_region)
       .doc(selectShop.shop_city)
       .collection("area")
       .doc(selectShop.shop_area);
+    const cityAreaRefSnapshop = await cityAreaRef.get();
+    // console.log(cityRefSnapshop);
+
+    const cityRef = db
+      .collection("gift")
+      .doc(selectShop.shop_country)
+      .collection(selectShop.shop_region)
+      .doc(selectShop.shop_city);
     const cityRefSnapshop = await cityRef.get();
+    console.log("this is city ref");
     console.log(cityRefSnapshop);
 
     const giftName = "gift";
 
     /**
-     * If city reference in database exists, update the array with the new gift (push)
+     * If cityArea reference in database exists, update the array with the new gift (push)
      * Else creates the reference and push gift inside
      */
-    if (cityRefSnapshop.exists) {
-      cityRef.update({
+    if (cityAreaRefSnapshop.exists) {
+      await cityAreaRef.update({
         [giftName]: firebase.firestore.FieldValue.arrayUnion({
           gift_name: gift.gift_name,
           gift_id: giftDocRef.id,
@@ -438,7 +458,49 @@ export default function ({ location }) {
         }),
       });
     } else {
-      cityRef.set({
+      await cityAreaRef.set({
+        [giftName]: firebase.firestore.FieldValue.arrayUnion({
+          gift_name: gift.gift_name,
+          gift_id: giftDocRef.id,
+          [giftDocRef.id]: "gift_id",
+          gift_creation_timeStamp: firebase.firestore.Timestamp.now(new Date()),
+          gift_creation_date: gift_creation_date,
+          gift_expiry_date: gift_expiry_date,
+          shop_address: selectShop.shop_address,
+          shop_name: selectShop.shop_name,
+          shop_city: selectShop.shop_city,
+          gift_description: gift.gift_description,
+          gift_intro: gift.gift_intro,
+          image_url: gift.image_url,
+          shop_area: selectShop.shop_area,
+        }),
+      });
+    }
+
+    /**
+     * If city reference in database exists, update the array with the new gift (push)
+     * Else creates the reference and push gift inside
+     */
+    if (cityRefSnapshop.exists) {
+      await cityRef.update({
+        [giftName]: firebase.firestore.FieldValue.arrayUnion({
+          gift_name: gift.gift_name,
+          gift_id: giftDocRef.id,
+          [giftDocRef.id]: "gift_id",
+          gift_creation_timeStamp: firebase.firestore.Timestamp.now(new Date()),
+          gift_creation_date: gift_creation_date,
+          gift_expiry_date: gift_expiry_date,
+          shop_address: selectShop.shop_address,
+          shop_name: selectShop.shop_name,
+          shop_city: selectShop.shop_city,
+          gift_description: gift.gift_description,
+          gift_intro: gift.gift_intro,
+          image_url: gift.image_url,
+          shop_area: selectShop.shop_area,
+        }),
+      });
+    } else {
+      await cityRef.set({
         [giftName]: firebase.firestore.FieldValue.arrayUnion({
           gift_name: gift.gift_name,
           gift_id: giftDocRef.id,

@@ -104,7 +104,7 @@ export default function ({ userDbInfo, setUserDbInfo, location, countryInfo, use
   const RenderBody = () => {
     if (navigationValue == "giftList") {
       return (
-        <UserGiftList userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} userAuthInfo={userAuthInfo}/>
+        <UserGiftList userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} userAuthInfo={userAuthInfo} countryInfo={countryInfo}/>
       );
     }
     if (navigationValue == "giftRecord") {
