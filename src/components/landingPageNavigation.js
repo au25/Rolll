@@ -22,6 +22,7 @@ const useStyles = makeStyles({
   menuButton: {
     backgroundColor: "transparent",
     border: "none",
+    color: "rgba(255, 255, 255, 0.9)"
   },
   welcomeMsgContainer: {
     padding: "20px",
@@ -72,6 +73,8 @@ const useStyles = makeStyles({
   navigationContainer: {
     display: "flex",
     justifyContent: "flex-end",
+    width: "100%",
+    position: "absolute"
   },
   loginButton: {
     fontSize: "14px",

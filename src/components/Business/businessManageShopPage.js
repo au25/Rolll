@@ -7,19 +7,12 @@ import {
 import firebase from "../../firebase";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
-import BusinessNavigation from "./businessNavigation";
 import BusinessAddShopComponent from "./businessAddShopPage";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData,
-} from "react-country-region-selector";
 import Button from "@material-ui/core/Button";
 import { CSSTransition } from "react-transition-group";
 import "./businessManageShopPage.css";
@@ -187,6 +180,12 @@ const theme = createMuiTheme({
   },
 });
 
+const db = firebase.firestore();
+let countryArray = [];
+let regionArray = [];
+let cityArray = [];
+let cityAreaArray = [];
+
 /**
  * Form outside of export function so input doesnt unfocus after single character change
  */
@@ -196,9 +195,6 @@ const FormComponent = ({
   parentShopInfo,
   handleShopProfileUpdate,
   handleRemoveShop,
-  countryErrorState,
-  regionErrorState,
-  validateCountryRegion,
 }) => {
   return parentShopInfo.shop
     ? parentShopInfo.shop.map((shop, index) => (
@@ -234,6 +230,7 @@ const FormComponent = ({
                     e
                   )
                 }
+                disabled
               />
               <TextValidator
                 id="filled-basic"
@@ -252,6 +249,29 @@ const FormComponent = ({
                     e
                   )
                 }
+                disabled
+              />
+              <TextValidator
+                id="filled-basic"
+                label="Country"
+                variant="filled"
+                InputLabelProps={{ shrink: true }}
+                value={shop.shop_country}
+                validators={["required"]}
+                errorMessages={["Country is requred"]}
+                name="shop_country"
+                disabled
+              />
+              <TextValidator
+                id="filled-basic"
+                label="Region"
+                variant="filled"
+                InputLabelProps={{ shrink: true }}
+                value={shop.shop_region}
+                validators={["required"]}
+                errorMessages={["Region is requred"]}
+                name="shop_region"
+                disabled
               />
               <TextValidator
                 id="filled-basic"
@@ -262,16 +282,28 @@ const FormComponent = ({
                 validators={["required"]}
                 errorMessages={["City is requred"]}
                 name="shop_city"
-                onChange={(e) =>
-                  handleShopProfileChange(
-                    setParentShopInfo,
-                    parentShopInfo,
-                    index,
-                    e
-                  )
-                }
+                disabled
+                // onChange={(e) =>
+                //   handleShopProfileChange(
+                //     setParentShopInfo,
+                //     parentShopInfo,
+                //     index,
+                //     e
+                //   )
+                // }
               />
-              <div className={classes.countryContainer}>
+              <TextValidator
+                id="filled-basic"
+                label="Area"
+                variant="filled"
+                InputLabelProps={{ shrink: true }}
+                value={shop.shop_area}
+                validators={["required"]}
+                errorMessages={["Area is requred"]}
+                name="shop_cityArea"
+                disabled
+              />
+              {/* <div className={classes.countryContainer}>
                 <CountryDropdown
                   required
                   value={shop.shop_country}
@@ -294,39 +326,15 @@ const FormComponent = ({
                     Select a country
                   </div>
                 ) : null}
-              </div>
-              <div className={classes.regionContainer}>
-                <RegionDropdown
-                  required
-                  disableWhenEmpty={true}
-                  country={shop.shop_country}
-                  value={shop.shop_region}
-                  disableWhenEmpty={true}
-                  onChange={(region) =>
-                    handleRegionChange(
-                      setParentShopInfo,
-                      parentShopInfo,
-                      index,
-                      region
-                    )
-                  }
-                  classes="manageShop_selectRegion add_businessManageShop_regionCss"
-                />
-              </div>
-              <div>
-                {regionErrorState && shop.shop_region == "" ? (
-                  <div className={classes.regionErrorMessage}>
-                    Select a region
-                  </div>
-                ) : null}
-              </div>
-              <Button
+              </div> */}
+
+              {/* <Button
                 type="submit"
                 className={classes.updateButton}
                 onClick={() => validateCountryRegion(index)}
               >
                 Update
-              </Button>
+              </Button> */}
               <div className={classes.deleteShopContainer}>
                 <Button
                   className={classes.deleteShopButton}
@@ -356,18 +364,43 @@ const handleRegionChange = (
   });
 };
 
-const handleCountryChange = (
+const handleCountryChange = async (
+  e,
   setParentShopInfo,
   parentShopInfo,
   index,
-  country
+  locationInfo,
+  selectDisable,
+  locationValid,
+  setLocationInfo,
+  setSelectDisable,
+  setLocationValid
 ) => {
-  console.log("country:" + country);
   let shopInfoCopy = parentShopInfo.shop;
-  shopInfoCopy[index].shop_country = country;
+  shopInfoCopy[index].shop_country = e.target.value;
   setParentShopInfo({
     ...parentShopInfo,
     shop: shopInfoCopy,
+  });
+  const regionCollection = await db
+    .collection("country")
+    .doc(e.target.value)
+    .collection("region")
+    .get();
+  regionCollection.docs.map((region) => regionArray.push(region.id));
+  setLocationInfo({ ...locationInfo, regionArray: regionArray });
+  setSelectDisable({
+    ...selectDisable,
+    regionDisable: false,
+    cityDisable: true,
+    cityAreaDisable: true,
+  });
+  setLocationValid({
+    ...locationValid,
+    country: true,
+    region: false,
+    city: false,
+    cityArea: false,
   });
 };
 
@@ -397,15 +430,49 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
 
-  const db = firebase.firestore();
-
   const [countryErrorState, setCountryErrorState] = useState(null);
   const [regionErrorState, setRegionErrorState] = useState(null);
   const [newParentShopInfo, setNewParentShopInfo] = useState();
   const [showButton, setShowButton] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
 
+  const [locationInfo, setLocationInfo] = useState();
+  const [selectDisable, setSelectDisable] = useState({
+    regionDisable: true,
+    cityDisable: true,
+    cityAreaDisable: true,
+  });
+  const [locationValid, setLocationValid] = useState({
+    cityArea: true,
+    city: true,
+    region: true,
+    country: false,
+  });
+
   useEffect(() => {
+    const fetchCountryInfo = async () => {
+      // console.log("this is the profile page");
+      const countryCollection = await db.collection("country").get();
+      countryCollection.docs.map((country) => countryArray.push(country.id));
+      console.log("this is userDB data");
+      console.log(userDbInfo.data());
+      // let cityCollection = await db
+      // .collection("country")
+      // .doc(userDbInfo.data().user_country)
+      // .collection("region")
+      // .doc(userDbInfo.data().user_region)
+      // .collection("city")
+      // .get();
+      // cityCollection.docs.map((city) => cityArray.push(city.id));
+      //   setLocationInfo({
+      //     ...locationInfo,
+      //     countryArray: countryArray,
+      //     regionArray: regionArray,
+      //     cityArray: cityArray,
+      //     cityAreaArray: cityAreaArray,
+      //   });
+    };
+    fetchCountryInfo();
     setNewParentShopInfo(parentShopInfo);
   }, []);
 
@@ -478,6 +545,12 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
             regionErrorState={regionErrorState}
             classes={classes}
             validateCountryRegion={validateCountryRegion}
+            locationInfo={locationInfo}
+            setLocationInfo={setLocationInfo}
+            selectDisable={selectDisable}
+            setSelectDisable={setSelectDisable}
+            locationValid={locationValid}
+            setLocationValid={setLocationValid}
           />
         ) : null}
         <div className={classes.addShop_container}>

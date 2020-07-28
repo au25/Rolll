@@ -9,11 +9,10 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router";
 import firebase from "../../firebase";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData,
-} from "react-country-region-selector";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import NativeSelect from "@material-ui/core/NativeSelect";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -145,6 +144,12 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     margin: "0 0 80px 0",
   },
+  location_errorText: {
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "13px",
+    color: "rgba(204, 0, 0, 1)",
+    margin: "3px 0 0px 0px",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -183,6 +188,12 @@ const theme = createMuiTheme({
         fontSize: "12px",
       },
     },
+    MuiNativeSelect: {
+      root: {
+        margin: "15px 0 10px 0",
+        padding: "0 0 0 11px",
+      },
+    },
   },
 });
 
@@ -202,6 +213,7 @@ const SignUp = ({ history }) => {
     shop_city: "",
     shop_region: "", //province or state or territory
     shop_country: "",
+    shop_cityArea: "",
     shop_number: "",
     first_name: "",
     last_name: "",
@@ -209,11 +221,40 @@ const SignUp = ({ history }) => {
     email: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [countryErrorState, setCountryErrorState] = useState(null);
-  const [regionErrorState, setRegionErrorState] = useState(null);
+  const [locationInfo, setLocationInfo] = useState();
+  const [selectDisable, setSelectDisable] = useState({
+    regionDisable: true,
+    cityDisable: true,
+    cityAreaDisable: true,
+  });
+  const [locationValid, setLocationValid] = useState({
+    cityArea: true,
+    city: true,
+    region: true,
+    country: false,
+  });
+
+  const db = firebase.firestore();
+  let countryArray = [];
+  let regionArray = [];
+  let cityArray = [];
+  let cityAreaArray = [];
 
   useEffect(() => {
     checkValidationRule();
+
+    const fetchCountryInfo = async () => {
+      const countryCollection = await db.collection("country").get();
+      countryCollection.docs.map((country) => countryArray.push(country.id));
+      setLocationInfo({
+        ...locationInfo,
+        countryArray: countryArray,
+        regionArray: regionArray,
+        cityArray: cityArray,
+        cityAreaArray: cityAreaArray,
+      });
+    };
+    fetchCountryInfo();
   }, [registrationValue.confirmPassword]);
 
   const checkValidationRule = () => {
@@ -260,6 +301,7 @@ const SignUp = ({ history }) => {
               shop_city: registrationValue.shop_city,
               shop_region: registrationValue.shop_region,
               shop_country: registrationValue.shop_country,
+              shop_area: registrationValue.shop_cityArea
             },
           ],
           first_name: registrationValue.first_name,
@@ -277,6 +319,7 @@ const SignUp = ({ history }) => {
               gift_description: {
                 chance: [0.02, 0.08, 0.5, 0.4],
                 reward: ["Free Drink", "15% Off", "10% Off", "Try Again"],
+                expire_time: [5, 1440, 1440, 1440],
               },
             },
             {
@@ -288,6 +331,7 @@ const SignUp = ({ history }) => {
               gift_description: {
                 chance: [0.1, 0.3, 0.6],
                 reward: ["Free Drink", "50% discount", "25% discount"],
+                expire_time: [5, 5, 5],
               },
             },
           ],
@@ -306,19 +350,78 @@ const SignUp = ({ history }) => {
 
     // history.push("/businessHome");
   }
+  const handleCountryChange = async (e) => {
+    setRegistrationValue({
+      ...registrationValue,
+      shop_country: e.target.value,
+    });
+    const regionCollection = await db
+      .collection("country")
+      .doc(e.target.value)
+      .collection("region")
+      .get();
+    regionCollection.docs.map((region) => regionArray.push(region.id));
+    setLocationInfo({ ...locationInfo, regionArray: regionArray });
+    setSelectDisable({
+      ...selectDisable,
+      regionDisable: false,
+      cityDisable: true,
+      cityAreaDisable: true,
+    });
+    setLocationValid({
+      ...locationValid,
+      country: true,
+      region: false,
+      city: false,
+      cityArea: false,
+    });
+  };
 
-  const validateCountryRegion = () => {
-    if (registrationValue.shop_country == "") {
-      setCountryErrorState(true);
-    } else {
-      setCountryErrorState(false);
-    }
+  const handleRegionChange = async (e) => {
+    setRegistrationValue({ ...registrationValue, shop_region: e.target.value });
+    const cityCollection = await db
+      .collection("country")
+      .doc(registrationValue.shop_country)
+      .collection("region")
+      .doc(e.target.value)
+      .collection("city")
+      .get();
+    cityCollection.docs.map((city) => cityArray.push(city.id));
+    setLocationInfo({ ...locationInfo, cityArray: cityArray });
+    setSelectDisable({
+      ...selectDisable,
+      cityDisable: false,
+      cityAreaDisable: true,
+    });
+    setLocationValid({ ...locationValid, region: true });
+  };
 
-    if (registrationValue.shop_region == "") {
-      setRegionErrorState(true);
-    } else {
-      setRegionErrorState(false);
-    }
+  const handleCityChange = async (e) => {
+    setRegistrationValue({ ...registrationValue, shop_city: e.target.value });
+    const cityAreaCollection = await db
+      .collection("country")
+      .doc(registrationValue.shop_country)
+      .collection("region")
+      .doc(registrationValue.shop_region)
+      .collection("city")
+      .doc(e.target.value)
+      .collection("area")
+      .get();
+    cityAreaCollection.docs.map((cityArea) => cityAreaArray.push(cityArea.id));
+    setLocationInfo({ ...locationInfo, cityAreaArray: cityAreaArray });
+    setSelectDisable({
+      ...selectDisable,
+      cityAreaDisable: false,
+    });
+    setLocationValid({ ...locationValid, city: true });
+  };
+
+  const handleCityAreaChange = async (e) => {
+    setRegistrationValue({
+      ...registrationValue,
+      shop_cityArea: e.target.value,
+    });
+    setLocationValid({ ...locationValid, cityArea: true });
   };
 
   return (
@@ -368,69 +471,85 @@ const SignUp = ({ history }) => {
                 })
               }
             />
-            <TextValidator
-              id="filled-basic"
-              label="Shop City"
-              variant="filled"
-              value={registrationValue.shop_city}
-              validators={["required"]}
-              errorMessages={["Shop city is requred"]}
-              onChange={(e) =>
-                setRegistrationValue({
-                  ...registrationValue,
-                  shop_city: e.target.value,
-                })
-              }
-            />
-            <div className={classes.countryOuterContainer}>
-              <div className={classes.countryContainer}>
-                <CountryDropdown
-                  required
-                  value={registrationValue.shop_country}
-                  onChange={(country) =>
-                    setRegistrationValue({
-                      ...registrationValue,
-                      shop_country: country,
+            <FormControl variant="filled" className={classes.formControl}>
+              <InputLabel>Shop Country</InputLabel>
+              <NativeSelect
+                className={classes.citySelect_input}
+                defaultValue=""
+                value={registrationValue.shop_country}
+                onChange={(e) => handleCountryChange(e)}
+              >
+                <option value="" disabled></option>
+                {locationInfo
+                  ? locationInfo.countryArray.map((country) => {
+                      return <option value={country}>{country}</option>;
                     })
-                  }
-                  whitelist={["CA", "US"]}
-                  priorityOptions={["CA", "US"]}
-                  classes="userSignup_selectCountry"
-                />
-              </div>
-              <div>
-                {countryErrorState && registrationValue.shop_country == "" ? (
-                  <div className={classes.countryErrorMessage}>
-                    Select a country
-                  </div>
-                ) : null}
-              </div>
-            </div>
-            <div className={classes.regionOuterContainer}>
-              <div className={classes.regionContainer}>
-                <RegionDropdown
-                  required
-                  disableWhenEmpty={true}
-                  country={registrationValue.shop_country}
-                  value={registrationValue.shop_region}
-                  disableWhenEmpty={true}
-                  onChange={(region) =>
-                    setRegistrationValue({
-                      ...registrationValue,
-                      shop_region: region,
+                  : null}
+              </NativeSelect>
+            </FormControl>
+            <FormControl variant="filled" className={classes.formControl}>
+              <InputLabel>Shop Region</InputLabel>
+              <NativeSelect
+                className={classes.citySelect_input}
+                defaultValue=""
+                value={registrationValue.shop_region}
+                onChange={(e) => handleRegionChange(e)}
+                disabled={selectDisable.regionDisable}
+              >
+                <option value="" disabled></option>
+                {locationInfo
+                  ? locationInfo.regionArray.map((region) => {
+                      return <option value={region}>{region}</option>;
                     })
-                  }
-                  classes="userSignup_selectRegion"
-                />
-              </div>
-              <div>
-                {regionErrorState && registrationValue.shop_region == "" ? (
-                  <div className={classes.regionErrorMessage}>
-                    Select a region
-                  </div>
-                ) : null}
-              </div>
-            </div>
+                  : null}
+              </NativeSelect>
+              {locationValid.region ? null : (
+                <div className={classes.location_errorText}>
+                  Select a Region
+                </div>
+              )}
+            </FormControl>
+            <FormControl variant="filled" className={classes.formControl}>
+              <InputLabel>Shop City</InputLabel>
+              <NativeSelect
+                className={classes.citySelect_input}
+                defaultValue=""
+                value={registrationValue.shop_city}
+                onChange={(e) => handleCityChange(e)}
+                disabled={selectDisable.cityDisable}
+              >
+                <option value="" disabled></option>
+                {locationInfo
+                  ? locationInfo.cityArray.map((city) => {
+                      return <option value={city}>{city}</option>;
+                    })
+                  : null}
+              </NativeSelect>
+              {locationValid.city ? null : (
+                <div className={classes.location_errorText}>Select a City</div>
+              )}
+            </FormControl>
+            <FormControl variant="filled" className={classes.formControl}>
+              <InputLabel>Shop Area</InputLabel>
+              <NativeSelect
+                className={classes.citySelect_input}
+                defaultValue=""
+                value={registrationValue.shop_cityArea}
+                onChange={(e) => handleCityAreaChange(e)}
+                disabled={selectDisable.cityAreaDisable}
+              >
+                <option value="" disabled></option>
+                {locationInfo
+                  ? locationInfo.cityAreaArray.map((area) => {
+                      return <option value={area}>{area}</option>;
+                    })
+                  : null}
+              </NativeSelect>
+              {locationValid.cityArea ? null : (
+                <div className={classes.location_errorText}>Select an Area</div>
+              )}
+            </FormControl>
+
             <div className={classes.managerInfoTitleContainer}>
               <div className={classes.managerInfoBorderBottom}></div>
               <div>Manager Information</div>
@@ -555,7 +674,14 @@ const SignUp = ({ history }) => {
             <Button
               className={classes.userSignup_saveButton}
               type="submit"
-              onClick={() => validateCountryRegion()}
+              disabled={
+                !(
+                  locationValid.cityArea &&
+                  locationValid.city &&
+                  locationValid.region &&
+                  locationValid.country
+                )
+              }
             >
               SIGN UP
             </Button>

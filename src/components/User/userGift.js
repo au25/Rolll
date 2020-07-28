@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
     display: "flex",
-    justifyContent: "center",
     flexDirection: "column",
     alignItems: "center",
   },
@@ -183,6 +182,7 @@ const useStyles = makeStyles((theme) => ({
   cityAreaSelect_container: {
     margin: "25px 0 20px 0",
     width: "80%",
+    height: "56px"
   },
 }));
 
@@ -196,7 +196,7 @@ const theme = createMuiTheme({
     MuiNativeSelect: {
       root: {
         padding: "0 0 0 11px",
-        height: "40px"
+        height: "40px",
       },
     },
   },
@@ -317,14 +317,14 @@ export default function ({
         //   .collection("region")
         //   .get();
         // regionCollection.docs.map((region) => regionArray.push(region.id));
-        let cityCollection = await db
-          .collection("country")
-          .doc(userDbInfo.data().user_country)
-          .collection("region")
-          .doc(userDbInfo.data().user_region)
-          .collection("city")
-          .get();
-        cityCollection.docs.map((city) => cityArray.push(city.id));
+        // let cityCollection = await db
+        //   .collection("country")
+        //   .doc(userDbInfo.data().user_country)
+        //   .collection("region")
+        //   .doc(userDbInfo.data().user_region)
+        //   .collection("city")
+        //   .get();
+        // cityCollection.docs.map((city) => cityArray.push(city.id));
         let cityAreaCollection = await db
           .collection("country")
           .doc(userDbInfo.data().user_country)
@@ -463,10 +463,9 @@ export default function ({
     if (cityGiftRecord) {
       // if (false) {
       if (cityGiftRecord.gift.length == 0) {
-        return <div>No gift Available.</div>;
+        return <div className={classes.giftContainer}>No gift Available.</div>;
       }
       if (cityGiftRecord.gift) {
-        //
         cityGiftRecord.gift.map((cityGift, index) => {
           if (currentTime.isBefore(cityGift.gift_expiry_date)) {
             nonExpiredGiftCounter++;
@@ -607,6 +606,9 @@ export default function ({
       );
   };
 
+  /**
+   *
+   */
   const handleCityAreaChange = async (e) => {
     setCityGiftRecord({ gift: [] });
     e.persist();

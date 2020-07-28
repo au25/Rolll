@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
       height: "100%",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center",
       alignItems: "center",
     },
   },
@@ -156,6 +155,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0",
     height: "40px",
     backgroundColor: "rgba(0, 0, 0, 0)",
+    margin: "0 0 25px 0"
   },
   logoutContainer: {
     display: "flex",
@@ -303,15 +303,6 @@ export default function ({ userDbInfo, countryInfo }) {
         cityArray: cityArray,
         cityAreaArray: cityAreaArray,
       });
-      // console.log(countryArray);
-      // console.log(regionArray);
-      // console.log(cityArray);
-      // console.log(cityAreaArray);
-
-      // console.log("mapping city array");
-      // cityArray.map((city) => console.log(city));
-      // let region123 = await db.collection("country").doc(userDbInfo.data().user_country).listCollections();
-      // console.log(region123);
     };
     fetchCountryInfo();
   }, []);
