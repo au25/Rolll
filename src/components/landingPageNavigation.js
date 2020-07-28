@@ -22,7 +22,10 @@ const useStyles = makeStyles({
   menuButton: {
     backgroundColor: "transparent",
     border: "none",
-    color: "rgba(255, 255, 255, 0.9)"
+    color: "rgba(255, 255, 255, 0.9)",
+    padding: "20px",
+    letterSpacing: "1.5px",
+    textTransform: "none"
   },
   welcomeMsgContainer: {
     padding: "20px",
@@ -74,7 +77,8 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     width: "100%",
-    position: "absolute"
+    position: "absolute",
+    backgroundColor: "black"
   },
   loginButton: {
     fontSize: "14px",
@@ -124,6 +128,20 @@ const useStyles = makeStyles({
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
     textDecoration: "none",
   },
+  policies_container: {
+    height: "67vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    padding: "0 0 12px 15px",
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "12px",
+    letterSpacing: "0.25px"
+  },
+  tos_text: {
+    margin: "0 0 5px 0"
+  },
+  privacy_text: {}
 });
 
 const theme = createMuiTheme({
@@ -161,7 +179,7 @@ export default function SwipeableTemporaryDrawer() {
       onClick={toggleDrawer(side, false)}
       onKeyDown={toggleDrawer(side, false)}
     >
-      <div className={classes.welcomeMsgContainer}>Hello, wooloo?</div>
+      <div className={classes.welcomeMsgContainer}>Hello</div>
       <div className={classes.loginSingupContainer}>
         <Link to="/login" className={classes.loginLinkContainer}>
           <div className={classes.loginContainer}>
@@ -182,6 +200,10 @@ export default function SwipeableTemporaryDrawer() {
           <button className={classes.forBusinessButton}>Are you a shop?</button>
         </div>
       </Link>
+      <div className={classes.policies_container}>
+          <div className={classes.tos_text}>Terms of Service</div>
+          <div className={classes.privacy_text}>Privacy Policy</div>
+        </div>
     </div>
   );
 
@@ -226,6 +248,7 @@ export default function SwipeableTemporaryDrawer() {
           </div>
         )}
       </div>
+
     </ThemeProvider>
   );
 }

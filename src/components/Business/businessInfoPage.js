@@ -11,7 +11,7 @@ export default function() {
   const classes = useStyles();
   return (
     <div>
-      <Navigation />
+      {/* <Navigation /> */}
       <div>
         <BusinessLogin />
       </div>
