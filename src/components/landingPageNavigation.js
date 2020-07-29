@@ -14,7 +14,8 @@ import CallToActionOutlinedIcon from "@material-ui/icons/CallToActionOutlined";
 
 const useStyles = makeStyles({
   list: {
-    width: 250,
+    width: "250px",
+    height: "100%"
   },
   fullList: {
     width: "auto",
@@ -129,7 +130,7 @@ const useStyles = makeStyles({
     textDecoration: "none",
   },
   policies_container: {
-    height: "67vh",
+    height: "66%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-end",
