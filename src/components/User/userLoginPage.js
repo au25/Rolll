@@ -37,7 +37,7 @@ export default function () {
   const classes = useStyles();
   return (
     <div className={classes.signupPageContainer}>
-      <Navigation />
+      {/* <Navigation /> */}
       {/* <OAuthLogin /> */}
       <div className={classes.container}>
         <div className={classes.accountMsg}>Log In</div>

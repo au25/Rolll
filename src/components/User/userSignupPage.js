@@ -73,7 +73,7 @@ export default function () {
   return (
     <Div100vh className={classes.signupPageContainer}>
       {/* <OAuthLogin /> */}
-      <Navigation />
+      {/* <Navigation /> */}
       <div className={classes.signinTitleContainer}>
         <div className={classes.signinTitle}>Have an account? Log in</div>
       </div>

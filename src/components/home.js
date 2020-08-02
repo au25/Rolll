@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   banner_image: {
     objectFit: "cover",
     height: "100%",
+    margin: "0 0 0 14px"
   },
 }));
 

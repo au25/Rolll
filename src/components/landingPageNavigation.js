@@ -11,11 +11,12 @@ import { Link } from "react-router-dom";
 import StorefrontOutlinedIcon from "@material-ui/icons/StorefrontOutlined";
 import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 import CallToActionOutlinedIcon from "@material-ui/icons/CallToActionOutlined";
+import { Redirect, useHistory } from "react-router";
 
 const useStyles = makeStyles({
   list: {
     width: "250px",
-    height: "100%"
+    height: "100%",
   },
   fullList: {
     width: "auto",
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
     color: "rgba(255, 255, 255, 0.9)",
     padding: "20px",
     letterSpacing: "1.5px",
-    textTransform: "none"
+    textTransform: "none",
   },
   welcomeMsgContainer: {
     padding: "20px",
@@ -79,7 +80,7 @@ const useStyles = makeStyles({
     justifyContent: "flex-end",
     width: "100%",
     position: "absolute",
-    backgroundColor: "black"
+    backgroundColor: "black",
   },
   loginButton: {
     fontSize: "14px",
@@ -137,12 +138,22 @@ const useStyles = makeStyles({
     padding: "0 0 12px 15px",
     fontFamily: "CoreSans, sans-serif",
     fontSize: "12px",
-    letterSpacing: "0.25px"
+    letterSpacing: "0.25px",
   },
   tos_text: {
-    margin: "0 0 5px 0"
+    fontFamily: "CoreSans, sans-serif",
+    display: "flex",
+    padding: "5px 5px 5px 0",
+    width: "110px",
+    fontSize: "12px",
   },
-  privacy_text: {}
+  privacy_text: {
+    padding: "5px 5px 5px 0",
+    width: "110px",
+    fontSize: "12px",
+    fontFamily: "CoreSans, sans-serif",
+    display: "flex",
+  },
 });
 
 const theme = createMuiTheme({
@@ -160,6 +171,7 @@ export default function SwipeableTemporaryDrawer() {
   const [state, setState] = React.useState({
     right: false,
   });
+  const history = useHistory();
 
   const toggleDrawer = (side, open) => (event) => {
     if (
@@ -202,9 +214,14 @@ export default function SwipeableTemporaryDrawer() {
         </div>
       </Link>
       <div className={classes.policies_container}>
-          <div className={classes.tos_text}>Terms of Service</div>
-          <div className={classes.privacy_text}>Privacy Policy</div>
-        </div>
+        <button
+          className={classes.tos_text}
+          onClick={() => history.push("/tos")}
+        >
+          Terms of Service
+        </button>
+        <button className={classes.privacy_text} onClick={()=> history.push("/privacyPolicy")}>Privacy Policy</button>
+      </div>
     </div>
   );
 
@@ -249,7 +266,6 @@ export default function SwipeableTemporaryDrawer() {
           </div>
         )}
       </div>
-
     </ThemeProvider>
   );
 }

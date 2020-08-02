@@ -6,6 +6,8 @@ import PrivateRoute from "./PrivateRoute";
 import Home from "./components/home";
 import Login from "./components/User/userLoginPage";
 import Signup from "./components/User/userSignupPage";
+import Tos from "./components/tos";
+import Pp from "./components/privacyPolicy"
 
 // Admin imports
 import AdminLoginPage from "./components/Admin/adminLoginPage";
@@ -33,6 +35,8 @@ function App() {
           <Route path="/home" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
+          <Route path="/tos" component={Tos} />
+          <Route path="/privacyPolicy" component={Pp}/>
 
           {/* User Routes */}
           <Route path="/userHome" component={UserHome} />
