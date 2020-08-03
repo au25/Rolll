@@ -146,6 +146,7 @@ const useStyles = makeStyles({
     padding: "5px 5px 5px 0",
     width: "110px",
     fontSize: "12px",
+    backgroundColor: "none",
   },
   privacy_text: {
     padding: "5px 5px 5px 0",
@@ -153,6 +154,7 @@ const useStyles = makeStyles({
     fontSize: "12px",
     fontFamily: "CoreSans, sans-serif",
     display: "flex",
+    backgroundColor: "none",
   },
 });
 
