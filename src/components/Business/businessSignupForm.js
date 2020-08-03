@@ -51,7 +51,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
   },
-  woolooWithUsText: {
+  rollWithUsTextUsText: {
     fontSize: "14px",
     fontSize: "16px",
     margin: "80px 0 15px 0",
@@ -426,10 +426,10 @@ const SignUp = ({ history }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Navigation />
+      {/* <Navigation /> */}
       <div className={classes.outerFormContainer}>
-        <div className={classes.woolooWithUsText}>
-          We just need a few information before you can wooloo your business.
+        <div className={classes.rollWithUsTextUsText}>
+          We just need a few information to get you rolling.
         </div>
         <div className={classes.shopInfoTitle}>
           <div className={classes.borderBottom}></div>

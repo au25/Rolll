@@ -79,7 +79,18 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(205, 239, 245, 0.8)",
+        "&$focused": {
+          backgroundColor: "rgba(205, 239, 245, 0.8) !important",
+        },
+      },
+      underline: {
+        "&$focused": {
+          // borderBottom: "1px solid black",
+        },
+        "&:after": {
+          borderBottom: "2px solid black",
+        }
       },
     },
     MuiInputLabel: {
@@ -89,8 +100,20 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "#4caf50",
+        color: "white",
         height: "60px",
+        "&$disabled": {
+          color: "white",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        },
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        "&$focused": {
+          color: "black",
+        },
       },
     },
     MuiIconButton: {
@@ -259,8 +282,8 @@ const SignUp = ({ history }) => {
       ...locationValid,
       country: true,
       region: false,
-      city: false,
-      cityArea: false,
+      city: true,
+      cityArea: true,
     });
   };
 
@@ -280,7 +303,7 @@ const SignUp = ({ history }) => {
       cityDisable: false,
       cityAreaDisable: true,
     });
-    setLocationValid({ ...locationValid, region: true });
+    setLocationValid({ ...locationValid, region: true, city: false });
   };
 
   const handleCityChange = async (e) => {
@@ -300,7 +323,7 @@ const SignUp = ({ history }) => {
       ...selectDisable,
       cityAreaDisable: false,
     });
-    setLocationValid({ ...locationValid, city: true });
+    setLocationValid({ ...locationValid, city: true, cityArea: false });
   };
 
   const handleCityAreaChange = async (e) => {
@@ -408,6 +431,11 @@ const SignUp = ({ history }) => {
                     })
                   : null}
               </NativeSelect>
+              {locationValid.country ? null : (
+                <div className={classes.location_errorText}>
+                  Select a Country
+                </div>
+              )}
             </FormControl>
             <FormControl variant="filled" className={classes.formControl}>
               <InputLabel>Region</InputLabel>

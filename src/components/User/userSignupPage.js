@@ -15,6 +15,17 @@ const useStyles = makeStyles({
   googleButton: {
     width: "300px",
   },
+  rollWithUsText: {
+    fontSize: "14px",
+    fontSize: "16px",
+    margin: "80px 0 35px 0",
+    display: "flex",
+    width: "70%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+  },
   accountMsg: {
     width: "300px",
   },
@@ -36,6 +47,7 @@ const useStyles = makeStyles({
   orTextContainer: {
     display: "flex",
     justifyContent: "center",
+    width: "100%",
   },
   orText: {
     fontSize: "16px",
@@ -62,6 +74,12 @@ const useStyles = makeStyles({
     fontSize: "14px",
     textAlign: "center",
     margin: "0 0 80px 0",
+    lineHeight: "18px",
+  },
+  page_container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
 });
 
@@ -71,18 +89,22 @@ export default function () {
   const [expanded, setExpanded] = React.useState("panel1");
 
   return (
-    <Div100vh className={classes.signupPageContainer}>
+    // <Div100vh className={classes.signupPageContainer}>
+    <div className={classes.page_container}>
       {/* <OAuthLogin /> */}
       {/* <Navigation /> */}
-      <div className={classes.signinTitleContainer}>
+      {/* <div className={classes.signinTitleContainer}>
         <div className={classes.signinTitle}>Have an account? Log in</div>
-      </div>
-      <div className={classes.orTextContainer}>
+      </div> */}
+      {/* <div className={classes.orTextContainer}>
         <div className={classes.orText}>
           <div className={classes.orBorderBottom}></div>
           <div>or</div>
           <div className={classes.orBorderBottom}></div>
         </div>
+      </div> */}
+      <div className={classes.rollWithUsText}>
+        We just need some information to get you rolling.
       </div>
       <div className={classes.signupFormContainer}>
         <SignupForm />
@@ -90,6 +112,7 @@ export default function () {
       <div className={classes.signupPolicyContainer}>
         By signing up, you agree with the Terms of Service & Privacy Policy
       </div>
-    </Div100vh>
+    </div>
+    // </Div100vh>
   );
 }

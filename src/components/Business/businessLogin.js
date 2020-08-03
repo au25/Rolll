@@ -92,9 +92,14 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        // backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "#4caf50 !important",
         height: "60px",
       },
+      text: {
+        color: "white",
+        letterSpacing: "1px"
+      }
     },
     MuiIconButton: {
       edgeEnd: {
