@@ -17,7 +17,7 @@ const useStyles = makeStyles({
   welcomeText: {
     fontSize: "14px",
     fontSize: "16px",
-    margin: "60px 0 28px 0",
+    margin: "80px 0 28px 0",
     display: "flex",
     width: "70%",
     alignItems: "center",
@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
   },
   dontHaveAccountText: {
-    fontSize: "16px",
+    fontSize: "14px",
     display: "flex",
     alignItems: "center",
     color: "rgba(0, 0, 0, 0.5)",
@@ -72,6 +72,16 @@ const useStyles = makeStyles({
   signupButton: {
     width: "100%",
   },
+  register_container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  register_button: {
+    width: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.09) !important",
+    color: "black"
+  }
 });
 
 /**
@@ -82,7 +92,18 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(205, 239, 245, 0.4)",
+        "&$focused": {
+          backgroundColor: "rgba(205, 239, 245, 0.8) !important",
+        },
+      },
+      underline: {
+        "&$focused": {
+          // borderBottom: "1px solid black",
+        },
+        "&:after": {
+          borderBottom: "2px solid black",
+        },
       },
     },
     MuiInputLabel: {
@@ -98,8 +119,8 @@ const theme = createMuiTheme({
       },
       text: {
         color: "white",
-        letterSpacing: "1px"
-      }
+        letterSpacing: "1px",
+      },
     },
     MuiIconButton: {
       edgeEnd: {
@@ -111,6 +132,13 @@ const theme = createMuiTheme({
       root: {
         width: "100%",
         margin: "0 0 28px 0",
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        "&$focused": {
+          color: "black",
+        },
       },
     },
     MuiFormHelperText: {
@@ -214,21 +242,21 @@ export default function () {
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </div>
-            <Button type="submit">
-              LOG IN
-            </Button>
+            <Button type="submit">LOG IN</Button>
             <div className={classes.forgotPasswordText}>
               Forgot Your Password?
             </div>
-            <div className={classes.dontHaveAccountText}>
-              Don't have an account?
+            <div className={classes.register_container}>
+              <div className={classes.dontHaveAccountText}>
+                Don't have an account?
+              </div>
+              <Button
+                className={classes.register_button}
+                onClick={() => history.push("/registerBusiness")}
+              >
+                Register
+              </Button>
             </div>
-            <Link
-              to="/registerBusiness"
-              className={classes.registerBusinessLinkContainer}
-            >
-              <Button className={classes.signupButton}>Register</Button>
-            </Link>
           </ValidatorForm>
         </div>
       </ThemeProvider>

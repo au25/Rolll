@@ -139,22 +139,21 @@ const useStyles = makeStyles({
     fontFamily: "CoreSans, sans-serif",
     fontSize: "12px",
     letterSpacing: "0.25px",
+    alignItems: "flex-start"
   },
   tos_text: {
     fontFamily: "CoreSans, sans-serif",
     display: "flex",
     padding: "5px 5px 5px 0",
-    width: "110px",
     fontSize: "12px",
-    backgroundColor: "none",
+    textTransform: "none",
   },
   privacy_text: {
     padding: "5px 5px 5px 0",
-    width: "110px",
     fontSize: "12px",
     fontFamily: "CoreSans, sans-serif",
     display: "flex",
-    backgroundColor: "none",
+    textTransform: "none",
   },
 });
 
@@ -216,13 +215,18 @@ export default function SwipeableTemporaryDrawer() {
         </div>
       </Link>
       <div className={classes.policies_container}>
-        <button
+        <Button
           className={classes.tos_text}
           onClick={() => history.push("/tos")}
         >
           Terms of Service
-        </button>
-        <button className={classes.privacy_text} onClick={()=> history.push("/privacyPolicy")}>Privacy Policy</button>
+        </Button>
+        <Button
+          className={classes.privacy_text}
+          onClick={() => history.push("/privacyPolicy")}
+        >
+          Privacy Policy
+        </Button>
       </div>
     </div>
   );

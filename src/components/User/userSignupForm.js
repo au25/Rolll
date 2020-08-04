@@ -67,7 +67,7 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(205, 239, 245, 0.8)",
+        backgroundColor: "rgba(205, 239, 245, 0.4)",
         "&$focused": {
           backgroundColor: "rgba(205, 239, 245, 0.8) !important",
         },
@@ -94,6 +94,13 @@ const theme = createMuiTheme({
         "&$disabled": {
           color: "white",
           backgroundColor: "rgba(0, 0, 0, 0.5)",
+        },
+        "&:hover": {
+          backgroundColor: "#4caf50",
+          // Reset on touch devices, it doesn't add specificity
+          "@media (hover: none)": {
+            backgroundColor: "#4caf50",
+          },
         },
       },
     },

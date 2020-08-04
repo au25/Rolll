@@ -179,6 +179,7 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
+        backgroundColor: "transparent"
       },
       input: {
         "&:disabled": {
@@ -198,6 +199,13 @@ const theme = createMuiTheme({
         "&$disabled": {
           color: "white",
           backgroundColor: "rgba(0, 0, 0, 0.5)"
+        },
+        "&:hover": {
+          backgroundColor: "#4caf50",
+          // Reset on touch devices, it doesn't add specificity
+          "@media (hover: none)": {
+            backgroundColor: "#4caf50",
+          },
         },
       },
     },
@@ -460,6 +468,7 @@ export default function ({ userDbInfo, countryInfo }) {
         >
           <div className={classes.yourProfileText}>Your Profile</div>
           <TextValidator
+          disabled
             id="filled-basic"
             label="Email"
             variant="filled"

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   passwordContainer: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "0 0 5px 0"
+    margin: "0 0 5px 0",
   },
   forgotPasswordText: {
     fontSize: "14px",
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(0, 0, 0, 0.5)",
     fontFamily: "CoreSans, sans-serif",
     padding: "28px 0 0 0",
-    margin: "0 0 20px 0"
+    margin: "0 0 20px 0",
   },
   signUpText: {
     fontSize: "14px",
@@ -61,6 +61,16 @@ const useStyles = makeStyles((theme) => ({
   signupLinkContainer: {
     textDecoration: "none",
   },
+  signup_container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  signup_button: {
+    width: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.09)",
+    color: "black"
+  }
 }));
 
 /**
@@ -71,7 +81,7 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(205, 239, 245, 0.8)",
+        backgroundColor: "rgba(205, 239, 245, 0.4)",
         "&$focused": {
           backgroundColor: "rgba(205, 239, 245, 0.8) !important",
         },
@@ -82,7 +92,7 @@ const theme = createMuiTheme({
         },
         "&:after": {
           borderBottom: "2px solid black",
-        }
+        },
       },
     },
     MuiInputLabel: {
@@ -99,6 +109,20 @@ const theme = createMuiTheme({
         "&$disabled": {
           color: "white",
           backgroundColor: "rgba(0, 0, 0, 0.5)",
+        },
+        "&:hover": {
+          backgroundColor: "#4caf50",
+          // Reset on touch devices, it doesn't add specificity
+          "@media (hover: none)": {
+            backgroundColor: "#4caf50",
+          },
+        },
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        "&$focused": {
+          color: "black",
         },
       },
     },
@@ -222,10 +246,17 @@ const SignUp = ({ history }) => {
         </Button>
       </ValidatorForm>
       <div className={classes.forgotPasswordText}> Forgot Your Password?</div>
+      <div className={classes.signup_container}>
         <div className={classes.dontHaveAccountText}>
           Don't have an account?
         </div>
-        <Button onClick={()=> history.push("/signup")}>Sign up</Button>
+        <Button
+          className={classes.signup_button}
+          onClick={() => history.push("/signup")}
+        >
+          Sign up
+        </Button>
+      </div>
     </ThemeProvider>
   );
 };

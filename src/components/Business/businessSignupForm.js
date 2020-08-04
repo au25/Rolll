@@ -11,12 +11,12 @@ import { withRouter } from "react-router";
 import firebase from "../../firebase";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
+import { Link } from "react-router-dom";
 import Navigation from "../landingPageNavigation";
 // Required for side-effects
 require("firebase/functions");
@@ -143,12 +143,19 @@ const useStyles = makeStyles(() => ({
     fontSize: "14px",
     textAlign: "center",
     margin: "0 0 80px 0",
+    letterSpacing: "0.5px"
   },
   location_errorText: {
     fontFamily: "CoreSans, sans-serif",
     fontSize: "13px",
     color: "rgba(204, 0, 0, 1)",
     margin: "3px 0 0px 0px",
+  },
+  tos_text: {
+    textDecoration: "none",
+  },
+  pp_text: {
+    textDecoration: "none",
   },
 }));
 
@@ -157,7 +164,25 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(205, 239, 245, 0.4)",
+        "&$focused": {
+          backgroundColor: "rgba(205, 239, 245, 0.8) !important",
+        },
+      },
+      underline: {
+        "&$focused": {
+          // borderBottom: "1px solid black",
+        },
+        "&:after": {
+          borderBottom: "2px solid black",
+        },
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        "&$focused": {
+          color: "black",
+        },
       },
     },
     MuiInputLabel: {
@@ -301,7 +326,7 @@ const SignUp = ({ history }) => {
               shop_city: registrationValue.shop_city,
               shop_region: registrationValue.shop_region,
               shop_country: registrationValue.shop_country,
-              shop_area: registrationValue.shop_cityArea
+              shop_area: registrationValue.shop_cityArea,
             },
           ],
           first_name: registrationValue.first_name,
@@ -372,8 +397,8 @@ const SignUp = ({ history }) => {
       ...locationValid,
       country: true,
       region: false,
-      city: false,
-      cityArea: false,
+      city: true,
+      cityArea: true,
     });
   };
 
@@ -393,7 +418,7 @@ const SignUp = ({ history }) => {
       cityDisable: false,
       cityAreaDisable: true,
     });
-    setLocationValid({ ...locationValid, region: true });
+    setLocationValid({ ...locationValid, region: true, city: false });
   };
 
   const handleCityChange = async (e) => {
@@ -413,7 +438,7 @@ const SignUp = ({ history }) => {
       ...selectDisable,
       cityAreaDisable: false,
     });
-    setLocationValid({ ...locationValid, city: true });
+    setLocationValid({ ...locationValid, city: true, cityArea: false });
   };
 
   const handleCityAreaChange = async (e) => {
@@ -486,6 +511,11 @@ const SignUp = ({ history }) => {
                     })
                   : null}
               </NativeSelect>
+              {locationValid.country ? null : (
+                <div className={classes.location_errorText}>
+                  Select a Country
+                </div>
+              )}
             </FormControl>
             <FormControl variant="filled" className={classes.formControl}>
               <InputLabel>Shop Region</InputLabel>
@@ -688,7 +718,15 @@ const SignUp = ({ history }) => {
           </div>
         </ValidatorForm>
         <div className={classes.signupPolicyContainer}>
-          By signing up, you agree with the Terms of Service & Privacy Policy
+          By signing up, you agree with the
+          <Link to="/tos" className={classes.tos_text}>
+            {" "}
+            Terms of Service
+          </Link>{" "}
+          &{" "}
+          <Link to="/privacyPolicy" className={classes.pp_text}>
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </ThemeProvider>

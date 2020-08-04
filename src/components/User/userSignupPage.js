@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SignupForm from "./userSignupForm";
+import { Link } from "react-router-dom";
 import OAuthLogin from "./userOAuthLoginComponent";
 import Div100vh from "react-div-100vh";
 import Navigation from "../landingPageNavigation";
@@ -75,12 +76,19 @@ const useStyles = makeStyles({
     textAlign: "center",
     margin: "0 0 80px 0",
     lineHeight: "18px",
+    letterSpacing: "0.5px"
   },
   page_container: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
+  tos_text: {
+    textDecoration: "none"
+  },
+  pp_text: {
+    textDecoration: "none"
+  }
 });
 
 export default function () {
@@ -110,7 +118,9 @@ export default function () {
         <SignupForm />
       </div>
       <div className={classes.signupPolicyContainer}>
-        By signing up, you agree with the Terms of Service & Privacy Policy
+        By signing up, you agree with the{" "}
+        <Link to="/tos" className={classes.tos_text}>Terms of Service</Link> & {" "}
+        <Link to="/privacyPolicy" className={classes.pp_text}>Privacy Policy</Link>
       </div>
     </div>
     // </Div100vh>
