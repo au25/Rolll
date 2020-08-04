@@ -44,18 +44,6 @@ const useStyles = makeStyles(() => ({
   countryContainer: {
     borderBottom: "1px solid rgba(0, 0, 0, 0.42)",
   },
-  countryErrorMessage: {
-    fontSize: "12.5px",
-    color: "#f44336",
-    padding: "5px 0 0 14px",
-    fontFamily: "CoreSans, sans-serif",
-  },
-  regionErrorMessage: {
-    fontSize: "12.5px",
-    color: "#f44336",
-    padding: "5px 0 0 14px",
-    fontFamily: "CoreSans, sans-serif",
-  },
   regionOuterContainer: {
     margin: "0 0 28px 0",
   },

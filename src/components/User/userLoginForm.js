@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   passwordContainer: {
     display: "flex",
     justifyContent: "space-between",
+    margin: "0 0 5px 0"
   },
   forgotPasswordText: {
     fontSize: "14px",
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(0, 0, 0, 0.5)",
     fontFamily: "CoreSans, sans-serif",
     padding: "28px 0 0 0",
+    margin: "0 0 20px 0"
   },
   signUpText: {
     fontSize: "14px",
@@ -54,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
   },
   userSignup_saveButton: {
-    backgroundColor: "rgba(0, 0, 0, 0.05)",
+    // backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
   signupLinkContainer: {
     textDecoration: "none",
@@ -69,7 +71,18 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "rgba(205, 239, 245, 0.8)",
+        "&$focused": {
+          backgroundColor: "rgba(205, 239, 245, 0.8) !important",
+        },
+      },
+      underline: {
+        "&$focused": {
+          // borderBottom: "1px solid black",
+        },
+        "&:after": {
+          borderBottom: "2px solid black",
+        }
       },
     },
     MuiInputLabel: {
@@ -79,8 +92,14 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
+        backgroundColor: "#4caf50",
+        color: "white",
         height: "60px",
         width: "100%",
+        "&$disabled": {
+          color: "white",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        },
       },
     },
     MuiIconButton: {
@@ -203,12 +222,10 @@ const SignUp = ({ history }) => {
         </Button>
       </ValidatorForm>
       <div className={classes.forgotPasswordText}> Forgot Your Password?</div>
-      <Link to="/signup" className={classes.signupLinkContainer}>
         <div className={classes.dontHaveAccountText}>
           Don't have an account?
         </div>
-        <div className={classes.signUpText}> Sign up</div>
-      </Link>
+        <Button onClick={()=> history.push("/signup")}>Sign up</Button>
     </ThemeProvider>
   );
 };

@@ -17,16 +17,17 @@ const useStyles = makeStyles({
   accountMsg: {
     width: "70%",
     fontFamily: "CoreSans, sans-serif",
-    color: "rgba(0, 0, 0, 0.7)",
+    color: "rgba(0, 0, 0, 0.5)",
     fontSize: "16px",
     fontWeight: "400",
-    margin: "10px 0 28px 0"
+    margin: "10px 0 28px 0",
   },
   container: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    margin: "80px 0 0 0",
   },
   formContainer: {
     width: "70%",
@@ -40,7 +41,7 @@ export default function () {
       {/* <Navigation /> */}
       {/* <OAuthLogin /> */}
       <div className={classes.container}>
-        <div className={classes.accountMsg}>Log In</div>
+        <div className={classes.accountMsg}>Welcome back</div>
         <div className={classes.formContainer}>
           <LoginForm />
         </div>
