@@ -3,13 +3,18 @@
     "name": "Rolll",
     "icons": [
         {
-            "src": "./img/squirtle.jpg",
+            "src": "./img/logo_192x192_ver4.png",
             "type": "image/jpg",
-            "sizes": "1024x1024"
+            "sizes": "192x192"
+        },
+        {
+            "src": "./img/logo_512x512_ver2.png",
+            "type": "image/png",
+            "sizes": "512x512"
         }
     ],
     "start_url": ".",
-    "displY": "standalone",
+    "display": "standalone",
     "theme_color": "#000000",
     "background_color": "#ffffff" 
 }
