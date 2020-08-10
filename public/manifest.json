@@ -1,0 +1,15 @@
+{
+    "short_name": "Rolll",
+    "name": "Rolll",
+    "icons": [
+        {
+            "src": "./img/squirtle.jpg",
+            "type": "image/jpg",
+            "sizes": "1024x1024"
+        }
+    ],
+    "start_url": ".",
+    "displY": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff" 
+}
