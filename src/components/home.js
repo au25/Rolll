@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     overflow: "hidden",
+    backgroundColor: "black"
   },
   banner_image: {
     objectFit: "cover",
@@ -53,7 +54,7 @@ export default function () {
         <div className={classes.banner_container}>
           <img
             className={classes.banner_image}
-            src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Flanding_withLogo.jpg?alt=media&token=32b5df0c-f3cb-4cc8-90c6-5c09474b6a6f"
+            src="img/landing_withLogo.jpg"
           />
         </div>
       </Div100vh>
