@@ -19,6 +19,7 @@ import {
   faHeart,
   faClone,
   faStoreAlt,
+  faGift
 } from "@fortawesome/free-solid-svg-icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -82,7 +83,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ({ userDbInfo, setUserDbInfo, location, countryInfo, userAuthInfo }) {
+export default function ({
+  userDbInfo,
+  setUserDbInfo,
+  location,
+  countryInfo,
+  userAuthInfo,
+}) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [parentShopInfo, setParentShopInfo] = useState({});
@@ -90,11 +97,10 @@ export default function ({ userDbInfo, setUserDbInfo, location, countryInfo, use
   const history = useHistory();
 
   useEffect(() => {
-    if(location && location.location.state){
+    if (location && location.location.state) {
       setNavigationValue(location.location.state.navigationValue);
     }
   }, []);
-
 
   // console.log("this is location");
   // console.log(location);
@@ -104,14 +110,19 @@ export default function ({ userDbInfo, setUserDbInfo, location, countryInfo, use
   const RenderBody = () => {
     if (navigationValue == "giftList") {
       return (
-        <UserGiftList userDbInfo={userDbInfo} setUserDbInfo={setUserDbInfo} userAuthInfo={userAuthInfo} countryInfo={countryInfo}/>
+        <UserGiftList
+          userDbInfo={userDbInfo}
+          setUserDbInfo={setUserDbInfo}
+          userAuthInfo={userAuthInfo}
+          countryInfo={countryInfo}
+        />
       );
     }
     if (navigationValue == "giftRecord") {
       return <UserGiftRecord userDbInfo={userDbInfo} />;
     }
     if (navigationValue == "profile") {
-      return <UserProfile userDbInfo={userDbInfo} countryInfo={countryInfo}/>;
+      return <UserProfile userDbInfo={userDbInfo} countryInfo={countryInfo} />;
     }
   };
 

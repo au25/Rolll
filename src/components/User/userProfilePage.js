@@ -6,20 +6,11 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData,
-} from "react-country-region-selector";
-import "./userProfilePage.css";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 const useStyles = makeStyles((theme) => ({

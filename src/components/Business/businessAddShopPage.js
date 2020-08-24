@@ -8,14 +8,8 @@ import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import * as firebase from "firebase";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import {
-  CountryDropdown,
-  RegionDropdown,
-  CountryRegionData,
-} from "react-country-region-selector";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import Button from "@material-ui/core/Button";
 import "./businessManageShopPage.css";

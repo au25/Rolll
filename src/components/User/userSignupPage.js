@@ -2,9 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SignupForm from "./userSignupForm";
 import { Link } from "react-router-dom";
-import OAuthLogin from "./userOAuthLoginComponent";
-import Div100vh from "react-div-100vh";
-import Navigation from "../landingPageNavigation";
 
 const useStyles = makeStyles({
   signupPageContainer: {
@@ -93,8 +90,6 @@ const useStyles = makeStyles({
 
 export default function () {
   const classes = useStyles();
-
-  const [expanded, setExpanded] = React.useState("panel1");
 
   return (
     // <Div100vh className={classes.signupPageContainer}>

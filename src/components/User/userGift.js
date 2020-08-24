@@ -5,17 +5,11 @@ import {
   ThemeProvider,
   createMuiTheme,
 } from "@material-ui/core/styles";
-import Gift from "../gift";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import LinearProgress from "@material-ui/core/LinearProgress";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 
 const useStyles = makeStyles((theme) => ({
@@ -202,38 +196,6 @@ const theme = createMuiTheme({
   },
 });
 
-/**
- * setInterval function that increases the gift open percentage while onTouchStart (gift is held down)
- * When gift percentage is > 100, the gift will go shake shake
- */
-// let openGiftPercent = 0;
-// let timer = null;
-
-// const progressIncrease = (
-//   setActiveGiftIndex,
-//   progressArray,
-//   setProgressArray,
-//   index,
-//   claimGift,
-//   gift
-// ) => {
-//   // setActiveGiftIndex(null);
-//   openGiftPercent += 1;
-//   let progressArrayCopy = [...progressArray];
-//   if (progressArrayCopy[index] < 100) {
-//     progressArrayCopy[index] = openGiftPercent;
-//   }
-//   setProgressArray(progressArrayCopy);
-//   console.log(openGiftPercent);
-//   if (openGiftPercent >= 100) {
-//     clearInterval(timer);
-//     // setActiveGiftIndex(index);
-//     // progressArrayCopy[index] = 100;
-//     openGiftPercent = 0;
-//     claimGift(gift);
-//   }
-// };
-
 export default function ({
   userDbInfo,
   setUserDbInfo,
@@ -308,23 +270,7 @@ export default function ({
     userGiftRef();
 
     const fetchCountryInfo = async () => {
-      // console.log("this is the profile page");
       if (countryInfo) {
-        // countryInfo.docs.map((country) => countryArray.push(country.id));
-        // let regionCollection = await db
-        //   .collection("country")
-        //   .doc(userDbInfo.data().user_country)
-        //   .collection("region")
-        //   .get();
-        // regionCollection.docs.map((region) => regionArray.push(region.id));
-        // let cityCollection = await db
-        //   .collection("country")
-        //   .doc(userDbInfo.data().user_country)
-        //   .collection("region")
-        //   .doc(userDbInfo.data().user_region)
-        //   .collection("city")
-        //   .get();
-        // cityCollection.docs.map((city) => cityArray.push(city.id));
         let cityAreaCollection = await db
           .collection("country")
           .doc(userDbInfo.data().user_country)
@@ -340,8 +286,6 @@ export default function ({
       }
       setLocationInfo({
         ...locationInfo,
-        // countryArray: countryArray,
-        // regionArray: regionArray,
         cityArray: cityArray,
         cityAreaArray: cityAreaArray,
       });
@@ -404,28 +348,14 @@ export default function ({
     console.log("mouse down");
     setActiveGiftIndex(index);
     setGiftReadyOpenIndex(index);
-    // timer = setInterval(function () {
-    //   progressIncrease(
-    //     setActiveGiftIndex,
-    //     progressArray,
-    //     setProgressArray,
-    //     index,
-    //     claimGift,
-    //     gift
-    //   );
-    // }, 10);
   };
 
   const handleGiftMouseUp = (e, index, gift) => {
-    // clearInterval(timer);
-    // openGiftPercent = 0;
     console.log("mouse up");
   };
 
   const clearGiftProgress = () => {
     console.log("scrolling");
-    // clearInterval(timer);
-    // openGiftPercent = 0;
   };
 
   /**
@@ -474,8 +404,6 @@ export default function ({
             }
           }
         });
-        console.log("gift available: " + nonExpiredGiftCounter);
-        console.log("gift claimed: " + nonExpiredGiftClaimedCounter);
         // cityGiftRecord is from gift collection
         if (nonExpiredGiftCounter != nonExpiredGiftClaimedCounter) {
           return cityGiftRecord.gift.map((cityGift, index) => {
@@ -581,7 +509,7 @@ export default function ({
               <div className={classes.logo_container}>
                 <img
                   className={classes.logo_image}
-                  src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Frolll_logo_2.png?alt=media&token=505ecac4-fd7b-412c-9463-b2ae39f2af37"
+                  src="img/rolll_logo_2.png"
                 />
               </div>
               <div className={classes.allGiftsClaimed_text}>
@@ -596,7 +524,7 @@ export default function ({
           <div className={classes.logo_container}>
             <img
               className={classes.logo_image}
-              src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Frolll_logo_2.png?alt=media&token=505ecac4-fd7b-412c-9463-b2ae39f2af37"
+              src="img/rolll_logo_2.png"
             />
           </div>
           {/* <div className={classes.linearProgress}> */}

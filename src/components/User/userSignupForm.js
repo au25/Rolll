@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
-  withStyles,
   makeStyles,
   ThemeProvider,
   createMuiTheme,
@@ -11,16 +10,12 @@ import firebase from "../../firebase";
 import { AuthContext } from "../../Auth";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
-import "./userSignupForm.css";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
-import clsx from "clsx";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Div100vh from "react-div-100vh";
-// Required for side-effects
 require("firebase/functions");
 
 /**
@@ -208,14 +203,6 @@ const SignUp = ({ history }) => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
-  };
-
-  const validateCountry = (e) => {
-    setRegistrationValue({ ...registrationValue, user_country: e });
-  };
-
-  const validateRegion = (e) => {
-    setRegistrationValue({ ...registrationValue, user_region: e });
   };
 
   /**

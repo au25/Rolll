@@ -1,7 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import app from "../../firebase";
 import { makeStyles } from "@material-ui/core/styles";
-import UserGift from "./userGift";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import UserNavigation from "./userNavigation";
@@ -14,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
     backgroundImage:
-      'url("https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fbackground_35.png?alt=media&token=a5be174a-cd06-4d97-b282-be6b33e71946")',
+      'url("img/background_35.png")',
     backgroundColor: "rgba(237, 232, 218, 0.7)",
 
     [theme.breakpoints.down(600)]: {},
