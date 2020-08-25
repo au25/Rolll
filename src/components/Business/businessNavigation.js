@@ -100,6 +100,7 @@ export default function ({ userDbInfo, location }) {
 
   useEffect(() => {
     setParentShopInfo(userDbInfo.data());
+    console.log("this is navigation page", userDbInfo.data());
     if (location && location.state) {
       if (value == "") {
         setValue("create");
@@ -197,7 +198,7 @@ export default function ({ userDbInfo, location }) {
             src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fprofile_icon.png?alt=media&token=2611a18c-502f-47e3-8dac-252adec806cd"
             onClick={() => setValue("profile")}
           />
-          <div className={classes.iconTitle}>Profile</div>
+          <div className={classes.iconTitle}>Profil</div>
         </div>
       </div>
     </Div100vh>

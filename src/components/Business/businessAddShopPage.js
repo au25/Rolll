@@ -150,10 +150,8 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
     shop_city: "",
     shop_country: "",
     shop_region: "",
-    shop_cityArea: "",
+    shop_area: "",
   });
-  const [countryErrorState, setCountryErrorState] = useState(null);
-  const [regionErrorState, setRegionErrorState] = useState(null);
   const [locationInfo, setLocationInfo] = useState();
   const [selectDisable, setSelectDisable] = useState({
     regionDisable: true,
@@ -215,7 +213,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
           shop_city: shopInfo.shop_city,
           shop_country: shopInfo.shop_country,
           shop_region: shopInfo.shop_region,
-          shop_area: shopInfo.shop_cityArea
+          shop_area: shopInfo.shop_area
         }),
       });
 
@@ -294,7 +292,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
 
   const handleCityAreaChange = async (e) => {
     setShopInfo({
-      ...shopInfo, shop_cityArea: e.target.value,
+      ...shopInfo, shop_area: e.target.value,
     });
     setLocationValid({ ...locationValid, cityArea: true });
   }
@@ -390,7 +388,7 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
               <NativeSelect
                 className={classes.citySelect_input}
                 defaultValue=""
-                value={shopInfo.shop_cityArea}
+                value={shopInfo.shop_area}
                 onChange={(e) => handleCityAreaChange(e)}
                 disabled={selectDisable.cityAreaDisable}
               >

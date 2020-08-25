@@ -141,7 +141,7 @@ export default function ({
                   filter:
                     navigationValue === "giftRecord" ? null : "grayscale(1)",
                 }}
-                src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2FplainBlue_giftBox.png?alt=media&token=73690a9c-81c8-4d84-88dc-e10a8784fab3"
+                src="img/blue_gift_box2.png"
                 onClick={() => setNavigationValue("giftRecord")}
               />
             </div>
@@ -155,7 +155,7 @@ export default function ({
                   filter:
                     navigationValue === "giftList" ? null : "grayscale(1)",
                 }}
-                src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2FplainBlue_giftBox.png?alt=media&token=73690a9c-81c8-4d84-88dc-e10a8784fab3"
+                src="img/blue_gift_box2.png"
                 onClick={() => setNavigationValue("giftList")}
               />
             </div>
@@ -167,7 +167,7 @@ export default function ({
               style={{
                 filter: navigationValue === "profile" ? null : "grayscale(1)",
               }}
-              src="https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fprofile_icon.png?alt=media&token=2611a18c-502f-47e3-8dac-252adec806cd"
+              src="img/blue_gift_box2.png"
               onClick={() => setNavigationValue("profile")}
             />
             <div className={classes.iconTitle}>Profile</div>

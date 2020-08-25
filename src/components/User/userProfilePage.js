@@ -146,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "0",
     height: "40px",
     backgroundColor: "rgba(0, 0, 0, 0)",
-    margin: "0 0 25px 0"
+    margin: "0 0 25px 0",
   },
   logoutContainer: {
     display: "flex",
@@ -170,7 +170,7 @@ const theme = createMuiTheme({
     MuiFilledInput: {
       root: {
         height: "60px",
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
       },
       input: {
         "&:disabled": {
@@ -189,7 +189,7 @@ const theme = createMuiTheme({
         width: "100%",
         "&$disabled": {
           color: "white",
-          backgroundColor: "rgba(0, 0, 0, 0.5)"
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
         },
         "&:hover": {
           backgroundColor: "#4caf50",
@@ -259,6 +259,7 @@ export default function ({ userDbInfo, countryInfo }) {
   let regionArray = [];
   let cityArray = [];
   let cityAreaArray = [];
+  let regionCollection, cityCollection, cityAreaCollection;
 
   useEffect(() => {
     if (userDbInfo && userDbInfo.data()) {
@@ -268,32 +269,36 @@ export default function ({ userDbInfo, countryInfo }) {
       // console.log("this is the profile page");
       if (countryInfo) {
         countryInfo.docs.map((country) => countryArray.push(country.id));
-        let regionCollection = await db
-          .collection("country")
-          .doc(userDbInfo.data().user_country)
-          .collection("region")
-          .get();
-        regionCollection.docs.map((region) => regionArray.push(region.id));
-        let cityCollection = await db
-          .collection("country")
-          .doc(userDbInfo.data().user_country)
-          .collection("region")
-          .doc(userDbInfo.data().user_region)
-          .collection("city")
-          .get();
-        cityCollection.docs.map((city) => cityArray.push(city.id));
-        let cityAreaCollection = await db
-          .collection("country")
-          .doc(userDbInfo.data().user_country)
-          .collection("region")
-          .doc(userDbInfo.data().user_region)
-          .collection("city")
-          .doc(userDbInfo.data().user_city)
-          .collection("area")
-          .get();
-        cityAreaCollection.docs.map((cityArea) =>
-          cityAreaArray.push(cityArea.id)
-        );
+        cityAreaArray.push(userDbInfo.data().user_cityArea);
+        cityArray.push(userDbInfo.data().user_city);
+        regionArray.push(userDbInfo.data().user_region);
+
+        // let regionCollection = await db
+        //   .collection("country")
+        //   .doc(userDbInfo.data().user_country)
+        //   .collection("region")
+        //   .get();
+        // regionCollection.docs.map((region) => regionArray.push(region.id));
+        // let cityCollection = await db
+        //   .collection("country")
+        //   .doc(userDbInfo.data().user_country)
+        //   .collection("region")
+        //   .doc(userDbInfo.data().user_region)
+        //   .collection("city")
+        //   .get();
+        // cityCollection.docs.map((city) => cityArray.push(city.id));
+        // let cityAreaCollection = await db
+        //   .collection("country")
+        //   .doc(userDbInfo.data().user_country)
+        //   .collection("region")
+        //   .doc(userDbInfo.data().user_region)
+        //   .collection("city")
+        //   .doc(userDbInfo.data().user_city)
+        //   .collection("area")
+        //   .get();
+        // cityAreaCollection.docs.map((cityArea) =>
+        //   cityAreaArray.push(cityArea.id)
+        // );
       }
       setLocationInfo({
         ...locationInfo,
@@ -459,7 +464,7 @@ export default function ({ userDbInfo, countryInfo }) {
         >
           <div className={classes.yourProfileText}>Your Profile</div>
           <TextValidator
-          disabled
+            disabled
             id="filled-basic"
             label="Email"
             variant="filled"
