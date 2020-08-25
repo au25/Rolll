@@ -1,5 +1,6 @@
 const static_cache_ver = "staticCache_ver1.4.1";
 const cacheArray = [
+  "/",
   "index.html",
   "offline.html",
   "img/landing_withLogo.jpg",

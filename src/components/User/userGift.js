@@ -176,7 +176,7 @@ const useStyles = makeStyles((theme) => ({
   cityAreaSelect_container: {
     margin: "25px 0 20px 0",
     width: "80%",
-    height: "56px"
+    height: "56px",
   },
 }));
 
@@ -239,7 +239,6 @@ export default function ({
     const fetchCityRecord = async () => {
       if (userDbInfo && userDbInfo.data()) {
         const user = await db.collection("user").doc(userAuthInfo.uid).get();
-        console.log("fetching city record in user gift page");
         const cityRef = await db
           .collection("gift")
           .doc(user.data().user_country)
@@ -249,10 +248,7 @@ export default function ({
           .doc(user.data().user_cityArea)
           .get();
 
-        // Array to hold the progress of each gift
-        // createProgressArray(cityRef.data());
-        //
-        console.log(cityRef.data());
+        // Sets the gifts from the city
         setCityGiftRecord(cityRef.data());
       }
     };
@@ -324,8 +320,6 @@ export default function ({
         .add(giftRewardArrayCopy[rollNumber].expireTime, "minutes")
         .toString(),
     };
-    // console.log("1 day expiry");
-    // console.log(giftCopy);
     newUserGiftArray.push(giftCopy);
     await db
       .collection("user")
@@ -350,23 +344,6 @@ export default function ({
     setGiftReadyOpenIndex(index);
   };
 
-  const handleGiftMouseUp = (e, index, gift) => {
-    console.log("mouse up");
-  };
-
-  const clearGiftProgress = () => {
-    console.log("scrolling");
-  };
-
-  /**
-   * Creates the progressArray state
-   */
-  // const createProgressArray = (giftRecordIteration) => {
-  //   for (let i = 0; i < giftRecordIteration.gift.length; i++) {
-  //     setProgressArray((progressArray) => [...progressArray, 0]);
-  //   }
-  // };
-
   /**
    * Render gifts based on location, if claimed and expiry
    */
@@ -374,15 +351,6 @@ export default function ({
     const currentTime = moment(
       firebase.firestore.Timestamp.now(new Date()).toDate()
     );
-    console.log(userGiftIdMap);
-    if (userGiftIdMap) {
-      console.log(userGiftIdMap.size);
-      console.log(userGiftIdMap);
-    }
-
-    if (cityGiftRecord && cityGiftRecord.gift) {
-      console.log(cityGiftRecord);
-    }
 
     let nonExpiredGiftCounter = 0;
     let nonExpiredGiftClaimedCounter = 0;
@@ -392,9 +360,6 @@ export default function ({
 
     if (cityGiftRecord) {
       // if (false) {
-      if (cityGiftRecord.gift.length == 0) {
-        return <div className={classes.giftContainer}>No gift Available.</div>;
-      }
       if (cityGiftRecord.gift) {
         cityGiftRecord.gift.map((cityGift, index) => {
           if (currentTime.isBefore(cityGift.gift_expiry_date)) {
@@ -412,12 +377,7 @@ export default function ({
               return userGiftIdMap.has(cityGift.gift_id) ? (
                 counterNull()
               ) : (
-                <div
-                  className={classes.giftContainer}
-                  onTouchMove={() => {
-                    clearGiftProgress(cityGift);
-                  }}
-                >
+                <div className={classes.giftContainer}>
                   <div className={classes.shopInfo_container}>
                     <div className={classes.shopName_text}>
                       {cityGift.shop_name}
@@ -456,7 +416,6 @@ export default function ({
                         onTouchStart={(e) =>
                           handleGiftMouseDown(e, index, cityGift)
                         }
-                        onMouseUp={(e) => handleGiftMouseUp(e, index, cityGift)}
                       >
                         <img
                           className={classes.giftImage}
@@ -488,10 +447,7 @@ export default function ({
                       </div>
                     </div>
                   </div>
-                  <div
-                    className={classes.expiring_container}
-                    // onClick={() => claimGift(cityGift)}
-                  >
+                  <div className={classes.expiring_container}>
                     <div className={classes.expire_text}>Expires</div>
                     <div className={classes.expireTime_text}>
                       {moment(cityGift.gift_expiry_date)
@@ -503,7 +459,8 @@ export default function ({
               );
             }
           });
-        } else
+        }
+        if (nonExpiredGiftCounter == nonExpiredGiftClaimedCounter) {
           return (
             <div className={classes.loading_container}>
               <div className={classes.logo_container}>
@@ -517,21 +474,12 @@ export default function ({
               </div>
             </div>
           );
+        }
       }
-    } else
-      return (
-        <div className={classes.loading_container}>
-          <div className={classes.logo_container}>
-            <img
-              className={classes.logo_image}
-              src="img/rolll_logo_2.png"
-            />
-          </div>
-          {/* <div className={classes.linearProgress}> */}
-          {/* <LinearProgress color="secondary" /> */}
-          {/* </div> */}
-        </div>
-      );
+    } else return null;
+    if (cityGiftRecord.gift.length == 0) {
+      return <div className={classes.giftContainer}>No gift Available.</div>;
+    }
   };
 
   /**
@@ -582,28 +530,15 @@ export default function ({
             )}
           </FormControl>
         </div>
-        {/* <FormControl variant="filled" className={classes.formControl}>
-          <InputLabel>City</InputLabel>
-          <NativeSelect
-            disabled={selectDisable.cityDisable}
-            className={classes.citySelect_input}
-            defaultValue={userInfo.user_city}
-            value={userInfo.user_city}
-            // onChange={(e) => handleCityChange(e)}
-          >
-            <option value="" disabled></option>
-            {locationInfo.cityArray.map((city) => {
-              return <option value={city}>{city}</option>;
-            })}
-          </NativeSelect>
-          {locationValid.city ? null : (
-            <div className={classes.location_errorText}>Select a City</div>
-          )}
-        </FormControl> */}
         <RenderGift />
       </ThemeProvider>
     </div>
   ) : (
-    <div>lol</div>
+    <div className={classes.loading_container}>
+      <div className={classes.logo_container}>
+        <img className={classes.logo_image} src="img/rolll_logo_2.png" />
+      </div>
+      <div className={classes.allGiftsClaimed_text}>Loading...</div>
+    </div>
   );
 }
