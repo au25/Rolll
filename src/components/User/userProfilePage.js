@@ -253,59 +253,57 @@ export default function ({ userDbInfo, countryInfo }) {
     region: true,
     country: true,
   });
+  const [locationArray, setLocationArray] = useState({
+    countryArray: [],
+    regionArray: [],
+    cityArray: [],
+    cityAreaArray: [],
+  });
+  const [currentLocation, setCurrentLocation] = useState({
+    currentCountry: "",
+    currentRegion: "",
+    currentCity: "",
+    currentCityArea: "",
+  });
 
   const db = firebase.firestore();
-  let countryArray = [];
-  let regionArray = [];
-  let cityArray = [];
-  let cityAreaArray = [];
-  let regionCollection, cityCollection, cityAreaCollection;
+  let countryArrayCopy = [];
+  let regionArrayCopy = [];
+  let cityArrayCopy = [];
+  let cityAreaArrayCopy = [];
+  let countryCollection, regionCollection, cityCollection, cityAreaCollection;
 
   useEffect(() => {
     if (userDbInfo && userDbInfo.data()) {
       setUserInfo(userDbInfo.data());
     }
     const fetchCountryInfo = async () => {
-      // console.log("this is the profile page");
       if (countryInfo) {
-        countryInfo.docs.map((country) => countryArray.push(country.id));
-        cityAreaArray.push(userDbInfo.data().user_cityArea);
-        cityArray.push(userDbInfo.data().user_city);
-        regionArray.push(userDbInfo.data().user_region);
-
-        // let regionCollection = await db
-        //   .collection("country")
-        //   .doc(userDbInfo.data().user_country)
-        //   .collection("region")
-        //   .get();
-        // regionCollection.docs.map((region) => regionArray.push(region.id));
-        // let cityCollection = await db
-        //   .collection("country")
-        //   .doc(userDbInfo.data().user_country)
-        //   .collection("region")
-        //   .doc(userDbInfo.data().user_region)
-        //   .collection("city")
-        //   .get();
-        // cityCollection.docs.map((city) => cityArray.push(city.id));
-        // let cityAreaCollection = await db
-        //   .collection("country")
-        //   .doc(userDbInfo.data().user_country)
-        //   .collection("region")
-        //   .doc(userDbInfo.data().user_region)
-        //   .collection("city")
-        //   .doc(userDbInfo.data().user_city)
-        //   .collection("area")
-        //   .get();
-        // cityAreaCollection.docs.map((cityArea) =>
-        //   cityAreaArray.push(cityArea.id)
-        // );
+        countryInfo.docs.map((country) => countryArrayCopy.push(country.id));
+        cityAreaArrayCopy.push(userDbInfo.data().user_cityArea);
+        cityArrayCopy.push(userDbInfo.data().user_city);
+        regionArrayCopy.push(userDbInfo.data().user_region);
+        setLocationArray({
+          ...locationArray,
+          countryArray: countryArrayCopy,
+          regionArray: regionArrayCopy,
+          cityArray: cityArrayCopy,
+          cityAreaArray: cityAreaArrayCopy,
+        });
+        setCurrentLocation({
+          ...currentLocation,
+          country: userDbInfo.data().user_country,
+          region: userDbInfo.data().user_region,
+          city: userDbInfo.data().user_city,
+          cityArea: userDbInfo.data().user_cityArea,
+        });
       }
       setLocationInfo({
         ...locationInfo,
-        countryArray: countryArray,
-        regionArray: regionArray,
-        cityArray: cityArray,
-        cityAreaArray: cityAreaArray,
+        countryArray: countryArrayCopy,
+        regionArray: regionArrayCopy,
+        cityArray: cityArrayCopy,
+        cityAreaArray: cityAreaArrayCopy,
       });
     };
     fetchCountryInfo();
@@ -338,11 +336,12 @@ export default function ({ userDbInfo, countryInfo }) {
    * Dynamically generates lower tier inputs, ex. country -> region -> city -> cityArea
    */
   const handlecityAreaChange = (e) => {
-    // console.log("lol");
+    e.persist();
     setUserInfo({
       ...userInfo,
       user_cityArea: e.target.value,
     });
+    setCurrentLocation({ ...currentLocation, cityArea: e.target.value });
     setLocationValid({
       ...locationValid,
       cityArea: true,
@@ -350,6 +349,7 @@ export default function ({ userDbInfo, countryInfo }) {
   };
 
   const handleCityChange = async (e) => {
+    e.persist();
     setUserInfo({
       ...userInfo,
       user_cityArea: "",
@@ -370,10 +370,15 @@ export default function ({ userDbInfo, countryInfo }) {
     cityAreaCollection.docs.map((cityArea) =>
       newCityAreaArray.push(cityArea.id)
     );
-    setLocationInfo({ ...locationInfo, cityAreaArray: newCityAreaArray });
+    setLocationArray({ ...locationArray, cityAreaArray: newCityAreaArray });
     setSelectDisable({
       ...selectDisable,
       cityAreaDisable: false,
+    });
+    setCurrentLocation({
+      ...currentLocation,
+      city: e.target.value,
+      cityArea: "",
     });
     setLocationValid({
       ...locationValid,
@@ -383,6 +388,7 @@ export default function ({ userDbInfo, countryInfo }) {
   };
 
   const handleRegionChange = async (e) => {
+    e.persist();
     setUserInfo({
       ...userInfo,
       user_cityArea: "",
@@ -400,14 +406,21 @@ export default function ({ userDbInfo, countryInfo }) {
 
     let newCityArray = [];
     cityCollection.docs.map((city) => newCityArray.push(city.id));
-    setLocationInfo({
-      ...locationInfo,
-      cityArray: newCityArray,
-      cityAreaArray: [],
-    });
     setSelectDisable({
       ...selectDisable,
       cityDisable: false,
+      cityAreaDisable: true,
+    });
+    setLocationArray({
+      ...locationArray,
+      cityArray: [],
+      cityAreaArray: [],
+    });
+    setCurrentLocation({
+      ...currentLocation,
+      region: e.target.value,
+      city: "",
+      cityArea: "",
     });
     setLocationValid({
       ...locationValid,
@@ -418,6 +431,7 @@ export default function ({ userDbInfo, countryInfo }) {
   };
 
   const handleCountryChange = async (e) => {
+    e.persist();
     setUserInfo({
       ...userInfo,
       user_cityArea: "",
@@ -434,16 +448,23 @@ export default function ({ userDbInfo, countryInfo }) {
 
     let newRegionArray = [];
     regionCollection.docs.map((region) => newRegionArray.push(region.id));
-    setLocationInfo({
-      ...locationInfo,
-      regionArray: newRegionArray,
-      cityArray: [],
-      cityAreaArray: [],
-    });
     setSelectDisable({
       ...selectDisable,
       cityDisable: true,
       cityAreaDisable: true,
+    });
+    setLocationArray({
+      ...locationArray,
+      region: [],
+      cityArray: [],
+      cityAreaArray: [],
+    });
+    setCurrentLocation({
+      ...currentLocation,
+      country: e.target.value,
+      region: "",
+      city: "",
+      cityArea: "",
     });
     setLocationValid({
       ...locationValid,
@@ -451,6 +472,57 @@ export default function ({ userDbInfo, countryInfo }) {
       city: false,
       region: false,
     });
+  };
+
+  const handleCityAreaClick = async () => {
+    if (!selectDisable.cityAreaDisable) {
+      cityAreaCollection = await db
+        .collection("country")
+        .doc(currentLocation.country)
+        .collection("region")
+        .doc(currentLocation.region)
+        .collection("city")
+        .doc(currentLocation.city)
+        .collection("area")
+        .get();
+      cityAreaCollection.docs.map((cityArea) =>
+        cityAreaArrayCopy.push(cityArea.id)
+      );
+      setLocationArray({ ...locationArray, cityAreaArray: cityAreaArrayCopy });
+    }
+  };
+
+  const handleCityClick = async (e) => {
+    if (!selectDisable.cityDisable) {
+      cityCollection = await db
+        .collection("country")
+        .doc(currentLocation.country)
+        .collection("region")
+        .doc(currentLocation.region)
+        .collection("city")
+        .get();
+      cityArrayCopy = [];
+      cityCollection.docs.map((city) => cityArrayCopy.push(city.id));
+      setLocationArray({ ...locationArray, cityArray: cityArrayCopy });
+    }
+  };
+
+  const handleRegionClick = async () => {
+    regionCollection = await db
+      .collection("country")
+      .doc(currentLocation.country)
+      .collection("region")
+      .get();
+    regionArrayCopy = [];
+    regionCollection.docs.map((region) => regionArrayCopy.push(region.id));
+    setLocationArray({ ...locationArray, regionArray: regionArrayCopy });
+  };
+
+  const handleCountryClick = async (e) => {
+    countryCollection = await db.collection("country").get();
+    countryArrayCopy = [];
+    countryCollection.docs.map((country) => countryArrayCopy.push(country.id));
+    setLocationArray({ ...locationArray, countryArray: countryArrayCopy });
   };
 
   return locationInfo ? (
@@ -487,9 +559,10 @@ export default function ({ userDbInfo, countryInfo }) {
               defaultValue={userInfo.user_cityArea}
               value={userInfo.user_cityArea}
               onChange={(e) => handlecityAreaChange(e)}
+              onClick={() => handleCityAreaClick()}
             >
               <option value="" disabled></option>
-              {locationInfo.cityAreaArray.map((cityArea) => {
+              {locationArray.cityAreaArray.map((cityArea) => {
                 return <option value={cityArea}>{cityArea}</option>;
               })}
             </NativeSelect>
@@ -505,9 +578,10 @@ export default function ({ userDbInfo, countryInfo }) {
               defaultValue={userInfo.user_city}
               value={userInfo.user_city}
               onChange={(e) => handleCityChange(e)}
+              onClick={(e) => handleCityClick(e)}
             >
               <option value="" disabled></option>
-              {locationInfo.cityArray.map((city) => {
+              {locationArray.cityArray.map((city) => {
                 return <option value={city}>{city}</option>;
               })}
             </NativeSelect>
@@ -519,12 +593,13 @@ export default function ({ userDbInfo, countryInfo }) {
             <InputLabel>Region</InputLabel>
             <NativeSelect
               className={classes.citySelect_input}
-              // defaultValue={userInfo.user_region}
+              defaultValue={userInfo.user_region}
               value={userInfo.user_region}
               onChange={(e) => handleRegionChange(e)}
+              onClick={(e) => handleRegionClick()}
             >
               <option value="" disabled></option>
-              {locationInfo.regionArray.map((region) => {
+              {locationArray.regionArray.map((region) => {
                 return <option value={region}>{region}</option>;
               })}
             </NativeSelect>
@@ -539,8 +614,9 @@ export default function ({ userDbInfo, countryInfo }) {
               defaultValue={userInfo.user_country}
               value={userInfo.user_country}
               onChange={(e) => handleCountryChange(e)}
+              onClick={(e) => handleCountryClick(e)}
             >
-              {locationInfo.countryArray.map((country) => {
+              {locationArray.countryArray.map((country) => {
                 return <option value={country}>{country}</option>;
               })}
             </NativeSelect>
