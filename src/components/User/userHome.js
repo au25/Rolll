@@ -11,8 +11,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     width: "100%",
     height: "100%",
-    backgroundImage:
-      'url("img/background_35.png")',
+    backgroundImage: 'url("img/background_35.png")',
     backgroundColor: "rgba(237, 232, 218, 0.7)",
 
     [theme.breakpoints.down(600)]: {},
@@ -27,6 +26,7 @@ export default function (location) {
   const [userAuthInfo, setUserAuthnfo] = useState();
   const [userDbInfo, setUserDbInfo] = useState();
   const [countryInfo, setCountryInfo] = useState();
+  const [userLocationInfo, setUserLocationInfo] = useState();
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user != null) {
@@ -47,6 +47,13 @@ export default function (location) {
         // console.log(ok.data());
         setUserDbInfo(user);
         setCountryInfo(countryData);
+        setUserLocationInfo({
+          ...userLocationInfo,
+          country: user.data().user_country,
+          region: user.data().user_region,
+          city: user.data().user_city,
+          cityArea: user.data().user_cityArea
+        });
         console.log(user);
       }
     }
@@ -61,6 +68,8 @@ export default function (location) {
         location={location}
         countryInfo={countryInfo}
         userAuthInfo={userAuthInfo}
+        userLocationInfo={userLocationInfo}
+        setUserLocationInfo={setUserLocationInfo}
       />
     </div>
   );

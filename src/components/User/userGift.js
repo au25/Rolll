@@ -198,9 +198,8 @@ const theme = createMuiTheme({
 
 export default function ({
   userDbInfo,
-  setUserDbInfo,
   userAuthInfo,
-  countryInfo,
+  userLocationInfo,
 }) {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
@@ -224,6 +223,10 @@ export default function ({
     cityAreaDisable: false,
   });
   const [locationInfo, setLocationInfo] = useState();
+  const [locationLoaded, setLocationLoaded] = useState({
+    cityArea: false,
+  });
+  const [cityAreaSelect, setCityAreaSelect] = useState("");
 
   const db = firebase.firestore();
   let cityArray = [];
@@ -266,25 +269,15 @@ export default function ({
     userGiftRef();
 
     const fetchCountryInfo = async () => {
-      if (countryInfo) {
-        let cityAreaCollection = await db
-          .collection("country")
-          .doc(userDbInfo.data().user_country)
-          .collection("region")
-          .doc(userDbInfo.data().user_region)
-          .collection("city")
-          .doc(userDbInfo.data().user_city)
-          .collection("area")
-          .get();
-        cityAreaCollection.docs.map((cityArea) =>
-          cityAreaArray.push(cityArea.id)
-        );
+      if (userLocationInfo && userLocationInfo.cityArea) {
+        cityAreaArray = [userLocationInfo.cityArea];
+        setLocationInfo({
+          ...locationInfo,
+          cityArray: cityArray,
+          cityAreaArray: cityAreaArray,
+        });
+        setCityAreaSelect(userLocationInfo.cityArea);
       }
-      setLocationInfo({
-        ...locationInfo,
-        cityArray: cityArray,
-        cityAreaArray: cityAreaArray,
-      });
     };
     fetchCountryInfo();
   }, []);
@@ -359,6 +352,8 @@ export default function ({
     };
 
     if (cityGiftRecord) {
+      console.log("this is cityGiftRecord");
+      console.log(cityGiftRecord);
       // if (false) {
       if (cityGiftRecord.gift) {
         cityGiftRecord.gift.map((cityGift, index) => {
@@ -486,25 +481,43 @@ export default function ({
    *
    */
   const handleCityAreaChange = async (e) => {
+    const evtTargetValue = e.target.value;
+    setCityAreaSelect(evtTargetValue);
     setCityGiftRecord({ gift: [] });
-    e.persist();
-    setUserInfo({ ...userInfo, user_cityArea: e.target.value });
-    const user = await db.collection("user").doc(userAuthInfo.uid).get();
-    console.log(user.data());
-    console.log(e.target.value);
-    setUserInfo({ ...userInfo, user_cityArea: e.target.value });
     const cityRef = await db
       .collection("gift")
-      .doc(user.data().user_country)
-      .collection(user.data().user_region)
-      .doc(user.data().user_city)
+      .doc(userLocationInfo.country)
+      .collection(userLocationInfo.region)
+      .doc(userLocationInfo.city)
       .collection("area")
-      .doc(e.target.value)
+      .doc(evtTargetValue)
       .get();
-
-    console.log("this is city gift record");
-    console.log(cityRef.data());
     setCityGiftRecord(cityRef.data());
+    setLocationLoaded({ ...locationLoaded, cityArea: true });
+  };
+
+  const handleCityAreaClick = async (e) => {
+    if (!locationLoaded.cityArea) {
+      console.log("running click");
+      let cityAreaCollection = await db
+        .collection("country")
+        .doc(userLocationInfo.country)
+        .collection("region")
+        .doc(userLocationInfo.region)
+        .collection("city")
+        .doc(userLocationInfo.city)
+        .collection("area")
+        .get();
+      cityAreaArray = [];
+      cityAreaCollection.docs.map((cityArea) =>
+        cityAreaArray.push(cityArea.id)
+      );
+      setLocationLoaded({ ...locationLoaded, cityArea: true });
+      setLocationInfo({
+        ...locationInfo,
+        cityAreaArray: cityAreaArray,
+      });
+    }
   };
 
   return userInfo && locationInfo ? (
@@ -516,9 +529,10 @@ export default function ({
             <NativeSelect
               disabled={selectDisable.cityAreaDisable}
               className={classes.citySelect_input}
-              defaultValue={userInfo.user_cityArea}
-              value={userInfo.user_cityArea}
+              defaultValue={userLocationInfo.cityArea}
+              value={cityAreaSelect}
               onChange={(e) => handleCityAreaChange(e)}
+              onClick={(e) => handleCityAreaClick()}
             >
               <option value="" disabled></option>
               {locationInfo.cityAreaArray.map((cityArea) => {

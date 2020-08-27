@@ -19,7 +19,7 @@ import {
   faHeart,
   faClone,
   faStoreAlt,
-  faGift
+  faGift,
 } from "@fortawesome/free-solid-svg-icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -89,6 +89,8 @@ export default function ({
   location,
   countryInfo,
   userAuthInfo,
+  userLocationInfo,
+  setUserLocationInfo,
 }) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
@@ -112,9 +114,8 @@ export default function ({
       return (
         <UserGiftList
           userDbInfo={userDbInfo}
-          setUserDbInfo={setUserDbInfo}
           userAuthInfo={userAuthInfo}
-          countryInfo={countryInfo}
+          userLocationInfo={userLocationInfo}
         />
       );
     }
@@ -122,7 +123,14 @@ export default function ({
       return <UserGiftRecord userDbInfo={userDbInfo} />;
     }
     if (navigationValue == "profile") {
-      return <UserProfile userDbInfo={userDbInfo} countryInfo={countryInfo} />;
+      return (
+        <UserProfile
+          userDbInfo={userDbInfo}
+          countryInfo={countryInfo}
+          userLocationInfo={userLocationInfo}
+          setUserLocationInfo={setUserLocationInfo}
+        />
+      );
     }
   };
 

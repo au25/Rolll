@@ -236,7 +236,12 @@ const theme = createMuiTheme({
   },
 });
 
-export default function ({ userDbInfo, countryInfo }) {
+export default function ({
+  userDbInfo,
+  countryInfo,
+  userLocationInfo,
+  setUserLocationInfo,
+}) {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
   const classes = useStyles();
@@ -265,6 +270,12 @@ export default function ({ userDbInfo, countryInfo }) {
     currentCity: "",
     currentCityArea: "",
   });
+  const [locationLoaded, setLocationLoaded] = useState({
+    country: false,
+    region: false,
+    city: false,
+    cityArea: false,
+  });
 
   const db = firebase.firestore();
   let countryArrayCopy = [];
@@ -278,11 +289,13 @@ export default function ({ userDbInfo, countryInfo }) {
       setUserInfo(userDbInfo.data());
     }
     const fetchCountryInfo = async () => {
-      if (countryInfo) {
+      if (countryInfo && userLocationInfo) {
+        // Loads country dropdown and user location info
         countryInfo.docs.map((country) => countryArrayCopy.push(country.id));
-        cityAreaArrayCopy.push(userDbInfo.data().user_cityArea);
-        cityArrayCopy.push(userDbInfo.data().user_city);
-        regionArrayCopy.push(userDbInfo.data().user_region);
+        setLocationLoaded({ ...locationLoaded, country: true });
+        cityAreaArrayCopy.push(userLocationInfo.cityArea);
+        cityArrayCopy.push(userLocationInfo.city);
+        regionArrayCopy.push(userLocationInfo.region);
         setLocationArray({
           ...locationArray,
           countryArray: countryArrayCopy,
@@ -325,10 +338,14 @@ export default function ({ userDbInfo, countryInfo }) {
    */
   const handleProfileUpdate = (e) => {
     e.preventDefault();
-
-    const db = firebase.firestore();
-    // console.log(userInfo);
     db.collection("user").doc(userDbInfo.id).set(userInfo);
+    setUserLocationInfo({
+      ...userLocationInfo,
+      cityArea: currentLocation.cityArea,
+      city: currentLocation.city,
+      region: currentLocation.region,
+      country: currentLocation.country,
+    });
   };
 
   /**
@@ -365,12 +382,12 @@ export default function ({ userDbInfo, countryInfo }) {
       .doc(e.target.value)
       .collection("area")
       .get();
-
     let newCityAreaArray = [];
     cityAreaCollection.docs.map((cityArea) =>
       newCityAreaArray.push(cityArea.id)
     );
     setLocationArray({ ...locationArray, cityAreaArray: newCityAreaArray });
+    setLocationLoaded({ ...locationLoaded, cityArea: true });
     setSelectDisable({
       ...selectDisable,
       cityAreaDisable: false,
@@ -388,6 +405,7 @@ export default function ({ userDbInfo, countryInfo }) {
   };
 
   const handleRegionChange = async (e) => {
+    console.log(e.target.value);
     e.persist();
     setUserInfo({
       ...userInfo,
@@ -403,9 +421,12 @@ export default function ({ userDbInfo, countryInfo }) {
       .doc(e.target.value)
       .collection("city")
       .get();
-
     let newCityArray = [];
+    console.log(e.target.value);
+    console.log(cityCollection);
     cityCollection.docs.map((city) => newCityArray.push(city.id));
+    console.log(newCityArray);
+    setLocationLoaded({ ...locationLoaded, city: true });
     setSelectDisable({
       ...selectDisable,
       cityDisable: false,
@@ -413,7 +434,7 @@ export default function ({ userDbInfo, countryInfo }) {
     });
     setLocationArray({
       ...locationArray,
-      cityArray: [],
+      cityArray: newCityArray,
       cityAreaArray: [],
     });
     setCurrentLocation({
@@ -445,9 +466,9 @@ export default function ({ userDbInfo, countryInfo }) {
       .doc(e.target.value)
       .collection("region")
       .get();
-
     let newRegionArray = [];
     regionCollection.docs.map((region) => newRegionArray.push(region.id));
+    setLocationLoaded({ ...locationLoaded, region: true });
     setSelectDisable({
       ...selectDisable,
       cityDisable: true,
@@ -476,53 +497,70 @@ export default function ({ userDbInfo, countryInfo }) {
 
   const handleCityAreaClick = async () => {
     if (!selectDisable.cityAreaDisable) {
-      cityAreaCollection = await db
-        .collection("country")
-        .doc(currentLocation.country)
-        .collection("region")
-        .doc(currentLocation.region)
-        .collection("city")
-        .doc(currentLocation.city)
-        .collection("area")
-        .get();
-      cityAreaCollection.docs.map((cityArea) =>
-        cityAreaArrayCopy.push(cityArea.id)
-      );
-      setLocationArray({ ...locationArray, cityAreaArray: cityAreaArrayCopy });
+      if (!locationLoaded.cityArea) {
+        cityAreaCollection = await db
+          .collection("country")
+          .doc(currentLocation.country)
+          .collection("region")
+          .doc(currentLocation.region)
+          .collection("city")
+          .doc(currentLocation.city)
+          .collection("area")
+          .get();
+        cityAreaCollection.docs.map((cityArea) =>
+          cityAreaArrayCopy.push(cityArea.id)
+        );
+        setLocationArray({
+          ...locationArray,
+          cityAreaArray: cityAreaArrayCopy,
+        });
+        setLocationLoaded({ ...locationLoaded, cityArea: true });
+      }
     }
   };
 
   const handleCityClick = async (e) => {
     if (!selectDisable.cityDisable) {
-      cityCollection = await db
-        .collection("country")
-        .doc(currentLocation.country)
-        .collection("region")
-        .doc(currentLocation.region)
-        .collection("city")
-        .get();
-      cityArrayCopy = [];
-      cityCollection.docs.map((city) => cityArrayCopy.push(city.id));
-      setLocationArray({ ...locationArray, cityArray: cityArrayCopy });
+      if (!locationLoaded.city) {
+        cityCollection = await db
+          .collection("country")
+          .doc(currentLocation.country)
+          .collection("region")
+          .doc(currentLocation.region)
+          .collection("city")
+          .get();
+        cityArrayCopy = [];
+        cityCollection.docs.map((city) => cityArrayCopy.push(city.id));
+        setLocationArray({ ...locationArray, cityArray: cityArrayCopy });
+        setLocationLoaded({ ...locationLoaded, city: true });
+      }
     }
   };
 
   const handleRegionClick = async () => {
-    regionCollection = await db
-      .collection("country")
-      .doc(currentLocation.country)
-      .collection("region")
-      .get();
-    regionArrayCopy = [];
-    regionCollection.docs.map((region) => regionArrayCopy.push(region.id));
-    setLocationArray({ ...locationArray, regionArray: regionArrayCopy });
+    if (!locationLoaded.region) {
+      regionCollection = await db
+        .collection("country")
+        .doc(currentLocation.country)
+        .collection("region")
+        .get();
+      regionArrayCopy = [];
+      regionCollection.docs.map((region) => regionArrayCopy.push(region.id));
+      setLocationArray({ ...locationArray, regionArray: regionArrayCopy });
+      setLocationLoaded({ ...locationLoaded, region: true });
+    }
   };
 
   const handleCountryClick = async (e) => {
-    countryCollection = await db.collection("country").get();
-    countryArrayCopy = [];
-    countryCollection.docs.map((country) => countryArrayCopy.push(country.id));
-    setLocationArray({ ...locationArray, countryArray: countryArrayCopy });
+    if (!locationLoaded.country) {
+      countryCollection = await db.collection("country").get();
+      countryArrayCopy = [];
+      countryCollection.docs.map((country) =>
+        countryArrayCopy.push(country.id)
+      );
+      setLocationArray({ ...locationArray, countryArray: countryArrayCopy });
+      setLocationLoaded({ ...locationLoaded, country: true });
+    }
   };
 
   return locationInfo ? (
