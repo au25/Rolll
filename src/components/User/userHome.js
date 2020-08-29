@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     width: "100%",
     height: "100%",
-    backgroundImage: 'url("img/background_35.png")',
-    backgroundColor: "rgba(237, 232, 218, 0.7)",
+    // backgroundImage: 'url("img/background_35.png")',
+    backgroundColor: "rgba(241, 241, 241, 0.7)",
 
     [theme.breakpoints.down(600)]: {},
   },

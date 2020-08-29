@@ -372,7 +372,6 @@ export default function ({
       user_cityArea: "",
       user_city: e.target.value,
     });
-
     let cityAreaCollection = await db
       .collection("country")
       .doc(userInfo.user_country)
@@ -405,7 +404,6 @@ export default function ({
   };
 
   const handleRegionChange = async (e) => {
-    console.log(e.target.value);
     e.persist();
     setUserInfo({
       ...userInfo,
@@ -413,7 +411,6 @@ export default function ({
       user_city: "",
       user_region: e.target.value,
     });
-
     let cityCollection = await db
       .collection("country")
       .doc(userInfo.user_country)
@@ -422,20 +419,17 @@ export default function ({
       .collection("city")
       .get();
     let newCityArray = [];
-    console.log(e.target.value);
-    console.log(cityCollection);
     cityCollection.docs.map((city) => newCityArray.push(city.id));
-    console.log(newCityArray);
+    setLocationArray({
+      ...locationArray,
+      cityArray: newCityArray,
+      cityAreaArray: [],
+    });
     setLocationLoaded({ ...locationLoaded, city: true });
     setSelectDisable({
       ...selectDisable,
       cityDisable: false,
       cityAreaDisable: true,
-    });
-    setLocationArray({
-      ...locationArray,
-      cityArray: newCityArray,
-      cityAreaArray: [],
     });
     setCurrentLocation({
       ...currentLocation,
@@ -452,6 +446,7 @@ export default function ({
   };
 
   const handleCountryChange = async (e) => {
+    console.log(e.target.value);
     e.persist();
     setUserInfo({
       ...userInfo,
@@ -460,25 +455,26 @@ export default function ({
       user_region: "",
       user_country: e.target.value,
     });
-
+    console.log(e.target.value);
     let regionCollection = await db
       .collection("country")
       .doc(e.target.value)
       .collection("region")
       .get();
+    console.log(regionCollection);
     let newRegionArray = [];
     regionCollection.docs.map((region) => newRegionArray.push(region.id));
+    setLocationArray({
+      ...locationArray,
+      regionArray: newRegionArray,
+      cityArray: [],
+      cityAreaArray: [],
+    });
     setLocationLoaded({ ...locationLoaded, region: true });
     setSelectDisable({
       ...selectDisable,
       cityDisable: true,
       cityAreaDisable: true,
-    });
-    setLocationArray({
-      ...locationArray,
-      region: [],
-      cityArray: [],
-      cityAreaArray: [],
     });
     setCurrentLocation({
       ...currentLocation,

@@ -1,5 +1,5 @@
-const static_cache_ver = "staticCache_ver1.4.13";
-const dynamicCache_ver = "dynamicCache_ver1.1.12"
+const static_cache_ver = "staticCache_ver1.4.14";
+const dynamicCache_ver = "dynamicCache_ver1.1.12";
 const cacheArray = [
   "/",
   "index.html",
@@ -9,6 +9,9 @@ const cacheArray = [
   "img/red_gift_box.png",
   "img/rolll_logo_2.png",
   "img/background_35.png",
+  "img/history.png",
+  "img/profile_v2.png",
+  "img/rolll.png",
 ];
 
 // serviceWorker listens to install request

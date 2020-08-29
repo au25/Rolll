@@ -1,32 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  ThemeProvider,
-  makeStyles,
-  createMuiTheme,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import UserProfile from "./userProfilePage";
-import UserFavorite from "./userFavorite";
 import UserGiftRecord from "./userGiftRecord";
 import UserGiftList from "./userGift";
 import Div100vh from "react-div-100vh";
-
-// Navigation Icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-  faEdit,
-  faHeart,
-  faClone,
-  faStoreAlt,
-  faGift,
-} from "@fortawesome/free-solid-svg-icons";
 
 const useStyles = makeStyles((theme) => ({
   userNavigation_container: {
     [theme.breakpoints.down(600)]: {
       width: "100%",
-      //   height: "100vh",
     },
   },
   userNavigation_div100Container: {
@@ -39,9 +22,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
   },
   userNavigation_navContainer: {
-    height: "14%",
-    backgroundColor: "#d4dcdc",
-    padding: "0 30px 0 25px",
+    height: "70px",
+    backgroundColor: "white",
+    padding: "0 50px 4px 50px",
+    boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.02)",
     [theme.breakpoints.down(600)]: {
       display: "flex",
       flexDirection: "row",
@@ -53,8 +37,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "25px",
   },
   icon_container: {
+    fontFamily: "Lato, sans-serif",
     width: "10%",
-    height: "60px",
+    height: "54px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -67,7 +52,8 @@ const useStyles = makeStyles((theme) => ({
     height: "42px",
   },
   giftList_image: {
-    width: "95%",
+    width: "30px",
+    height: "30px",
     margin: "5px 0 0 0",
   },
   profile_icon_image: {
@@ -76,16 +62,19 @@ const useStyles = makeStyles((theme) => ({
     height: "38px",
   },
   iconTitle: {
-    fontFamily: "CoreSans, sans-serif",
-    color: "rgba(0, 0, 0, 0.7)",
+    // fontFamily: "CoreSans, sans-serif",
+    color: "#a9a8a9",
     fontSize: "14px",
     margin: "3px 0 0 0",
   },
+  profileTitle: {
+    fontSize: "14px",
+    margin: "3px 0 0 0",
+  }
 }));
 
 export default function ({
   userDbInfo,
-  setUserDbInfo,
   location,
   countryInfo,
   userAuthInfo,
@@ -94,7 +83,6 @@ export default function ({
 }) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
-  const [parentShopInfo, setParentShopInfo] = useState({});
   const [navigationValue, setNavigationValue] = useState("giftList");
   const history = useHistory();
 
@@ -104,8 +92,6 @@ export default function ({
     }
   }, []);
 
-  // console.log("this is location");
-  // console.log(location);
   /**
    * Renders body content based on value of icon clicked
    */
@@ -147,13 +133,22 @@ export default function ({
                 className={classes.giftList_image}
                 style={{
                   filter:
-                    navigationValue === "giftRecord" ? null : "grayscale(1)",
+                    navigationValue === "giftRecord"
+                      ? "invert(33%) sepia(93%) saturate(2157%) hue-rotate(110deg) brightness(70%) contrast(101%)"
+                      : null,
                 }}
-                src="img/blue_gift_box2.png"
+                src="img/history.png"
                 onClick={() => setNavigationValue("giftRecord")}
               />
             </div>
-            <div className={classes.iconTitle}>Record</div>
+            <div
+              className={classes.iconTitle}
+              style={{
+                color: navigationValue === "giftRecord" ? "black" : "#a9a8a9",
+              }}
+            >
+              History
+            </div>
           </div>
           <div className={classes.icon_container}>
             <div className={classes.image_container}>
@@ -161,24 +156,45 @@ export default function ({
                 className={classes.giftList_image}
                 style={{
                   filter:
-                    navigationValue === "giftList" ? null : "grayscale(1)",
+                    navigationValue === "giftList"
+                      ? "invert(86%) sepia(71%) saturate(625%) hue-rotate(3deg) brightness(94%) contrast(95%)"
+                      : null,
                 }}
-                src="img/blue_gift_box2.png"
+                src="img/rolll.png"
                 onClick={() => setNavigationValue("giftList")}
               />
             </div>
-            <div className={classes.iconTitle}>Gift</div>
+            <div
+              className={classes.iconTitle}
+              style={{
+                color: navigationValue === "giftList" ? "black" : "#a9a8a9",
+              }}
+            >
+              Rolll
+            </div>
           </div>
           <div className={classes.icon_container}>
-            <img
-              className={classes.profile_icon_image}
+            <div className={classes.image_container}>
+              <img
+                className={classes.giftList_image}
+                style={{
+                  filter:
+                    navigationValue === "profile"
+                      ? "invert(10%) sepia(100%) saturate(7026%) hue-rotate(252deg) brightness(70%) contrast(124%)"
+                      : null,
+                }}
+                src="img/profile_v2.png"
+                onClick={() => setNavigationValue("profile")}
+              />
+            </div>
+            <div
+              className={classes.profileTitle}
               style={{
-                filter: navigationValue === "profile" ? null : "grayscale(1)",
+                color: navigationValue === "profile" ? "black" : "#a9a8a9",
               }}
-              src="img/blue_gift_box2.png"
-              onClick={() => setNavigationValue("profile")}
-            />
-            <div className={classes.iconTitle}>Profile</div>
+            >
+              Profile
+            </div>
           </div>
         </div>
       </Div100vh>

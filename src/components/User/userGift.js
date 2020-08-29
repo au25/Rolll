@@ -37,20 +37,23 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    backgroundColor: "rgba(173, 216, 230, 0.8)",
+    backgroundColor: "#4a4a4a",
     padding: "10px 0 5px 0",
+    borderRadius: "10px 10px 0 0",
+    // borderLeft: "9px solid rgba(9, 68, 16)"
   },
   shopName_text: {
     fontSize: "16px",
-    fontWeight: "bold",
+    // fontWeight: "bold",
     margin: "0 0 0px 0",
-    color: "rgba(0, 0, 0, 0.8)",
+    color: "#fbfcfc",
     fontFamily: "CoreSans, sans-serif",
+    letterSpacing: "0.5px"
   },
   shopAddress_text: {
     fontSize: "14px",
     margin: "0 0 5px 0",
-    color: "rgba(0, 0, 0, 0.8)",
+    color: "#fbfcfc",
     fontFamily: "CoreSans, sans-serif",
   },
   userHomeContainer: {
@@ -58,23 +61,24 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   imageDescription_container: {
-    // border: "2px solid rgb(0, 0, 0, 0.2)",
-    padding: "5px 10px",
-    borderRadius: "3px",
+    padding: "0px 40px 5px 25px",
+    // borderRadius: "3px",
     height: "135px",
-    // backgroundColor: "rgba(224, 238, 225, 0.6)",
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
-    background:
-      "linear-gradient(to right, rgba(254, 239, 186, 0.4), rgba(0, 0, 0, 0.05))",
+    // background:
+    //   "linear-gradient(to right, rgba(254, 239, 186, 0.4), rgba(0, 0, 0, 0.05))",
+    backgroundColor: "white",
+    borderRadius: "0 0 0 70px",
+    borderLeft: "8px solid rgb(149, 149, 148, 0.5)"
   },
   giftImageContainer: {
-    width: "90px",
+    width: "70px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    margin: "8px 0",
+    margin: "8px 0 15px 0",
     // "&:active:hover": {
     //   width: "110px",
     // },
@@ -84,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     margin: "8px 0",
-    width: "110px",
+    width: "70px",
     animation: "$shake 500ms",
     animationIterationCount: "infinite",
   },
@@ -229,7 +233,6 @@ export default function ({
   const [cityAreaSelect, setCityAreaSelect] = useState("");
 
   const db = firebase.firestore();
-  let cityArray = [];
   let cityAreaArray = [];
 
   useEffect(() => {
@@ -241,14 +244,13 @@ export default function ({
      */
     const fetchCityRecord = async () => {
       if (userDbInfo && userDbInfo.data()) {
-        const user = await db.collection("user").doc(userAuthInfo.uid).get();
         const cityRef = await db
           .collection("gift")
-          .doc(user.data().user_country)
+          .doc(userDbInfo.data().user_country)
           .collection(userDbInfo.data().user_region)
-          .doc(user.data().user_city)
+          .doc(userDbInfo.data().user_city)
           .collection("area")
-          .doc(user.data().user_cityArea)
+          .doc(userDbInfo.data().user_cityArea)
           .get();
 
         // Sets the gifts from the city
@@ -269,12 +271,10 @@ export default function ({
     userGiftRef();
 
     const fetchCountryInfo = async () => {
-      if (userLocationInfo && userLocationInfo.cityArea) {
-        cityAreaArray = [userLocationInfo.cityArea];
+      if (userLocationInfo) {
         setLocationInfo({
           ...locationInfo,
-          cityArray: cityArray,
-          cityAreaArray: cityAreaArray,
+          cityAreaArray: [userLocationInfo.cityArea],
         });
         setCityAreaSelect(userLocationInfo.cityArea);
       }
@@ -352,8 +352,6 @@ export default function ({
     };
 
     if (cityGiftRecord) {
-      console.log("this is cityGiftRecord");
-      console.log(cityGiftRecord);
       // if (false) {
       if (cityGiftRecord.gift) {
         cityGiftRecord.gift.map((cityGift, index) => {
@@ -520,7 +518,7 @@ export default function ({
     }
   };
 
-  return userInfo && locationInfo ? (
+  return locationInfo ? (
     <div className={classes.outerContaniner}>
       <ThemeProvider theme={theme}>
         <div className={classes.cityAreaSelect_container}>
