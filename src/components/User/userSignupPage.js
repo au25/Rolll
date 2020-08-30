@@ -92,20 +92,7 @@ export default function () {
   const classes = useStyles();
 
   return (
-    // <Div100vh className={classes.signupPageContainer}>
     <div className={classes.page_container}>
-      {/* <OAuthLogin /> */}
-      {/* <Navigation /> */}
-      {/* <div className={classes.signinTitleContainer}>
-        <div className={classes.signinTitle}>Have an account? Log in</div>
-      </div> */}
-      {/* <div className={classes.orTextContainer}>
-        <div className={classes.orText}>
-          <div className={classes.orBorderBottom}></div>
-          <div>or</div>
-          <div className={classes.orBorderBottom}></div>
-        </div>
-      </div> */}
       <div className={classes.rollWithUsText}>
         We just need some information to get you rolling.
       </div>
@@ -118,6 +105,5 @@ export default function () {
         <Link to="/privacyPolicy" className={classes.pp_text}>Privacy Policy</Link>
       </div>
     </div>
-    // </Div100vh>
   );
 }

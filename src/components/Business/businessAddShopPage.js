@@ -135,6 +135,11 @@ const theme = createMuiTheme({
         margin: "15px 0 10px 0",
         padding: "0 0 0 11px",
       },
+      select: {
+        "&$select": {
+          backgroundColor: "transparent"
+        },
+      }
     },
   },
 });

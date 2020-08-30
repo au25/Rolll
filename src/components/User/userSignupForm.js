@@ -15,7 +15,6 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import Div100vh from "react-div-100vh";
 require("firebase/functions");
 
 /**
@@ -128,6 +127,11 @@ const theme = createMuiTheme({
         margin: "15px 0 10px 0",
         padding: "0 0 0 11px",
       },
+      select: {
+        "&$select": {
+          backgroundColor: "transparent"
+        },
+      }
     },
   },
 });

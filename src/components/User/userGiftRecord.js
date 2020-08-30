@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import firebase from "../../firebase";
 import {
   ThemeProvider,
   makeStyles,
@@ -25,14 +24,39 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     flexDirection: "column",
   },
-  giftInfo_container: {
+  giftInfo_container_active: {
     width: "70%",
     fontFamily: "CoreSans, sans-serif",
     color: "rgba(0, 0, 0, 0.7)",
     fontSize: "14px",
-    padding: "0 0 10px 0",
-    borderBottom: "1px solid black",
+    padding: "10px 0 10px 15px",
+    borderLeft: "5px solid #91b96c",
     margin: "15px 0px",
+    backgroundColor: "white",
+    borderRadius: "5px 10px 10px 5px",
+  },
+  giftInfo_outerContainer: {
+    width: "70%",
+    fontFamily: "CoreSans, sans-serif",
+    color: "rgba(0, 0, 0, 0.7)",
+    fontSize: "14px",
+    backgroundColor: "white",
+    borderRadius: "5px 10px 10px 5px",
+    margin: "15px 0px",
+    borderRadius: "0 0 10px 40px"
+  },
+  giftInfo_container: {
+    width: "100%",
+    // padding: "10px 0 10px 15px",
+    // borderRadius: "5px 10px 10px 5px",
+  },
+  shopInfo_container: {
+    backgroundColor: "#4a4a4a",
+    color: "#fbfcfc",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "10px 0",
   },
   shopName_text: {
     fontWeight: "bold",
@@ -46,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
   end_container: {
     display: "flex",
-    margin: "0 0 5px 0"
+    margin: "0 0 5px 0",
   },
   start_text: {
     fontWeight: "bold",
@@ -75,8 +99,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "none",
     backgroundColor: "rgba(204, 0, 0, 0.7)",
   },
-  activePrize_outerContainer: {
-  },
+  activePrize_outerContainer: {},
   active_text: {
     fontWeight: "bold",
   },
@@ -97,12 +120,27 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "none",
     backgroundColor: "#4caf50",
   },
+  active_rewardInfo_container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "10px 0 10px 0px",
+    borderLeft: "5px solid green",
+    borderRadius: "0 0 10px 40px"
+  },
+  expire_rewardInfo_container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "10px 0 10px 0px",
+    borderLeft: "5px solid red",
+    borderRadius: "0 0 10px 40px"
+  },
 }));
 
 const theme = createMuiTheme({});
 
 export default function ({ userDbInfo }) {
-  const { currentUser } = useContext(AuthContext);
   const [claimedGift, setClaimedGift] = useState();
   const history = useHistory();
   const classes = useStyles();
@@ -134,8 +172,6 @@ export default function ({ userDbInfo }) {
       return dateB - dateA;
     });
 
-    // console.log("this is the sorted recrod array");
-    // console.log(giftRecordArray);
     setClaimedGift(giftRecordArray);
   };
 
@@ -150,59 +186,73 @@ export default function ({ userDbInfo }) {
       }
       if (claimedGift[0]) {
         return claimedGift.map((gift) => (
-          <div className={classes.giftInfo_container}>
-            <div className={classes.shopName_text}>{gift.shop_name}</div>
-            <div>{gift.shop_address}</div>
-            <div>{gift.shop_city}</div>
-            <br />
+          <div className={classes.giftInfo_outerContainer}>
             {currentTime > moment(gift.gift_expiry_date) ? (
-              <div className={classes.expirePrize_container}>
-                <div className={classes.expireReward_text}>{gift.reward}</div>
-                <div className={classes.start_container}>
-                  <div className={classes.start_text}>Start:</div>
-                  <div className={classes.startTime_text}>
-                    {moment
-                      .unix(gift.gift_open_timeStamp.seconds)
-                      .format("lll")}
+              <div className={classes.giftInfo_container}>
+                <div className={classes.expirePrize_container}>
+                  <div className={classes.shopInfo_container}>
+                    <div className={classes.shopName_text}>
+                      {gift.shop_name}
+                    </div>
+                    <div>{gift.shop_address}</div>
+                    <div>{gift.shop_city}</div>
+                  </div>
+                  <div className={classes.expire_rewardInfo_container}>
+                    <div className={classes.expireReward_text}>
+                      {gift.reward}
+                    </div>
+                    <div className={classes.start_container}>
+                      <div className={classes.start_text}>Start:</div>
+                      <div className={classes.startTime_text}>
+                        {moment
+                          .unix(gift.gift_open_timeStamp.seconds)
+                          .format("lll")}
+                      </div>
+                    </div>
+                    <div className={classes.end_container}>
+                      <div className={classes.end_text}>End: </div>
+                      <div className={classes.endTime_text}>
+                        {moment(gift.gift_expiry_date).format("lll")}
+                      </div>
+                    </div>
+                    <div className={classes.expire_text}>Expired</div>
                   </div>
                 </div>
-                <div className={classes.end_container}>
-                  <div className={classes.end_text}>End: </div>
-                  <div className={classes.endTime_text}>
-                    {moment(gift.gift_expiry_date).format("lll")}
-                  </div>
-                </div>
-                <div className={classes.expire_text}>Expired</div>
               </div>
             ) : (
-              <div className={classes.activePrize_outerContainer}>
-                <div className={classes.statusPrize_container}>
-                  {/* <div className={classes.active_text}>Active</div> */}
+              <div className={classes.giftInfo_container}>
+                <div className={classes.shopInfo_container}>
+                  <div className={classes.shopName_text}>{gift.shop_name}</div>
+                  <div>{gift.shop_address}</div>
+                  <div>{gift.shop_city}</div>
+                </div>
+                <div className={classes.active_rewardInfo_container}>
                   <div className={classes.reward_text}>{gift.reward}</div>
-                </div>
-                <div className={classes.start_container}>
-                  <div className={classes.start_text}>Start:</div>
-                  <div className={classes.startTime_text}>
-                    {moment
-                      .unix(gift.gift_open_timeStamp.seconds)
-                      .format("lll")}
+                  <div className={classes.start_container}>
+                    <div className={classes.start_text}>Start:</div>
+                    <div className={classes.startTime_text}>
+                      {moment
+                        .unix(gift.gift_open_timeStamp.seconds)
+                        .format("lll")}
+                    </div>
+                  </div>
+                  <div className={classes.end_container}>
+                    <div className={classes.end_text}>End: </div>
+                    <div className={classes.endTime_text}>
+                      {moment(gift.gift_expiry_date).format("lll")}
+                    </div>
+                  </div>
+                  <div>
+                    <Button
+                      className={classes.view_button}
+                      onTouchStart={() => toGiftResult(gift)}
+                    >
+                      View
+                    </Button>
                   </div>
                 </div>
-                <div className={classes.end_container}>
-                  <div className={classes.end_text}>End: </div>
-                  <div className={classes.endTime_text}>
-                    {moment(gift.gift_expiry_date).format("lll")}
-                  </div>
-                </div>
-                <Button
-                  className={classes.view_button}
-                  onTouchStart={() => toGiftResult(gift)}
-                >
-                  View
-                </Button>
               </div>
             )}
-            {/* <div>{gift.gift_expiry_date}</div> */}
           </div>
         ));
       }

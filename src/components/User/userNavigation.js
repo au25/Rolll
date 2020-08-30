@@ -18,14 +18,15 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   userNavigation_renderBodyContainer: {
-    height: "86%",
+    height: "100%",
     overflow: "auto",
   },
   userNavigation_navContainer: {
-    height: "70px",
+    height: "80px",
     backgroundColor: "white",
     padding: "0 50px 4px 50px",
-    boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.02)",
+    boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
+    zIndex: "100",
     [theme.breakpoints.down(600)]: {
       display: "flex",
       flexDirection: "row",
@@ -48,12 +49,12 @@ const useStyles = makeStyles((theme) => ({
   image_container: {
     display: "flex",
     justifyContent: "center",
-    width: "42px",
-    height: "42px",
+    width: "32px",
+    height: "32px",
   },
   giftList_image: {
-    width: "30px",
-    height: "30px",
+    width: "25px",
+    height: "25px",
     margin: "5px 0 0 0",
   },
   profile_icon_image: {
@@ -65,12 +66,8 @@ const useStyles = makeStyles((theme) => ({
     // fontFamily: "CoreSans, sans-serif",
     color: "#a9a8a9",
     fontSize: "14px",
-    margin: "3px 0 0 0",
+    margin: "0px 0 0 0",
   },
-  profileTitle: {
-    fontSize: "14px",
-    margin: "3px 0 0 0",
-  }
 }));
 
 export default function ({
@@ -188,7 +185,7 @@ export default function ({
               />
             </div>
             <div
-              className={classes.profileTitle}
+              className={classes.iconTitle}
               style={{
                 color: navigationValue === "profile" ? "black" : "#a9a8a9",
               }}

@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
   imageDescription_container: {
     padding: "0px 40px 5px 25px",
     // borderRadius: "3px",
-    height: "135px",
+    height: "120px",
     display: "flex",
     justifyContent: "space-around",
     alignItems: "center",
@@ -196,6 +196,11 @@ const theme = createMuiTheme({
         padding: "0 0 0 11px",
         height: "40px",
       },
+      select: {
+        "&$select": {
+          backgroundColor: "transparent"
+        },
+      }
     },
   },
 });
