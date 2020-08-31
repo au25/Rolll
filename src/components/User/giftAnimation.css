@@ -36,7 +36,7 @@ p {
 }
 
 .block-reveal {
-  --bc: #4040bf;
+  --bc: #4a4a4a;
   --d: 0.1s;
   --t: calc(var(--td) + var(--d));
 
@@ -93,7 +93,7 @@ p {
 }
 
 .h1_container {
-  --td: 1.2s;
-  margin: 19% 0 0 0;
+  --td: 0.6s;
+  /* margin: 19% 0 0 0; */
   width: 70%;
 }

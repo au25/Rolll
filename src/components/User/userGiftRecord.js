@@ -119,6 +119,7 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: "1px",
     textTransform: "none",
     backgroundColor: "#4caf50",
+    borderRadius: "5px"
   },
   active_rewardInfo_container: {
     display: "flex",
