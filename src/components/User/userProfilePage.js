@@ -12,6 +12,12 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
+import Alert from "@material-ui/lab/Alert";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -163,6 +169,26 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(204, 0, 0, 1)",
     margin: "3px 0 0px 0px",
   },
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    outline: "none"
+  },
+  alert_button: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  closeIcon: {
+    padding: "0px"
+  }
 }));
 
 const theme = createMuiTheme({
@@ -229,15 +255,29 @@ const theme = createMuiTheme({
       },
       select: {
         "&$select": {
-          backgroundColor: "transparent"
+          backgroundColor: "transparent",
         },
-      }
+      },
     },
     Mui: {
       disabled: {
         color: "red !important",
       },
     },
+    MuiAlert: {
+      message: {
+        padding: "20px 20px 20px 0px",
+        fontSize: "18px",
+      },
+      root: {
+        borderRadius: "10px",
+      },
+    },
+    MuiPaper: {
+      root: {
+        outline: "none"
+      }
+    }
   },
 });
 
@@ -281,6 +321,8 @@ export default function ({
     city: false,
     cityArea: false,
   });
+  const [profileUpdateMsg, setProfileUpdateMsg] = useState("before update");
+  const [open, setOpen] = React.useState(false);
 
   const db = firebase.firestore();
   let countryArrayCopy = [];
@@ -328,22 +370,12 @@ export default function ({
   }, []);
 
   /**
-   * Handles profile changes
-   */
-  function handleProfileChange(e) {
-    const { name, value } = e.target;
-    setUserInfo({
-      ...userInfo,
-      [name]: value,
-    });
-  }
-
-  /**
    * Write to db new profile updates
    */
-  const handleProfileUpdate = (e) => {
+  const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    db.collection("user").doc(userDbInfo.id).set(userInfo);
+    await db.collection("user").doc(userDbInfo.id).set(userInfo);
+    await new Promise((resolve) => setOpen(true, () => resolve()));
     setUserLocationInfo({
       ...userLocationInfo,
       cityArea: currentLocation.cityArea,
@@ -351,6 +383,14 @@ export default function ({
       region: currentLocation.region,
       country: currentLocation.country,
     });
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   /**
@@ -564,7 +604,7 @@ export default function ({
     }
   };
 
-  return locationInfo ? (
+  return locationInfo && profileUpdateMsg ? (
     <div className={classes.container}>
       <ThemeProvider theme={theme}>
         <ValidatorForm
@@ -686,6 +726,40 @@ export default function ({
               >
                 Logout
               </Button>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+                <Fade in={open}>
+                  <Alert
+                    className={classes.alert_button}
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        <CloseIcon
+                          className={classes.closeIcon}
+                          fontSize="inherit"
+                        />
+                      </IconButton>
+                    }
+                  >
+                    Profile updated!
+                  </Alert>
+                </Fade>
+              </Modal>
             </div>
           </div>
         </ValidatorForm>
