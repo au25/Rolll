@@ -12,6 +12,7 @@ const cacheArray = [
   "img/history.png",
   "img/profile_v2.png",
   "img/rolll.png",
+  "img/shop.png"
 ];
 
 // serviceWorker listens to install request

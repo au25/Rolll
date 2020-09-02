@@ -179,7 +179,7 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    outline: "none"
+    outline: "none",
   },
   alert_button: {
     display: "flex",
@@ -187,8 +187,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   closeIcon: {
-    padding: "0px"
-  }
+    padding: "0px",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -266,7 +266,7 @@ const theme = createMuiTheme({
     },
     MuiAlert: {
       message: {
-        padding: "20px 20px 20px 0px",
+        padding: "20px 20px 20px 5px",
         fontSize: "18px",
       },
       root: {
@@ -275,9 +275,14 @@ const theme = createMuiTheme({
     },
     MuiPaper: {
       root: {
-        outline: "none"
-      }
-    }
+        outline: "none",
+      },
+    },
+    MuiSvgIcon: {
+      fontSizeInherit: {
+        fontSize: "33px",
+      },
+    },
   },
 });
 
@@ -374,8 +379,13 @@ export default function ({
    */
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    await db.collection("user").doc(userDbInfo.id).set(userInfo);
-    await new Promise((resolve) => setOpen(true, () => resolve()));
+    await db
+      .collection("user")
+      .doc(userDbInfo.id)
+      .set(userInfo)
+      .then(async () => {
+        await new Promise((resolve) => setOpen(true, () => resolve()));
+      });
     setUserLocationInfo({
       ...userLocationInfo,
       cityArea: currentLocation.cityArea,

@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     color: "rgba(0, 0, 0, 0.7)",
     fontSize: "14px",
     borderBottom: "1px solid black",
-    padding: "0 0 10px 0",
+    // padding: "0 0 10px 0",
   },
   shopName_text: {
     fontWeight: "bold",
@@ -59,6 +59,9 @@ const useStyles = makeStyles({
   },
   disableButton_container: {
     width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
     // display: "flex",
     // justifyContent: "center",
     // margin: "10px"
@@ -74,8 +77,34 @@ const useStyles = makeStyles({
     width: "94px",
     height: "35px",
     margin: "10px 0",
-    borderRadius: "0",
+    borderRadius: "2px",
   },
+  shopInfo_container: {
+    backgroundColor: "#4a4a4a",
+    color: "#fbfcfc",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "10px 0",
+  },
+  expire_rewardInfo_container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "10px 0 10px 0px",
+    backgroundColor: "white"
+  },
+  live_text: {
+    backgroundColor: "green",
+    color: "white",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "10px",
+    padding: "6px 15px",
+    letterSpacing: "1px",
+    margin: "0 10px 0 0"
+  }
 });
 
 export default function ({ userDbInfo }) {
@@ -189,30 +218,36 @@ export default function ({ userDbInfo }) {
       return giftRecord.map((gift) =>
         currentTime < moment(gift.gift_expiry_date) ? (
           <div className={classes.giftInfo_innerContainer}>
-            <div className={classes.shopName_text}>{gift.shop_name}</div>
-            <div className={classes.shopAddress_text}>{gift.shop_address}</div>
-            <div className={classes.shopCity_text}>{gift.shop_city}</div>
-            <br />
-            <div className={classes.giftName_text}>{gift.gift_name}</div>
-            <div className={classes.giftCreation_date}>
-              <div className={classes.startDate_text}>Start time:</div>
-              <div className={classes.startDate}>
-                {moment(gift.gift_creation_date).format("LL")}
+            <div className={classes.shopInfo_container}>
+              <div className={classes.shopName_text}>{gift.shop_name}</div>
+              <div className={classes.shopAddress_text}>
+                {gift.shop_address}
               </div>
+              <div className={classes.shopCity_text}>{gift.shop_city}</div>
             </div>
-            <div className={classes.giftExpiry_date}>
-              <div className={classes.endDate_text}>End time:</div>
-              <div className={classes.endDate}>
-                {moment(gift.gift_expiry_date).format("LL")}
+            <div className={classes.expire_rewardInfo_container}>
+              <div className={classes.giftName_text}>{gift.gift_name}</div>
+              <div className={classes.giftCreation_date}>
+                <div className={classes.startDate_text}>Start time:</div>
+                <div className={classes.startDate}>
+                  {moment(gift.gift_creation_date).format("LL")}
+                </div>
               </div>
-            </div>
-            <div className={classes.disableButton_container}>
-              <Button
-                className={classes.disable_button}
-                onClick={() => disableGift(gift)}
-              >
-                Disable
-              </Button>
+              <div className={classes.giftExpiry_date}>
+                <div className={classes.endDate_text}>End time:</div>
+                <div className={classes.endDate}>
+                  {moment(gift.gift_expiry_date).format("LL")}
+                </div>
+              </div>
+              <div className={classes.disableButton_container}>
+                <div className={classes.live_text}>Live</div>
+                <Button
+                  className={classes.disable_button}
+                  onClick={() => disableGift(gift)}
+                >
+                  Disable
+                </Button>
+              </div>
             </div>
           </div>
         ) : (
