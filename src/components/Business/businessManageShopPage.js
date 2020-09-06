@@ -16,14 +16,6 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Button from "@material-ui/core/Button";
 import { CSSTransition } from "react-transition-group";
 import "./businessManageShopPage.css";
-import {
-  Link,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-  scroller,
-} from "react-scroll";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -570,14 +562,12 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
               Close
             </Button>
           ) : (
-            <Link to="addShop_form" spy={true} smooth={true} duration={500}>
               <Button
                 className={classes.openCloseForm}
                 onClick={() => setShowMessage(true)}
               >
                 Add Shop
               </Button>
-            </Link>
           )}
           <CSSTransition
             in={showMessage}
