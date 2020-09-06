@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)http://localhost:3000/businessHome -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <!-- <link rel="icon" href="/favicon.ico" /> -->
+    <link rel="icon" type="image/png" href="http://localhost:3000/img/logo_48x48_ver2.png">
+    <link rel="preconnect" href="https://firebasestorage.googleapis.com/">
+    <link href="./Rolll_files/css2" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Let&#39;s get rollling">
+    <!-- <link rel="apple-touch-icon" href="/logo192.png" /> -->
+    <link rel="apple-touch-icon" href="http://localhost:3000/img/logo_192x192_ver4.png">
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <!-- <link rel="manifest" href="/manifest.json" /> -->
+    <link rel="manifest" href="http://localhost:3000/manifest.json">
+    <!--
+      Notice the use of  in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Rolll</title>
+
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script> -->
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-analytics.js"></script> -->
+
+    <!-- Add Firebase products that you want to use -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-firestore.js"></script> -->
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+  <style>/* reset */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  min-height: 100vh;
+  padding: 20px;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+} */
+
+/* other */
+.info {
+  margin: 20px 0;
+  text-align: center;
+}
+
+p {
+  color: #2e2e2e;
+  margin-bottom: 20px;
+}
+
+/* block-$ */
+.block-effect {
+  font-size: calc(8px + 6vw);
+}
+
+.block-reveal {
+  --bc: #4a4a4a;
+  --d: 0.1s;
+  --t: calc(var(--td) + var(--d));
+
+  color: transparent;
+  padding: 4px;
+
+  position: relative;
+  overflow: hidden;
+
+  animation: revealBlock 0s var(--t) forwards;
+}
+
+.block-reveal::after {
+  content: "";
+
+  width: 0%;
+  height: 100%;
+  padding-bottom: 4px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background: var(--bc);
+  animation: revealingIn var(--td) var(--d) forwards,
+    revealingOut var(--td) var(--t) forwards;
+}
+
+/* animations */
+@keyframes revealBlock {
+  100% {
+    color: #0f0f0f;
+  }
+}
+
+@keyframes revealingIn {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes revealingOut {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.h1_container {
+  --td: 0.6s;
+  /* margin: 19% 0 0 0; */
+  width: 70%;
+}
+</style><style>.add_businessManageShop_countryCss {
+  margin: 0;
+}
+
+.add_businessManageShop_regionCss {
+  margin: 0;
+}
+
+.manageShop_selectCountry {
+  width: 100%;
+  border: 0;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  color: rgba(0, 0, 0, 0.6);
+  padding: 0 0 0 8px;
+  font-weight: bold;
+}
+
+.manageShop_selectRegion {
+  width: 100%;
+  border: 0;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  color: rgba(0, 0, 0, 0.6);
+  padding: 0 0 0 8px;
+  font-weight: bold;
+}
+
+.alert-enter {
+  opacity: 0;
+  transform: scale(0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.alert-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+  width: 80%;
+}
+
+.alert-enter-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+}
+
+.alert-exit {
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.alert-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+  width: 80%;
+}
+
+.gift_template-enter {
+  opacity: 0;
+  transform: scale(0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.gift_template-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+  width: 100%;
+}
+
+.gift_template-enter-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.gift_template-exit {
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.gift_template-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+  width: 100%;
+}
+</style><style>.alert-enter {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .alert-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  .alert-exit {
+    opacity: 1;
+  }
+  .alert-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+  }
+  </style><style data-jss="" data-meta="MuiSvgIcon">
+.MuiSvgIcon-root {
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  font-size: 1.5rem;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  flex-shrink: 0;
+  user-select: none;
+}
+.MuiSvgIcon-colorPrimary {
+  color: #3f51b5;
+}
+.MuiSvgIcon-colorSecondary {
+  color: #f50057;
+}
+.MuiSvgIcon-colorAction {
+  color: rgba(0, 0, 0, 0.54);
+}
+.MuiSvgIcon-colorError {
+  color: #f44336;
+}
+.MuiSvgIcon-colorDisabled {
+  color: rgba(0, 0, 0, 0.26);
+}
+.MuiSvgIcon-fontSizeInherit {
+  font-size: inherit;
+}
+.MuiSvgIcon-fontSizeSmall {
+  font-size: 1.25rem;
+}
+.MuiSvgIcon-fontSizeLarge {
+  font-size: 2.1875rem;
+}
+</style><style data-jss="" data-meta="MuiInputBase">
+@-webkit-keyframes mui-auto-fill {}
+@-webkit-keyframes mui-auto-fill-cancel {}
+.MuiInputBase-root {
+  color: rgba(0, 0, 0, 0.87);
+  cursor: text;
+  display: inline-flex;
+  position: relative;
+  font-size: 1rem;
+  box-sizing: border-box;
+  align-items: center;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.1876em;
+  letter-spacing: 0.00938em;
+}
+.MuiInputBase-root.Mui-disabled {
+  color: rgba(0, 0, 0, 0.38);
+  cursor: default;
+}
+.MuiInputBase-multiline {
+  padding: 6px 0 7px;
+}
+.MuiInputBase-multiline.MuiInputBase-marginDense {
+  padding-top: 3px;
+}
+.MuiInputBase-fullWidth {
+  width: 100%;
+}
+.MuiInputBase-input {
+  font: inherit;
+  color: currentColor;
+  width: 100%;
+  border: 0;
+  height: 1.1876em;
+  margin: 0;
+  display: block;
+  padding: 6px 0 7px;
+  min-width: 0;
+  background: none;
+  box-sizing: content-box;
+  animation-name: mui-auto-fill-cancel;
+  -webkit-tap-highlight-color: transparent;
+}
+.MuiInputBase-input::-webkit-input-placeholder {
+  color: currentColor;
+  opacity: 0.42;
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.MuiInputBase-input::-moz-placeholder {
+  color: currentColor;
+  opacity: 0.42;
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.MuiInputBase-input:-ms-input-placeholder {
+  color: currentColor;
+  opacity: 0.42;
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.MuiInputBase-input::-ms-input-placeholder {
+  color: currentColor;
+  opacity: 0.42;
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.MuiInputBase-input:focus {
+  outline: 0;
+}
+.MuiInputBase-input:invalid {
+  box-shadow: none;
+}
+.MuiInputBase-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+.MuiInputBase-input.Mui-disabled {
+  opacity: 1;
+}
+.MuiInputBase-input:-webkit-autofill {
+  animation-name: mui-auto-fill;
+  animation-duration: 5000s;
+}
+label[data-shrink=false] + .MuiInputBase-formControl .MuiInputBase-input::-webkit-input-placeholder {
+  opacity: 0 !important;
+}
+label[data-shrink=false] + .MuiInputBase-formControl .MuiInputBase-input::-moz-placeholder {
+  opacity: 0 !important;
+}
+label[data-shrink=false] + .MuiInputBase-formControl .MuiInputBase-input:-ms-input-placeholder {
+  opacity: 0 !important;
+}
+label[data-shrink=false] + .MuiInputBase-formControl .MuiInputBase-input::-ms-input-placeholder {
+  opacity: 0 !important;
+}
+label[data-shrink=false] + .MuiInputBase-formControl .MuiInputBase-input:focus::-webkit-input-placeholder {
+  opacity: 0.42;
+}
+label[data-shrink=false] + .MuiInputBase-formControl .MuiInputBase-input:focus::-moz-placeholder {
+  opacity: 0.42;
+}
+label[data-shrink=false] + .MuiInputBase-formControl .MuiInputBase-input:focus:-ms-input-placeholder {
+  opacity: 0.42;
+}
+label[data-shrink=false] + .MuiInputBase-formControl .MuiInputBase-input:focus::-ms-input-placeholder {
+  opacity: 0.42;
+}
+.MuiInputBase-inputMarginDense {
+  padding-top: 3px;
+}
+.MuiInputBase-inputMultiline {
+  height: auto;
+  resize: none;
+  padding: 0;
+}
+.MuiInputBase-inputTypeSearch {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+}
+</style><style data-jss="" data-meta="MuiInput">
+.MuiInput-root {
+  position: relative;
+}
+label + .MuiInput-formControl {
+  margin-top: 16px;
+}
+.MuiInput-colorSecondary.MuiInput-underline:after {
+  border-bottom-color: #f50057;
+}
+.MuiInput-underline:after {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  position: absolute;
+  transform: scaleX(0);
+  transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+  border-bottom: 2px solid #3f51b5;
+  pointer-events: none;
+}
+.MuiInput-underline.Mui-focused:after {
+  transform: scaleX(1);
+}
+.MuiInput-underline.Mui-error:after {
+  transform: scaleX(1);
+  border-bottom-color: #f44336;
+}
+.MuiInput-underline:before {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "\00a0";
+  position: absolute;
+  transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  pointer-events: none;
+}
+.MuiInput-underline:hover:not(.Mui-disabled):before {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.87);
+}
+.MuiInput-underline.Mui-disabled:before {
+  border-bottom-style: dotted;
+}
+@media (hover: none) {
+  .MuiInput-underline:hover:not(.Mui-disabled):before {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  }
+}
+</style><style data-jss="" data-meta="MuiFormControl">
+.MuiFormControl-root {
+  width: 70%;
+  border: 0;
+  margin: 0 0 28px 0;
+  display: inline-flex;
+  padding: 0;
+  position: relative;
+  min-width: 0;
+  flex-direction: column;
+  vertical-align: top;
+}
+.MuiFormControl-marginNormal {
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+.MuiFormControl-marginDense {
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+.MuiFormControl-fullWidth {
+  width: 100%;
+}
+</style><style data-jss="" data-meta="MuiNativeSelect">
+.MuiNativeSelect-root {
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.MuiNativeSelect-select {
+  cursor: pointer;
+  height: 40px;
+  padding: 8px 0 8px 12px;
+  min-width: 16px;
+  user-select: none;
+  border-radius: 0;
+  -moz-appearance: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-appearance: none;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.MuiNativeSelect-select:focus {
+  border-radius: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.MuiNativeSelect-select::-ms-expand {
+  display: none;
+}
+.MuiNativeSelect-select.Mui-disabled {
+  cursor: default;
+}
+.MuiNativeSelect-select[multiple] {
+  height: auto;
+}
+.MuiNativeSelect-select:not([multiple]) option, .MuiNativeSelect-select:not([multiple]) optgroup {
+  background-color: #fff;
+}
+.MuiNativeSelect-select.MuiNativeSelect-select {
+  padding-right: 24px;
+}
+.MuiNativeSelect-filled.MuiNativeSelect-filled {
+  padding-right: 32px;
+}
+.MuiNativeSelect-outlined {
+  border-radius: 4px;
+}
+.MuiNativeSelect-outlined.MuiNativeSelect-outlined {
+  padding-right: 32px;
+}
+.MuiNativeSelect-selectMenu {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.MuiNativeSelect-icon {
+  top: calc(50% - 12px);
+  color: rgba(0, 0, 0, 0.54);
+  right: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.MuiNativeSelect-icon.Mui-disabled {
+  color: rgba(0, 0, 0, 0.26);
+}
+.MuiNativeSelect-iconOpen {
+  transform: rotate(180deg);
+}
+.MuiNativeSelect-iconFilled {
+  right: 7px;
+}
+.MuiNativeSelect-iconOutlined {
+  right: 7px;
+}
+</style><style data-jss="" data-meta="makeStyles">
+.makeStyles-container-488 {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.makeStyles-chooseGiftText-489 {
+  color: rgba(0, 0, 0, 0.7);
+  width: 70%;
+  margin: 45px 0 35px 0;
+  display: flex;
+  font-size: 16px;
+  font-family: CoreSans, sans-serif;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+}
+.makeStyles-giftOfferText-490 {
+  color: rgba(0, 0, 0, 0.7);
+  width: 70%;
+  margin: 35px 0 15px 0;
+  display: flex;
+  font-size: 16px;
+  font-family: CoreSans, sans-serif;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+}
+.makeStyles-giftTitle_text-491 {
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+.makeStyles-giftIntro_text-492 {
+  margin: 0 0 20px 0;
+}
+.makeStyles-giftInfoContainer-493 {
+  color: rgba(0, 0, 0, 0.7);
+  width: 70%;
+  margin: 12px 0 15px 0;
+  display: flex;
+  font-size: 16px;
+  font-family: CoreSans, sans-serif;
+  flex-direction: column;
+}
+.makeStyles-chooseGiftAppearContainer-494 {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.makeStyles-chooseGiftContainer-495 {
+  margin: 12px 0 30px 0;
+}
+.makeStyles-linkContainer-496 {
+  color: rgba(0, 0, 0, 0.87);
+  text-decoration: none;
+}
+.makeStyles-imageDescription_container-497 {
+  border: 3px solid rgb(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 5px;
+}
+.makeStyles-giftImageContainer-498 {
+  width: 100%;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.makeStyles-giftImage-499 {
+  width: 40%;
+  overflow: hidden;
+}
+.makeStyles-giftTitle-500 {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+}
+.makeStyles-giftDescription_container-501 {
+  display: flex;
+  padding: 0 15px 0 35px;
+  justify-content: space-evenly;
+}
+.makeStyles-chanceText_container-502 {
+  color: rgba(0, 0, 0, 0.8);
+  margin: 10px 0 0 0;
+  text-align: right;
+  font-family: CoreSans, sans-serif;
+  font-weight: bold;
+}
+.makeStyles-rewardText_container-503 {
+  color: rgba(0, 0, 0, 0.8);
+  margin: 10px 0 0 0;
+  font-family: CoreSans, sans-serif;
+}
+.makeStyles-chanceText-504 {
+  margin: 3px 0 0 0;
+}
+.makeStyles-rewardText-505 {
+  margin: 3px 0 0 0;
+}
+.makeStyles-giftSelectButton_container-506 {
+  width: 100%;
+  margin: 15px 0 0 0;
+  display: flex;
+  justify-content: center;
+}
+.makeStyles-giftSelectButton-507 {
+  color: white;
+  width: 126px;
+  height: 50px;
+  padding: 6px 8px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: none;
+  background-color: #4caf50;
+}
+.makeStyles-nextButton-508 {
+  color: white;
+  width: 126px;
+  height: 50px;
+  margin: 0 0 35px 0;
+  padding: 6px 8px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: none;
+  background-color: #4caf50;
+}
+.makeStyles-disableButton-509 {
+  color: white;
+  width: 126px;
+  height: 50px;
+  margin: 0 0 35px 0;
+  padding: 6px 8px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: none;
+  background-color: lightgray;
+}
+</style><style data-jss="" data-meta="makeStyles">
+.makeStyles-div100Container-2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.makeStyles-root-3 {
+  width: 500px;
+}
+.makeStyles-renderBodyContainer-4 {
+  height: 100%;
+  overflow: auto;
+}
+.makeStyles-profileIcon-5 {
+  width: 100%;
+}
+.makeStyles-navigationIconContainer-6 {
+  height: 80px;
+  padding: 0 40px 4px 40px;
+  z-index: 100;
+  box-shadow: 0px -4px 3px rgba(50, 50, 50, 0.03);
+  background-color: white;
+}
+@media (max-width:599.95px) {
+  .makeStyles-navigationIconContainer-6 {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+.makeStyles-icon_container-7 {
+  width: 10%;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  font-family: Lato, sans-serif;
+  flex-direction: column;
+  justify-content: center;
+}
+.makeStyles-image_container-8 {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+}
+.makeStyles-create_icon_image-9 {
+  width: 95%;
+  margin: 5px 0 0 0;
+}
+.makeStyles-giftList_image-10 {
+  width: 25px;
+  height: 25px;
+  margin: 5px 0 0 0;
+}
+.makeStyles-iconTitle-11 {
+  color: rgba(0, 0, 0, 0.7);
+  margin: 3px 0 0 0;
+  font-size: 14px;
+  font-family: CoreSans, sans-serif;
+}
+</style><style data-jss="" data-meta="makeStyles">
+.makeStyles-home_container-1 {
+  background-color: rgba(241, 241, 241, 0.7);
+}
+</style></head>
+  <body>
+    <!--
+      Firebase credentials
+    -->
+    <script>
+      var firebaseConfig = {
+        apiKey: process.env.REACT_APP_FIREBASE_API_KEY.replace(/\\n/g, "\n"),
+        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+        databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+        storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+        appId: process.env.REACT_APP_FIREBASE_APP_ID,
+        measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root" tabindex="1"><div class="App"><div class="makeStyles-home_container-1"><div><div class="makeStyles-div100Container-2" style="height: 728px;"><div class="makeStyles-renderBodyContainer-4"><div class="makeStyles-container-488"><div class="makeStyles-chooseGiftText-489">1. Choose Gift Duration</div><div class="MuiFormControl-root"><div class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"><select class="MuiNativeSelect-root MuiNativeSelect-select MuiInputBase-input MuiInput-input" aria-invalid="false" name="gift_duration"><option value="" disabled="">Select Duration</option><option value="3">3 Days</option><option value="7">7 Days</option><option value="30">30 Days </option></select><svg class="MuiSvgIcon-root MuiNativeSelect-icon" focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"></path></svg></div></div></div></div><div class="makeStyles-navigationIconContainer-6"><div class="makeStyles-icon_container-7"><div class="makeStyles-image_container-8"><img class="makeStyles-giftList_image-10" src="./Rolll_files/rolll.png" style="filter: invert(58%) sepia(11%) saturate(3250%) hue-rotate(-98deg) brightness(80%) contrast(82%);"></div><div class="makeStyles-iconTitle-11" style="color: black;">Create</div></div><div class="makeStyles-icon_container-7"><div class="makeStyles-image_container-8"><img class="makeStyles-giftList_image-10" src="./Rolll_files/history.png" style=""></div><div class="makeStyles-iconTitle-11" style="color: rgb(169, 168, 169);">Record</div></div><div class="makeStyles-icon_container-7"><div class="makeStyles-image_container-8"><img class="makeStyles-giftList_image-10" src="./Rolll_files/shop.png" style=""></div><div class="makeStyles-iconTitle-11" style="color: rgb(169, 168, 169);">Shop</div></div><div class="makeStyles-icon_container-7"><div class="makeStyles-image_container-8"><img class="makeStyles-giftList_image-10" src="./Rolll_files/profile_v2.png" style=""></div><div class="makeStyles-iconTitle-11" style="color: rgb(169, 168, 169);">Profile</div></div></div></div></div></div></div></div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", async () => {
+          try {
+            const registration = await navigator.serviceWorker.register(
+              "./serviceWorker.js"
+            );
+            console.log("success", registration.scope);
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      }
+    </script>
+  <script src="./Rolll_files/bundle.js"></script><script src="./Rolll_files/0.chunk.js"></script><script src="./Rolll_files/main.chunk.js"></script><script src="./Rolll_files/main.7a6b3a9aa5986545e570.hot-update.js"></script>
+
+</body></html>

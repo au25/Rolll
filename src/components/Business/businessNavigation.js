@@ -95,10 +95,12 @@ export default function ({ userDbInfo, location }) {
           parentShopInfo={parentShopInfo}
           setValue={setValue}
         />
+        // null
       );
     }
     if (value == "history") {
       return <BusinessGiftHistoryPage userDbInfo={userDbInfo} />;
+      // return null
     }
     if (value == "shop") {
       return (
@@ -107,6 +109,7 @@ export default function ({ userDbInfo, location }) {
           parentShopInfo={parentShopInfo}
           setParentShopInfo={setParentShopInfo}
         />
+        // null
       );
     }
     if (value == "profile") {

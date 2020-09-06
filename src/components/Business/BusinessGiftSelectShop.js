@@ -17,12 +17,11 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    backgroundImage:
-      'url("https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fbackground_35.png?alt=media&token=a5be174a-cd06-4d97-b282-be6b33e71946")',
-    backgroundColor: "rgba(237, 232, 218, 0.7)",
+    backgroundColor: "rgba(241, 241, 241, 0.7)",
   },
   selectShopOuterContainer: {
     width: "100%",
+    height: "100%",
     display: "flex",
     justifyContent: "center",
     overflow: "scroll",
