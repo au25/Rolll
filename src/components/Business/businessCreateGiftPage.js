@@ -42,14 +42,16 @@ const useStyles = makeStyles({
     margin: "0 0 10px 0",
   },
   giftOfferText: {
-    fontSize: "16px",
-    width: "70%",
-    margin: "35px 0 15px 0",
+    fontSize: "18px",
     display: "flex",
-    color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
     fontWeight: "bold",
     borderBottom: "1px solid black",
+    color: "#fbfcfc",
+    width: "100%",
+    padding: "15px 0 15px 10px",
+    backgroundColor: "#4a4a4a",
+    margin: "0 0 10px 0",
   },
   giftTitle_text: {
     fontWeight: "bold",
@@ -60,16 +62,21 @@ const useStyles = makeStyles({
   },
   giftInfoContainer: {
     fontSize: "16px",
-    width: "70%",
-    margin: "12px 0 15px 0",
+    width: "85%",
+    margin: "12px 0 0px 0",
     display: "flex",
     flexDirection: "column",
     color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
+    alignItems: "center",
   },
   chooseGiftAppearContainer: {
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
+    width: "70%",
+    margin: "25px 0 0 0",
+    backgroundColor: "white",
     alignItems: "center",
   },
   chooseGiftContainer: {
@@ -159,7 +166,7 @@ const useStyles = makeStyles({
     padding: "6px 8px",
     width: "126px",
     height: "50px",
-    margin: "0 0 35px 0",
+    margin: "20px 0 35px 0",
   },
   expireDate_container: {
     fontFamily: "CoreSans, sans-serif",
@@ -392,12 +399,12 @@ export default function ({ userDbInfo, parentShopInfo }) {
         <div className={classes.expireDate_container}>
           {/* <div className={classes.giftExpiryDate_text}>Gift Expiry Date </div> */}
           <div className={classes.giftExpiryDateInfo_container}>
-            {/* <div className={classes.endTime_text}>
+            <div className={classes.endTime_text}>
               {giftExpirySelection.endTime_text}
-            </div> */}
-            <div className={classes.dayOfWeek_text}>
-              {giftExpirySelection.dayOfWeek_selection}
             </div>
+            {/* <div className={classes.dayOfWeek_text}>
+              {giftExpirySelection.dayOfWeek_selection}
+            </div> */}
             <div className={classes.date_text}>
               {giftExpirySelection.date_selection}
             </div>
@@ -424,20 +431,20 @@ export default function ({ userDbInfo, parentShopInfo }) {
                 {parentShopInfo.gift ? <RenderGift /> : null}
               </div>
               {/* Validation check to see which button is shown */}
-              {giftChosen && durationChosen && selectGift.gift_name ? (
-                <Link
-                  className={classes.linkContainer}
-                  to={{
-                    pathname: "/businessGiftSelectShop",
-                    state: { userId, parentShopInfo, selectGift, giftDuration },
-                  }}
-                >
-                  <Button className={classes.nextButton}>Next</Button>
-                </Link>
-              ) : (
-                <Button className={classes.disableButton}>Next</Button>
-              )}
             </div>
+            {giftChosen && durationChosen && selectGift.gift_name ? (
+              <Link
+                className={classes.linkContainer}
+                to={{
+                  pathname: "/businessGiftSelectShop",
+                  state: { userId, parentShopInfo, selectGift, giftDuration },
+                }}
+              >
+                <Button className={classes.nextButton}>Next</Button>
+              </Link>
+            ) : (
+              <Button className={classes.disableButton}>Next</Button>
+            )}
           </div>
         </CSSTransition>
       </div>
