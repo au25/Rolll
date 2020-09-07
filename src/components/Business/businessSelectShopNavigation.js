@@ -77,7 +77,7 @@ const useStyles = makeStyles({
 
 export default function ({ userDbInfo }) {
   const classes = useStyles();
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState("create");
   const [parentShopInfo, setParentShopInfo] = useState({});
   const history = useHistory();
 
@@ -120,52 +120,92 @@ export default function ({ userDbInfo }) {
           <img
             className={classes.giftList_image}
             style={{
-              filter: value === "create" ? null : null,
+              filter:
+                value === "create"
+                  ? "invert(58%) sepia(11%) saturate(3250%) hue-rotate(-98deg) brightness(80%) contrast(82%)"
+                  : null,
             }}
             src="img/rolll.png"
             onClick={() => handleCreate()}
           />
         </div>
-        <div className={classes.iconTitle}>Create</div>
+        <div
+          className={classes.iconTitle}
+          style={{
+            color: value === "create" ? "black" : "#a9a8a9",
+          }}
+        >
+          Create
+        </div>
       </div>
       <div className={classes.icon_container}>
         <div className={classes.image_container}>
           <img
             className={classes.giftList_image}
             style={{
-              filter: value === "history" ? null : "grayscale(1)",
+              filter:
+                value === "history"
+                  ? "invert(33%) sepia(93%) saturate(2157%) hue-rotate(110deg) brightness(70%) contrast(101%)"
+                  : null,
             }}
             src="img/history.png"
             onClick={() => handleHistory()}
           />
         </div>
-        <div className={classes.iconTitle}>Record</div>
+        <div
+          className={classes.iconTitle}
+          style={{
+            color: value === "history" ? "black" : "#a9a8a9",
+          }}
+        >
+          Record
+        </div>
       </div>
       <div className={classes.icon_container}>
         <div className={classes.image_container}>
           <img
             className={classes.giftList_image}
             style={{
-              filter: value === "shop" ? null : "grayscale(1)",
+              filter:
+                value === "shop"
+                  ? "invert(86%) sepia(71%) saturate(625%) hue-rotate(3deg) brightness(94%) contrast(95%)"
+                  : null,
             }}
             src="img/shop.png"
             onClick={() => handleShop()}
           />
         </div>
-        <div className={classes.iconTitle}>Shop</div>
+        <div
+          className={classes.iconTitle}
+          style={{
+            color: value === "shop" ? "black" : "#a9a8a9",
+          }}
+        >
+          Shop
+        </div>
       </div>
       <div className={classes.icon_container}>
         <div className={classes.image_container}>
           <img
             className={classes.giftList_image}
             style={{
-              filter: value === "profile" ? null : "grayscale(1)",
+              filter:
+                value === "profile"
+                  ? "invert(10%) sepia(100%) saturate(7026%) hue-rotate(252deg) brightness(70%) contrast(124%)"
+                  : null,
             }}
             src="img/profile_v2.png"
             onClick={() => handleProfile()}
           />
         </div>
-        <div className={classes.iconTitle}>Profile</div>
+        <div
+          className={classes.iconTitle}
+          style={{
+            color: value === "profile" ? "black" : "#a9a8a9",
+          }}
+        >
+          Profile
+        </div>
       </div>
     </div>
   );

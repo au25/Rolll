@@ -29,13 +29,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     color: "rgba(0, 0, 0, 0.7)",
     width: "80%",
-    margin: "50px 0 20px 0",
+    margin: "50px 0 15px 0",
+    backgroundColor: "#4a4a4a",
+    color: "#fbfcfc",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "10px 0",
   },
   formContainer: {
     width: "85%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    borderBottom: "1px solid lightgray",
   },
   countryContainer: {
     margin: "0 0 28px 0",
@@ -79,6 +86,8 @@ const useStyles = makeStyles((theme) => ({
   deleteShopButton: {
     fontSize: "12px",
     height: "40px",
+    color: "rgba(204, 0 ,0)",
+    padding: "6px 8px",
   },
   openCloseForm: {
     margin: "28px 0 20px 0",
@@ -97,7 +106,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     width: "80%",
-    borderTop: "1px solid rgba(0, 0, 0, 0.2)",
+    // borderTop: "1px solid rgba(0, 0, 0, 0.2)",
+  },
+  shopName_text: {
+    margin: "0 0 0 10px",
   },
 }));
 
@@ -148,6 +160,9 @@ const theme = createMuiTheme({
       root: {
         width: "80%",
         position: "none",
+        "&$expanded": {
+          margin: "0",
+        },
       },
     },
     MuiExpansionPanelDetails: {
@@ -161,12 +176,20 @@ const theme = createMuiTheme({
       root: {
         height: "60px",
         padding: "0",
-        borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
+        borderBottom: "2px solid rgba(0, 0, 0, 0.2)",
+        width: "90%",
+        margin: "0 auto 7px auto",
+        borderRadius: "0 5px 5px 0",
+        backgroundColor: "white",
+        borderLeft: "4px solid green",
       },
       content: {
         color: "rgba(0, 0, 0, 0.7)",
         fontSize: "16px",
         fontFamily: "CoreSans, sans-serif",
+        // borderLeft: "5px solid green",
+        padding: "8px 0px 8px 0",
+        margin: "0",
       },
     },
     MuiPaper: {
@@ -203,7 +226,7 @@ const FormComponent = ({
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
           >
-            {shop.shop_name}
+            <div className={classes.shopName_text}>{shop.shop_name}</div>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <ValidatorForm
@@ -562,12 +585,12 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
               Close
             </Button>
           ) : (
-              <Button
-                className={classes.openCloseForm}
-                onClick={() => setShowMessage(true)}
-              >
-                Add Shop
-              </Button>
+            <Button
+              className={classes.openCloseForm}
+              onClick={() => setShowMessage(true)}
+            >
+              Add Shop
+            </Button>
           )}
           <CSSTransition
             in={showMessage}
@@ -578,11 +601,11 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
             onExited={() => setShowButton(true)}
           >
             <div>
-                <BusinessAddShopComponent
-                  userDbInfo={userDbInfo}
-                  parentShopInfo={parentShopInfo}
-                  setParentShopInfo={setParentShopInfo}
-                />
+              <BusinessAddShopComponent
+                userDbInfo={userDbInfo}
+                parentShopInfo={parentShopInfo}
+                setParentShopInfo={setParentShopInfo}
+              />
             </div>
           </CSSTransition>
         </div>

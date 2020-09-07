@@ -28,6 +28,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    margin: "30px 0 0 0",
   },
   chooseGiftText: {
     fontSize: "18px",
@@ -78,9 +79,12 @@ const useStyles = makeStyles({
     margin: "25px 0 0 0",
     backgroundColor: "white",
     alignItems: "center",
+    borderRadius: "0 0 10px 10px",
   },
   chooseGiftContainer: {
     margin: "12px 0 30px 0",
+    padding: "0 0 30px 0",
+    borderBottom: "1px solid #4a4a4a",
   },
   linkContainer: {
     textDecoration: "none",
@@ -155,7 +159,7 @@ const useStyles = makeStyles({
     padding: "6px 8px",
     width: "126px",
     height: "50px",
-    margin: "0 0 35px 0",
+    margin: "25px 0 35px 0",
   },
   disableButton: {
     fontWeight: "bold",
@@ -197,6 +201,13 @@ const useStyles = makeStyles({
   dayOfWeek_text: {
     // width: "100%",
   },
+  date_text: {
+    color: "green",
+  },
+  endTime_text: {
+    fontWeight: "bold",
+  },
+  expireTime_text: {},
 });
 
 const theme = createMuiTheme({
@@ -307,7 +318,7 @@ export default function ({ userDbInfo, parentShopInfo }) {
       ...giftExpirySelection,
       dayOfWeek_selection: gift_expiry_dayOfWeek,
       date_selection: gift_expiry_date,
-      time_selection: gift_expiry_time,
+      time_selection: "@ " + gift_expiry_time,
       endTime_text: "Expires",
     });
     setDurationChosen(true);
