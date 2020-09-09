@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import SignupForm from "./userSignupForm";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   signupPageContainer: {
     width: "100%",
   },
@@ -12,17 +12,6 @@ const useStyles = makeStyles({
   },
   googleButton: {
     width: "300px",
-  },
-  rollWithUsText: {
-    fontSize: "14px",
-    fontSize: "16px",
-    margin: "80px 0 35px 0",
-    display: "flex",
-    width: "70%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    color: "rgba(0, 0, 0, 0.5)",
-    fontFamily: "CoreSans, sans-serif",
   },
   accountMsg: {
     width: "300px",
@@ -64,6 +53,12 @@ const useStyles = makeStyles({
   },
   signupFormContainer: {
     margin: "0 0 15px 0",
+    width: "415px",
+    [theme.breakpoints.down("sm")]: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
   },
   signupPolicyContainer: {
     width: "70%",
@@ -73,36 +68,42 @@ const useStyles = makeStyles({
     textAlign: "center",
     margin: "0 0 80px 0",
     lineHeight: "18px",
-    letterSpacing: "0.5px"
+    letterSpacing: "0.5px",
   },
   page_container: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    backgroundColor: "rgba(241, 241, 241, 0.7)",
+    [theme.breakpoints.down("sm")]: {
+      backgroundColor: "white",
+    },
   },
   tos_text: {
-    textDecoration: "none"
+    textDecoration: "none",
   },
   pp_text: {
-    textDecoration: "none"
-  }
-});
+    textDecoration: "none",
+  },
+}));
 
 export default function () {
   const classes = useStyles();
 
   return (
     <div className={classes.page_container}>
-      <div className={classes.rollWithUsText}>
-        We just need some information to get you rolling.
-      </div>
       <div className={classes.signupFormContainer}>
         <SignupForm />
       </div>
       <div className={classes.signupPolicyContainer}>
         By signing up, you agree with the{" "}
-        <Link to="/tos" className={classes.tos_text}>Terms of Service</Link> & {" "}
-        <Link to="/privacyPolicy" className={classes.pp_text}>Privacy Policy</Link>
+        <Link to="/tos" className={classes.tos_text}>
+          Terms of Service
+        </Link>{" "}
+        &{" "}
+        <Link to="/privacyPolicy" className={classes.pp_text}>
+          Privacy Policy
+        </Link>
       </div>
     </div>
   );

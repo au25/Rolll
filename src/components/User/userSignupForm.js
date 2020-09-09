@@ -20,12 +20,27 @@ require("firebase/functions");
 /**
  * CSS of the page
  */
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    margin: "0 0 32px 0",
-    width: "100vw",
+    width: "100%",
     display: "flex",
-    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    // margin: "80px 0 0 0",
+    maxWidth: "415px",
+    backgroundColor: "white",
+    borderRadius: "20px",
+    padding: "45px 0",
+    // height: "75%",
+    // maxHeight: "600px",
+    [theme.breakpoints.down("sm")]: {
+      // height: "100vh",
+      // maxHeight: "100vh",
+      borderRadius: "0",
+      justifyContent: "center",
+      backgroundColor: "white",
+      padding: "0 0 15px 0",
+    },
   },
   formContainer: {
     width: "70%",
@@ -54,6 +69,20 @@ const useStyles = makeStyles(() => ({
     color: "rgba(204, 0, 0, 1)",
     margin: "3px 0 0px 0px",
   },
+  rollWithUsText: {
+    fontSize: "14px",
+    fontSize: "16px",
+    margin: "80px 0 35px 0",
+    display: "flex",
+    // width: "70%",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "CoreSans, sans-serif",
+    [theme.breakpoints.down("sm")]: {
+      width: "70%",
+    },
+  },
 }));
 
 const theme = createMuiTheme({
@@ -72,7 +101,7 @@ const theme = createMuiTheme({
         },
         "&:after": {
           borderBottom: "2px solid black",
-        }
+        },
       },
     },
     MuiInputLabel: {
@@ -129,9 +158,9 @@ const theme = createMuiTheme({
       },
       select: {
         "&$select": {
-          backgroundColor: "transparent"
+          backgroundColor: "transparent",
         },
-      }
+      },
     },
   },
 });
@@ -322,6 +351,9 @@ const SignUp = ({ history }) => {
 
   return (
     <ThemeProvider theme={theme}>
+      <div className={classes.rollWithUsText}>
+        We just need some information to get you rolling.
+      </div>
       <ValidatorForm
         className={classes.root}
         noValidate

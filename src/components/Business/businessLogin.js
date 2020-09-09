@@ -13,11 +13,11 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   welcomeText: {
     fontSize: "14px",
     fontSize: "16px",
-    margin: "80px 0 28px 0",
+    margin: "0px 0 28px 0",
     display: "flex",
     width: "70%",
     alignItems: "center",
@@ -29,16 +29,35 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
   },
   businessLoginContainer: {
-    width: "100vw",
+    width: "100%",
+    height: "100vh",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(241, 241, 241, 0.7)",
+    [theme.breakpoints.down("sm")]: {
+      backgroundColor: "white",
+    },
   },
   root: {
-    margin: "0 0 32px 0",
-    width: "70%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    alignItems: "center",
+    // margin: "80px 0 0 0",
+    maxWidth: "415px",
+    backgroundColor: "white",
+    borderRadius: "20px",
+    padding: "45px 0",
+    // height: "75%",
+    // maxHeight: "600px",
+    [theme.breakpoints.down("sm")]: {
+      height: "100vh",
+      maxHeight: "100vh",
+      borderRadius: "0",
+      justifyContent: "center",
+      backgroundColor: "white",
+    },
   },
   forgotPasswordText: {
     fontSize: "14px",
@@ -80,9 +99,14 @@ const useStyles = makeStyles({
   register_button: {
     width: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.09) !important",
-    color: "black"
-  }
-});
+    color: "black",
+  },
+  form_container: {
+    width: "70%",
+    display: "flex",
+    flexDirection: "column"
+  },
+}));
 
 /**
  * Overrides MUI theme css
@@ -205,57 +229,59 @@ export default function () {
             onSubmit={businessLogin}
           >
             <div className={classes.welcomeText}>Welcome back!</div>
-            <TextValidator
-              id="filled-basic"
-              label="Email"
-              variant="filled"
-              value={loginValue.email}
-              validators={["required", "isEmail"]}
-              errorMessages={[
-                "Email address is requred",
-                "Email address is not valid",
-              ]}
-              onChange={(e) =>
-                setLoginValue({ ...loginValue, email: e.target.value })
-              }
-            />
-            <div className={classes.passwordContainer}>
+            <div className={classes.form_container}>
               <TextValidator
                 id="filled-basic"
-                label="Password"
+                label="Email"
                 variant="filled"
-                type={showPassword ? "text" : "password"}
-                value={loginValue.password}
-                validators={["required"]}
-                errorMessages={["Password is required"]}
+                value={loginValue.email}
+                validators={["required", "isEmail"]}
+                errorMessages={[
+                  "Email address is requred",
+                  "Email address is not valid",
+                ]}
                 onChange={(e) =>
-                  setLoginValue({ ...loginValue, password: e.target.value })
+                  setLoginValue({ ...loginValue, email: e.target.value })
                 }
               />
-              <IconButton
-                className={classes.passwordIcon}
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </div>
-            <Button type="submit">LOG IN</Button>
-            <div className={classes.forgotPasswordText}>
-              Forgot Your Password?
-            </div>
-            <div className={classes.register_container}>
-              <div className={classes.dontHaveAccountText}>
-                Don't have an account?
+              <div className={classes.passwordContainer}>
+                <TextValidator
+                  id="filled-basic"
+                  label="Password"
+                  variant="filled"
+                  type={showPassword ? "text" : "password"}
+                  value={loginValue.password}
+                  validators={["required"]}
+                  errorMessages={["Password is required"]}
+                  onChange={(e) =>
+                    setLoginValue({ ...loginValue, password: e.target.value })
+                  }
+                />
+                <IconButton
+                  className={classes.passwordIcon}
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
               </div>
-              <Button
-                className={classes.register_button}
-                onClick={() => history.push("/registerBusiness")}
-              >
-                Register
-              </Button>
+              <Button type="submit">LOG IN</Button>
+              <div className={classes.forgotPasswordText}>
+                Forgot Your Password?
+              </div>
+              <div className={classes.register_container}>
+                <div className={classes.dontHaveAccountText}>
+                  Don't have an account?
+                </div>
+                <Button
+                  className={classes.register_button}
+                  onClick={() => history.push("/registerBusiness")}
+                >
+                  Register
+                </Button>
+              </div>
             </div>
           </ValidatorForm>
         </div>

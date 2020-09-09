@@ -13,7 +13,7 @@ import ExitToAppRoundedIcon from "@material-ui/icons/ExitToAppRounded";
 import CallToActionOutlinedIcon from "@material-ui/icons/CallToActionOutlined";
 import { Redirect, useHistory } from "react-router";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   list: {
     width: "250px",
     height: "100%",
@@ -28,6 +28,9 @@ const useStyles = makeStyles({
     padding: "20px",
     letterSpacing: "1.5px",
     textTransform: "none",
+    [theme.breakpoints.up("md")]: {
+      color: "yellow",
+    },
   },
   welcomeMsgContainer: {
     padding: "20px",
@@ -79,6 +82,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     width: "100%",
+    maxWidth: "825px",
     position: "absolute",
     backgroundColor: "black",
   },
@@ -139,7 +143,7 @@ const useStyles = makeStyles({
     fontFamily: "CoreSans, sans-serif",
     fontSize: "12px",
     letterSpacing: "0.25px",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
   },
   tos_text: {
     fontFamily: "CoreSans, sans-serif",
@@ -155,7 +159,7 @@ const useStyles = makeStyles({
     display: "flex",
     textTransform: "none",
   },
-});
+}));
 
 const theme = createMuiTheme({
   overrides: {
@@ -240,7 +244,7 @@ export default function SwipeableTemporaryDrawer() {
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.navigationContainer}>
-        {max600 && (
+        {/* {max600 && ( */}
           <div>
             <Button
               className={classes.menuButton}
@@ -257,8 +261,8 @@ export default function SwipeableTemporaryDrawer() {
               {sideList("right")}
             </SwipeableDrawer>
           </div>
-        )}
-        {min600 && (
+        {/* )} */}
+        {/* {min600 && (
           <div>
             <Button onClick={toggleDrawer("right", true)}>LOL</Button>
             <SwipeableDrawer
@@ -270,7 +274,7 @@ export default function SwipeableTemporaryDrawer() {
               {sideList("right")}
             </SwipeableDrawer>
           </div>
-        )}
+        )} */}
       </div>
     </ThemeProvider>
   );

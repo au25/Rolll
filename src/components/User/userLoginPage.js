@@ -4,9 +4,17 @@ import LoginForm from "./userLoginForm";
 import Navigation from "../landingPageNavigation";
 import OAuthLogin from "./userOAuthLoginComponent";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   signupPageContainer: {
     width: "100%",
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(241, 241, 241, 0.7)",
+    [theme.breakpoints.down("sm")]: {
+      backgroundColor: "white"
+    }
   },
   fbButton: {
     width: "300px",
@@ -27,12 +35,25 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    margin: "80px 0 0 0",
+    // margin: "80px 0 0 0",
+    maxWidth: "415px",
+    backgroundColor: "white",
+    borderRadius: "20px",
+    padding: "45px 0",
+    height: "75%",
+    maxHeight: "600px",
+    [theme.breakpoints.down("sm")]: {
+      height: "100vh",
+      maxHeight: "100vh",
+      borderRadius: "0",
+      justifyContent: "center",
+      backgroundColor: "white",
+    },
   },
   formContainer: {
     width: "70%",
   },
-});
+}));
 
 export default function () {
   const classes = useStyles();

@@ -54,19 +54,23 @@ const useStyles = makeStyles(() => ({
   rollWithUsTextUsText: {
     fontSize: "14px",
     fontSize: "16px",
-    margin: "80px 0 15px 0",
+    margin: "80px 0 20px 0",
     display: "flex",
-    width: "70%",
+    // width: "70%",
     justifyContent: "space-between",
     alignItems: "center",
     color: "rgba(0, 0, 0, 0.5)",
     fontFamily: "CoreSans, sans-serif",
+    [theme.breakpoints.down("sm")]: {
+      width: "290px",
+    },
   },
   root: {
     margin: "0 0 32px 0",
-    width: "100vw",
+    width: "100%",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
   },
   formContainer: {
     width: "70%",
@@ -102,9 +106,16 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
   },
   outerFormContainer: {
+    width: "100%",
+    // height: "100vh",
     display: "flex",
     flexDirection: "column",
+    justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(241, 241, 241, 0.7)",
+    [theme.breakpoints.down("sm")]: {
+      backgroundColor: "white",
+    },
   },
   borderBottom: {
     padding: "4px 0 0 0",
@@ -142,8 +153,12 @@ const useStyles = makeStyles(() => ({
     fontFamily: "CoreSans, sans-serif",
     fontSize: "14px",
     textAlign: "center",
-    margin: "0 0 80px 0",
-    letterSpacing: "0.5px"
+    margin: "30px 0 80px 0",
+    letterSpacing: "0.5px",
+    [theme.breakpoints.down("sm")]: {
+      width: "290px",
+      margin: "0 0 80px 0"
+    }
   },
   location_errorText: {
     fontFamily: "CoreSans, sans-serif",
@@ -156,6 +171,27 @@ const useStyles = makeStyles(() => ({
   },
   pp_text: {
     textDecoration: "none",
+  },
+  form_container: {
+    width: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    // margin: "80px 0 0 0",
+    maxWidth: "415px",
+    backgroundColor: "white",
+    borderRadius: "20px",
+    padding: "15px 0",
+    // height: "75%",
+    // maxHeight: "600px",
+    [theme.breakpoints.down("sm")]: {
+      // height: "100vh",
+      // maxHeight: "100vh",
+      borderRadius: "0",
+      justifyContent: "center",
+      backgroundColor: "white",
+      margin: "0 0 0 0"
+    },
   },
 }));
 
@@ -220,9 +256,9 @@ const theme = createMuiTheme({
       },
       select: {
         "&$select": {
-          backgroundColor: "transparent"
+          backgroundColor: "transparent",
         },
-      }
+      },
     },
   },
 });
@@ -461,267 +497,273 @@ const SignUp = ({ history }) => {
         <div className={classes.rollWithUsTextUsText}>
           We just need a few information to get you rolling.
         </div>
-        <div className={classes.shopInfoTitle}>
-          <div className={classes.borderBottom}></div>
-          <div>Shop Information</div>
-          <div className={classes.borderBottom}></div>
-        </div>
-        <ValidatorForm
-          className={classes.root}
-          noValidate
-          autoComplete="off"
-          onSubmit={accountSignup}
-        >
-          <div className={classes.formContainer}>
-            <TextValidator
-              id="filled-basic"
-              label="Shop Name"
-              variant="filled"
-              value={registrationValue.shop_name}
-              validators={["required"]}
-              errorMessages={["Shop name is requred"]}
-              onChange={(e) =>
-                setRegistrationValue({
-                  ...registrationValue,
-                  shop_name: e.target.value,
-                })
-              }
-            />
-            <TextValidator
-              id="filled-basic"
-              label="Shop Address"
-              variant="filled"
-              value={registrationValue.shop_address}
-              validators={["required"]}
-              errorMessages={["Shop address is requred"]}
-              onChange={(e) =>
-                setRegistrationValue({
-                  ...registrationValue,
-                  shop_address: e.target.value,
-                })
-              }
-            />
-            <FormControl variant="filled" className={classes.formControl}>
-              <InputLabel>Shop Country</InputLabel>
-              <NativeSelect
-                className={classes.citySelect_input}
-                defaultValue=""
-                value={registrationValue.shop_country}
-                onChange={(e) => handleCountryChange(e)}
-              >
-                <option value="" disabled></option>
-                {locationInfo
-                  ? locationInfo.countryArray.map((country) => {
-                      return <option value={country}>{country}</option>;
-                    })
-                  : null}
-              </NativeSelect>
-              {locationValid.country ? null : (
-                <div className={classes.location_errorText}>
-                  Select a Country
-                </div>
-              )}
-            </FormControl>
-            <FormControl variant="filled" className={classes.formControl}>
-              <InputLabel>Shop Region</InputLabel>
-              <NativeSelect
-                className={classes.citySelect_input}
-                defaultValue=""
-                value={registrationValue.shop_region}
-                onChange={(e) => handleRegionChange(e)}
-                disabled={selectDisable.regionDisable}
-              >
-                <option value="" disabled></option>
-                {locationInfo
-                  ? locationInfo.regionArray.map((region) => {
-                      return <option value={region}>{region}</option>;
-                    })
-                  : null}
-              </NativeSelect>
-              {locationValid.region ? null : (
-                <div className={classes.location_errorText}>
-                  Select a Region
-                </div>
-              )}
-            </FormControl>
-            <FormControl variant="filled" className={classes.formControl}>
-              <InputLabel>Shop City</InputLabel>
-              <NativeSelect
-                className={classes.citySelect_input}
-                defaultValue=""
-                value={registrationValue.shop_city}
-                onChange={(e) => handleCityChange(e)}
-                disabled={selectDisable.cityDisable}
-              >
-                <option value="" disabled></option>
-                {locationInfo
-                  ? locationInfo.cityArray.map((city) => {
-                      return <option value={city}>{city}</option>;
-                    })
-                  : null}
-              </NativeSelect>
-              {locationValid.city ? null : (
-                <div className={classes.location_errorText}>Select a City</div>
-              )}
-            </FormControl>
-            <FormControl variant="filled" className={classes.formControl}>
-              <InputLabel>Shop Area</InputLabel>
-              <NativeSelect
-                className={classes.citySelect_input}
-                defaultValue=""
-                value={registrationValue.shop_cityArea}
-                onChange={(e) => handleCityAreaChange(e)}
-                disabled={selectDisable.cityAreaDisable}
-              >
-                <option value="" disabled></option>
-                {locationInfo
-                  ? locationInfo.cityAreaArray.map((area) => {
-                      return <option value={area}>{area}</option>;
-                    })
-                  : null}
-              </NativeSelect>
-              {locationValid.cityArea ? null : (
-                <div className={classes.location_errorText}>Select an Area</div>
-              )}
-            </FormControl>
-
-            <div className={classes.managerInfoTitleContainer}>
-              <div className={classes.managerInfoBorderBottom}></div>
-              <div>Manager Information</div>
-              <div className={classes.managerInfoBorderBottom}></div>
-            </div>
-            <TextValidator
-              id="filled-basic"
-              label="First Name"
-              variant="filled"
-              value={registrationValue.first_name}
-              validators={["required"]}
-              errorMessages={["First name is requred"]}
-              onChange={(e) =>
-                setRegistrationValue({
-                  ...registrationValue,
-                  first_name: e.target.value,
-                })
-              }
-            />
-            <TextValidator
-              id="filled-basic"
-              label="Last Name"
-              variant="filled"
-              value={registrationValue.last_name}
-              validators={["required"]}
-              errorMessages={["Last name is requred"]}
-              onChange={(e) =>
-                setRegistrationValue({
-                  ...registrationValue,
-                  last_name: e.target.value,
-                })
-              }
-            />
-            <TextValidator
-              id="filled-basic"
-              label="Phone number"
-              variant="filled"
-              value={registrationValue.phone_number}
-              validators={["required"]}
-              errorMessages={["Phone number is requred"]}
-              onChange={(e) =>
-                setRegistrationValue({
-                  ...registrationValue,
-                  phone_number: e.target.value,
-                })
-              }
-            />
-            <div className={classes.managerInfoTitleContainer}>
-              <div className={classes.managerInfoBorderBottom}></div>
-              <div>Account Information</div>
-              <div className={classes.managerInfoBorderBottom}></div>
-            </div>
-            <TextValidator
-              id="filled-basic"
-              label="Email Address"
-              variant="filled"
-              value={registrationValue.email}
-              validators={["required"]}
-              errorMessages={["Email address is requred"]}
-              onChange={(e) =>
-                setRegistrationValue({
-                  ...registrationValue,
-                  email: e.target.value,
-                })
-              }
-            />
-            <div className={classes.passwordContainer}>
-              <TextValidator
-                id="filled-basic"
-                label="Password"
-                variant="filled"
-                type={showPassword ? "text" : "password"}
-                value={registrationValue.password}
-                validators={["required"]}
-                errorMessages={["Password is required"]}
-                onChange={(e) =>
-                  setRegistrationValue({
-                    ...registrationValue,
-                    password: e.target.value,
-                  })
-                }
-              />
-              <IconButton
-                className={classes.passwordIcon}
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </div>
-            <div className={classes.passwordContainer}>
-              <TextValidator
-                id="filled-basic"
-                label="Repeat Password"
-                variant="filled"
-                type={showPassword ? "text" : "password"}
-                value={registrationValue.confirmPassword}
-                validators={["isPasswordMatch", "required"]}
-                errorMessages={[
-                  "Password doesn't match",
-                  "Confirm password is required",
-                ]}
-                onChange={(e) =>
-                  setRegistrationValue({
-                    ...registrationValue,
-                    confirmPassword: e.target.value,
-                  })
-                }
-              />
-              <IconButton
-                className={classes.passwordIcon}
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </div>
-            <Button
-              className={classes.userSignup_saveButton}
-              type="submit"
-              disabled={
-                !(
-                  locationValid.cityArea &&
-                  locationValid.city &&
-                  locationValid.region &&
-                  locationValid.country
-                )
-              }
-            >
-              SIGN UP
-            </Button>
+        <div className={classes.form_container}>
+          <div className={classes.shopInfoTitle}>
+            <div className={classes.borderBottom}></div>
+            <div>Shop Information</div>
+            <div className={classes.borderBottom}></div>
           </div>
-        </ValidatorForm>
+          <ValidatorForm
+            className={classes.root}
+            noValidate
+            autoComplete="off"
+            onSubmit={accountSignup}
+          >
+            <div className={classes.formContainer}>
+              <TextValidator
+                id="filled-basic"
+                label="Shop Name"
+                variant="filled"
+                value={registrationValue.shop_name}
+                validators={["required"]}
+                errorMessages={["Shop name is requred"]}
+                onChange={(e) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    shop_name: e.target.value,
+                  })
+                }
+              />
+              <TextValidator
+                id="filled-basic"
+                label="Shop Address"
+                variant="filled"
+                value={registrationValue.shop_address}
+                validators={["required"]}
+                errorMessages={["Shop address is requred"]}
+                onChange={(e) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    shop_address: e.target.value,
+                  })
+                }
+              />
+              <FormControl variant="filled" className={classes.formControl}>
+                <InputLabel>Shop Country</InputLabel>
+                <NativeSelect
+                  className={classes.citySelect_input}
+                  defaultValue=""
+                  value={registrationValue.shop_country}
+                  onChange={(e) => handleCountryChange(e)}
+                >
+                  <option value="" disabled></option>
+                  {locationInfo
+                    ? locationInfo.countryArray.map((country) => {
+                        return <option value={country}>{country}</option>;
+                      })
+                    : null}
+                </NativeSelect>
+                {locationValid.country ? null : (
+                  <div className={classes.location_errorText}>
+                    Select a Country
+                  </div>
+                )}
+              </FormControl>
+              <FormControl variant="filled" className={classes.formControl}>
+                <InputLabel>Shop Region</InputLabel>
+                <NativeSelect
+                  className={classes.citySelect_input}
+                  defaultValue=""
+                  value={registrationValue.shop_region}
+                  onChange={(e) => handleRegionChange(e)}
+                  disabled={selectDisable.regionDisable}
+                >
+                  <option value="" disabled></option>
+                  {locationInfo
+                    ? locationInfo.regionArray.map((region) => {
+                        return <option value={region}>{region}</option>;
+                      })
+                    : null}
+                </NativeSelect>
+                {locationValid.region ? null : (
+                  <div className={classes.location_errorText}>
+                    Select a Region
+                  </div>
+                )}
+              </FormControl>
+              <FormControl variant="filled" className={classes.formControl}>
+                <InputLabel>Shop City</InputLabel>
+                <NativeSelect
+                  className={classes.citySelect_input}
+                  defaultValue=""
+                  value={registrationValue.shop_city}
+                  onChange={(e) => handleCityChange(e)}
+                  disabled={selectDisable.cityDisable}
+                >
+                  <option value="" disabled></option>
+                  {locationInfo
+                    ? locationInfo.cityArray.map((city) => {
+                        return <option value={city}>{city}</option>;
+                      })
+                    : null}
+                </NativeSelect>
+                {locationValid.city ? null : (
+                  <div className={classes.location_errorText}>
+                    Select a City
+                  </div>
+                )}
+              </FormControl>
+              <FormControl variant="filled" className={classes.formControl}>
+                <InputLabel>Shop Area</InputLabel>
+                <NativeSelect
+                  className={classes.citySelect_input}
+                  defaultValue=""
+                  value={registrationValue.shop_cityArea}
+                  onChange={(e) => handleCityAreaChange(e)}
+                  disabled={selectDisable.cityAreaDisable}
+                >
+                  <option value="" disabled></option>
+                  {locationInfo
+                    ? locationInfo.cityAreaArray.map((area) => {
+                        return <option value={area}>{area}</option>;
+                      })
+                    : null}
+                </NativeSelect>
+                {locationValid.cityArea ? null : (
+                  <div className={classes.location_errorText}>
+                    Select an Area
+                  </div>
+                )}
+              </FormControl>
+
+              <div className={classes.managerInfoTitleContainer}>
+                <div className={classes.managerInfoBorderBottom}></div>
+                <div>Manager Information</div>
+                <div className={classes.managerInfoBorderBottom}></div>
+              </div>
+              <TextValidator
+                id="filled-basic"
+                label="First Name"
+                variant="filled"
+                value={registrationValue.first_name}
+                validators={["required"]}
+                errorMessages={["First name is requred"]}
+                onChange={(e) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    first_name: e.target.value,
+                  })
+                }
+              />
+              <TextValidator
+                id="filled-basic"
+                label="Last Name"
+                variant="filled"
+                value={registrationValue.last_name}
+                validators={["required"]}
+                errorMessages={["Last name is requred"]}
+                onChange={(e) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    last_name: e.target.value,
+                  })
+                }
+              />
+              <TextValidator
+                id="filled-basic"
+                label="Phone number"
+                variant="filled"
+                value={registrationValue.phone_number}
+                validators={["required"]}
+                errorMessages={["Phone number is requred"]}
+                onChange={(e) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    phone_number: e.target.value,
+                  })
+                }
+              />
+              <div className={classes.managerInfoTitleContainer}>
+                <div className={classes.managerInfoBorderBottom}></div>
+                <div>Account Information</div>
+                <div className={classes.managerInfoBorderBottom}></div>
+              </div>
+              <TextValidator
+                id="filled-basic"
+                label="Email Address"
+                variant="filled"
+                value={registrationValue.email}
+                validators={["required"]}
+                errorMessages={["Email address is requred"]}
+                onChange={(e) =>
+                  setRegistrationValue({
+                    ...registrationValue,
+                    email: e.target.value,
+                  })
+                }
+              />
+              <div className={classes.passwordContainer}>
+                <TextValidator
+                  id="filled-basic"
+                  label="Password"
+                  variant="filled"
+                  type={showPassword ? "text" : "password"}
+                  value={registrationValue.password}
+                  validators={["required"]}
+                  errorMessages={["Password is required"]}
+                  onChange={(e) =>
+                    setRegistrationValue({
+                      ...registrationValue,
+                      password: e.target.value,
+                    })
+                  }
+                />
+                <IconButton
+                  className={classes.passwordIcon}
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </div>
+              <div className={classes.passwordContainer}>
+                <TextValidator
+                  id="filled-basic"
+                  label="Repeat Password"
+                  variant="filled"
+                  type={showPassword ? "text" : "password"}
+                  value={registrationValue.confirmPassword}
+                  validators={["isPasswordMatch", "required"]}
+                  errorMessages={[
+                    "Password doesn't match",
+                    "Confirm password is required",
+                  ]}
+                  onChange={(e) =>
+                    setRegistrationValue({
+                      ...registrationValue,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                />
+                <IconButton
+                  className={classes.passwordIcon}
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </div>
+              <Button
+                className={classes.userSignup_saveButton}
+                type="submit"
+                disabled={
+                  !(
+                    locationValid.cityArea &&
+                    locationValid.city &&
+                    locationValid.region &&
+                    locationValid.country
+                  )
+                }
+              >
+                SIGN UP
+              </Button>
+            </div>
+          </ValidatorForm>
+        </div>
         <div className={classes.signupPolicyContainer}>
           By signing up, you agree with the
           <Link to="/tos" className={classes.tos_text}>

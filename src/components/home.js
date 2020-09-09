@@ -10,17 +10,23 @@ import {
 import Div100vh from "react-div-100vh";
 
 const useStyles = makeStyles((theme) => ({
+  outer_container: {
+    display: "flex",
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(241, 241, 241, 0.7)",
+  },
   banner_container: {
     height: "100%",
     display: "flex",
     justifyContent: "center",
     overflow: "hidden",
-    backgroundColor: "black"
+    backgroundColor: "black",
+    maxWidth: "825px",
   },
   banner_image: {
     objectFit: "cover",
     height: "100%",
-    margin: "0 0 0 14px"
+    margin: "0 0 0 14px",
   },
 }));
 
@@ -49,9 +55,9 @@ export default function () {
 
   return (
     <div>
-      <Div100vh>
-        <Navigation />
+      <Div100vh className={classes.outer_container}>
         <div className={classes.banner_container}>
+          <Navigation />
           <img
             className={classes.banner_image}
             src="img/landing_withLogo.jpg"
