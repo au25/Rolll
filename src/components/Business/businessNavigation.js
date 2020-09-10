@@ -23,16 +23,52 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   navigationIconContainer: {
-    height: "80px",
-    backgroundColor: "white",
-    padding: "0 40px 4px 40px",
-    boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
-    zIndex: "100",
+    // height: "80px",
+    // backgroundColor: "white",
+    // padding: "0 40px 4px 40px",
+    // boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
+    // zIndex: "100",
+    // display: "flex",
+    // flexDirection: "row",
+    // justifyContent: "space-around",
+    // alignItems: "center",
+
     [theme.breakpoints.down(600)]: {
+      // display: "flex",
+      // flexDirection: "row",
+      // justifyContent: "space-around",
+      // alignItems: "center",
+    },
+    [theme.breakpoints.up(600)]: {
+      // boxShadow: "none",
+      // backgroundColor: "transparent",
+      display: "flex",
+      justifyContent: "center",
+    },
+  },
+  navigation_innerContainer: {
+    [theme.breakpoints.down(600)]: {
+      height: "80px",
+      backgroundColor: "white",
+      padding: "0 40px 4px 40px",
+      boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
+      zIndex: "100",
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-around",
       alignItems: "center",
+    },
+    [theme.breakpoints.up(600)]: {
+      width: "500px",
+      backgroundColor: "white",
+      height: "80px",
+      display: "flex",
+      justifyContent: "space-around",
+      alignItems: "center",
+      borderRadius: "30px 30px 0 0",
+      padding: "15px 10px 15px 10px",
+      boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
+      zIndex: "100",
     },
   },
   icon_container: {
@@ -123,96 +159,98 @@ export default function ({ userDbInfo, location }) {
         <RenderBody />
       </div>
       <div className={classes.navigationIconContainer}>
-        <div className={classes.icon_container}>
-          <div className={classes.image_container}>
-            <img
-              className={classes.giftList_image}
+        <div className={classes.navigation_innerContainer}>
+          <div className={classes.icon_container}>
+            <div className={classes.image_container}>
+              <img
+                className={classes.giftList_image}
+                style={{
+                  filter:
+                    value === "create"
+                      ? "invert(58%) sepia(11%) saturate(3250%) hue-rotate(-98deg) brightness(80%) contrast(82%)"
+                      : null,
+                }}
+                src="img/rolll.png"
+                onClick={() => setValue("create")}
+              />
+            </div>
+            <div
+              className={classes.iconTitle}
               style={{
-                filter:
-                  value === "create"
-                    ? "invert(58%) sepia(11%) saturate(3250%) hue-rotate(-98deg) brightness(80%) contrast(82%)"
-                    : null,
+                color: value === "create" ? "black" : "#a9a8a9",
               }}
-              src="img/rolll.png"
-              onClick={() => setValue("create")}
-            />
+            >
+              Create
+            </div>
           </div>
-          <div
-            className={classes.iconTitle}
-            style={{
-              color: value === "create" ? "black" : "#a9a8a9",
-            }}
-          >
-            Create
-          </div>
-        </div>
-        <div className={classes.icon_container}>
-          <div className={classes.image_container}>
-            <img
-              className={classes.giftList_image}
+          <div className={classes.icon_container}>
+            <div className={classes.image_container}>
+              <img
+                className={classes.giftList_image}
+                style={{
+                  filter:
+                    value === "history"
+                      ? "invert(33%) sepia(93%) saturate(2157%) hue-rotate(110deg) brightness(70%) contrast(101%)"
+                      : null,
+                }}
+                src="img/history.png"
+                onClick={() => setValue("history")}
+              />
+            </div>
+            <div
+              className={classes.iconTitle}
               style={{
-                filter:
-                  value === "history"
-                    ? "invert(33%) sepia(93%) saturate(2157%) hue-rotate(110deg) brightness(70%) contrast(101%)"
-                    : null,
+                color: value === "history" ? "black" : "#a9a8a9",
               }}
-              src="img/history.png"
-              onClick={() => setValue("history")}
-            />
+            >
+              Record
+            </div>
           </div>
-          <div
-            className={classes.iconTitle}
-            style={{
-              color: value === "history" ? "black" : "#a9a8a9",
-            }}
-          >
-            Record
-          </div>
-        </div>
-        <div className={classes.icon_container}>
-          <div className={classes.image_container}>
-            <img
-              className={classes.giftList_image}
+          <div className={classes.icon_container}>
+            <div className={classes.image_container}>
+              <img
+                className={classes.giftList_image}
+                style={{
+                  filter:
+                    value === "shop"
+                      ? "invert(86%) sepia(71%) saturate(625%) hue-rotate(3deg) brightness(94%) contrast(95%)"
+                      : null,
+                }}
+                src="img/shop.png"
+                onClick={() => setValue("shop")}
+              />
+            </div>
+            <div
+              className={classes.iconTitle}
               style={{
-                filter:
-                  value === "shop"
-                    ? "invert(86%) sepia(71%) saturate(625%) hue-rotate(3deg) brightness(94%) contrast(95%)"
-                    : null,
+                color: value === "shop" ? "black" : "#a9a8a9",
               }}
-              src="img/shop.png"
-              onClick={() => setValue("shop")}
-            />
+            >
+              Shop
+            </div>
           </div>
-          <div
-            className={classes.iconTitle}
-            style={{
-              color: value === "shop" ? "black" : "#a9a8a9",
-            }}
-          >
-            Shop
-          </div>
-        </div>
-        <div className={classes.icon_container}>
-          <div className={classes.image_container}>
-            <img
-              className={classes.giftList_image}
+          <div className={classes.icon_container}>
+            <div className={classes.image_container}>
+              <img
+                className={classes.giftList_image}
+                style={{
+                  filter:
+                    value === "profile"
+                      ? "invert(10%) sepia(100%) saturate(7026%) hue-rotate(252deg) brightness(70%) contrast(124%)"
+                      : null,
+                }}
+                src="img/profile_v2.png"
+                onClick={() => setValue("profile")}
+              />
+            </div>
+            <div
+              className={classes.iconTitle}
               style={{
-                filter:
-                  value === "profile"
-                    ? "invert(10%) sepia(100%) saturate(7026%) hue-rotate(252deg) brightness(70%) contrast(124%)"
-                    : null,
+                color: value === "profile" ? "black" : "#a9a8a9",
               }}
-              src="img/profile_v2.png"
-              onClick={() => setValue("profile")}
-            />
-          </div>
-          <div
-            className={classes.iconTitle}
-            style={{
-              color: value === "profile" ? "black" : "#a9a8a9",
-            }}
-          >
-            Profile
+            >
+              Profile
+            </div>
           </div>
         </div>
       </div>

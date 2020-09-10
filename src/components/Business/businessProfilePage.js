@@ -5,17 +5,36 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles";
 import firebase from "../../firebase";
-import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles({
-  businessProfilePageContainer: {
+const useStyles = makeStyles((theme) => ({
+  businessProfilePage_outerContainer: {
     width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      // width: "100%"
+    },
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+      justifyContent: "center",
+      height: "100%",
+      alignItems: "center",
+    },
+  },
+  businessProfilePageContainer: {
+    width: "415px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
+    [theme.breakpoints.up("sm")]: {
+      backgroundColor: "white",
+      borderRadius: "20px",
+      width: "415px",
+    },
   },
   maangerInfoText: {
     fontSize: "16px",
@@ -62,7 +81,7 @@ const useStyles = makeStyles({
     margin: " 0 0 12px 0",
     height: "50px",
   },
-});
+}));
 
 const theme = createMuiTheme({
   overrides: {
@@ -155,81 +174,83 @@ export default function ({ userDbInfo }) {
   }
 
   return (
-    <div className={classes.businessProfilePageContainer}>
-      <div className={classes.maangerInfoText}>User Info</div>
-      <ThemeProvider theme={theme}>
-        <ValidatorForm
-          className={classes.formContainer}
-          noValidate
-          autoComplete="off"
-          onSubmit={handleProfileSubmit}
-        >
-          <TextValidator
-            className={classes.emailInput}
-            // disabled="true"
-            id="filled-basic"
-            label="Email"
-            InputLabelProps={{ shrink: true }}
-            variant="filled"
-            value={userInfo && userInfo.email}
-            validators={["required", "isEmail"]}
-            errorMessages={[
-              "Email address is requred",
-              "Email address is not valid",
-            ]}
-            name="email"
-            onChange={handleProfileChange}
-          />
-          <TextValidator
-            id="filled-basic"
-            label="First Name"
-            InputLabelProps={{ shrink: true }}
-            variant="filled"
-            value={userInfo && userInfo.first_name}
-            validators={["required"]}
-            errorMessages={["First name is requred"]}
-            name="first_name"
-            onChange={handleProfileChange}
-          />
-          <TextValidator
-            id="filled-basic"
-            label="Last Name"
-            InputLabelProps={{ shrink: true }}
-            variant="filled"
-            value={userInfo && userInfo.last_name}
-            validators={["required"]}
-            errorMessages={["Last name is requred"]}
-            name="last_name"
-            onChange={handleProfileChange}
-          />
-          <TextValidator
-            id="filled-basic"
-            label="Phone Number"
-            InputLabelProps={{ shrink: true }}
-            variant="filled"
-            value={userInfo && userInfo.phone_number}
-            validators={["required"]}
-            errorMessages={["Phone number is requred"]}
-            name="phone_number"
-            onChange={handleProfileChange}
-          />
-          <Button className={classes.updateButton} type="submit">
-            Update
-          </Button>
-          <div className={classes.logoutButtonContainer}>
-            <Button
-              className={classes.logoutButton}
-              onClick={async (e) => {
-                e.preventDefault();
-                await firebase.auth().signOut();
-                history.push("./home");
-              }}
-            >
-              Log out
+    <div className={classes.businessProfilePage_outerContainer}>
+      <div className={classes.businessProfilePageContainer}>
+        <div className={classes.maangerInfoText}>User Info</div>
+        <ThemeProvider theme={theme}>
+          <ValidatorForm
+            className={classes.formContainer}
+            noValidate
+            autoComplete="off"
+            onSubmit={handleProfileSubmit}
+          >
+            <TextValidator
+              className={classes.emailInput}
+              // disabled="true"
+              id="filled-basic"
+              label="Email"
+              InputLabelProps={{ shrink: true }}
+              variant="filled"
+              value={userInfo && userInfo.email}
+              validators={["required", "isEmail"]}
+              errorMessages={[
+                "Email address is requred",
+                "Email address is not valid",
+              ]}
+              name="email"
+              onChange={handleProfileChange}
+            />
+            <TextValidator
+              id="filled-basic"
+              label="First Name"
+              InputLabelProps={{ shrink: true }}
+              variant="filled"
+              value={userInfo && userInfo.first_name}
+              validators={["required"]}
+              errorMessages={["First name is requred"]}
+              name="first_name"
+              onChange={handleProfileChange}
+            />
+            <TextValidator
+              id="filled-basic"
+              label="Last Name"
+              InputLabelProps={{ shrink: true }}
+              variant="filled"
+              value={userInfo && userInfo.last_name}
+              validators={["required"]}
+              errorMessages={["Last name is requred"]}
+              name="last_name"
+              onChange={handleProfileChange}
+            />
+            <TextValidator
+              id="filled-basic"
+              label="Phone Number"
+              InputLabelProps={{ shrink: true }}
+              variant="filled"
+              value={userInfo && userInfo.phone_number}
+              validators={["required"]}
+              errorMessages={["Phone number is requred"]}
+              name="phone_number"
+              onChange={handleProfileChange}
+            />
+            <Button className={classes.updateButton} type="submit">
+              Update
             </Button>
-          </div>
-        </ValidatorForm>
-      </ThemeProvider>
+            <div className={classes.logoutButtonContainer}>
+              <Button
+                className={classes.logoutButton}
+                onClick={async (e) => {
+                  e.preventDefault();
+                  await firebase.auth().signOut();
+                  history.push("./home");
+                }}
+              >
+                Log out
+              </Button>
+            </div>
+          </ValidatorForm>
+        </ThemeProvider>
+      </div>
     </div>
   );
 }

@@ -62,7 +62,7 @@ const useStyles = makeStyles(() => ({
     color: "rgba(0, 0, 0, 0.5)",
     fontFamily: "CoreSans, sans-serif",
     [theme.breakpoints.down("sm")]: {
-      width: "290px",
+      width: "70%",
     },
   },
   root: {
@@ -157,8 +157,8 @@ const useStyles = makeStyles(() => ({
     letterSpacing: "0.5px",
     [theme.breakpoints.down("sm")]: {
       width: "290px",
-      margin: "0 0 80px 0"
-    }
+      margin: "0 0 80px 0",
+    },
   },
   location_errorText: {
     fontFamily: "CoreSans, sans-serif",
@@ -190,7 +190,9 @@ const useStyles = makeStyles(() => ({
       borderRadius: "0",
       justifyContent: "center",
       backgroundColor: "white",
-      margin: "0 0 0 0"
+      margin: "0 0 0 0",
+      width: "100%",
+      padding: "0",
     },
   },
 }));

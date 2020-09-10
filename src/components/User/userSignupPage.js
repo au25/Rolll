@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+      width: "100%",
     },
   },
   signupPolicyContainer: {
@@ -77,6 +78,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(241, 241, 241, 0.7)",
     [theme.breakpoints.down("sm")]: {
       backgroundColor: "white",
+      width: "100%",
     },
   },
   tos_text: {
