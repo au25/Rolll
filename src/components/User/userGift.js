@@ -19,10 +19,17 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      width: "415px",
+      height: "675px",
+      overflow: "scroll",
+      backgroundColor: "#e8e8e8",
+      borderRadius: "20px"
+    },
   },
   giftContainer: {
     width: "80%",
-    height: "100%",
+    // height: "100%",
     margin: "0 0 30px",
   },
   gift_text: {
@@ -48,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 0 0px 0",
     color: "#fbfcfc",
     fontFamily: "CoreSans, sans-serif",
-    letterSpacing: "0.5px"
+    letterSpacing: "0.5px",
   },
   shopAddress_text: {
     fontSize: "14px",
@@ -71,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     //   "linear-gradient(to right, rgba(254, 239, 186, 0.4), rgba(0, 0, 0, 0.05))",
     backgroundColor: "white",
     borderRadius: "0 0 0 70px",
-    borderLeft: "8px solid rgb(149, 149, 148, 0.5)"
+    borderLeft: "8px solid rgb(149, 149, 148, 0.5)",
   },
   giftImageContainer: {
     width: "70px",
@@ -198,18 +205,14 @@ const theme = createMuiTheme({
       },
       select: {
         "&$select": {
-          backgroundColor: "transparent"
+          backgroundColor: "transparent",
         },
-      }
+      },
     },
   },
 });
 
-export default function ({
-  userDbInfo,
-  userAuthInfo,
-  userLocationInfo,
-}) {
+export default function ({ userDbInfo, userAuthInfo, userLocationInfo }) {
   const { currentUser } = useContext(AuthContext);
   const history = useHistory();
   const classes = useStyles();
@@ -393,7 +396,7 @@ export default function ({
                             ? classes.shakeCSS
                             : classes.giftImageContainer
                         }
-                        onTouchStart={() => {
+                        onClick={() => {
                           claimGift(cityGift);
                         }}
                       >
@@ -411,7 +414,7 @@ export default function ({
                             ? classes.shakeCSS
                             : classes.giftImageContainer
                         }
-                        onTouchStart={(e) =>
+                        onClick={(e) =>
                           handleGiftMouseDown(e, index, cityGift)
                         }
                       >

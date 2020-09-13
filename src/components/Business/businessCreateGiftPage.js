@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useRef, useContext, useState } from "react";
 import {
   makeStyles,
   ThemeProvider,
@@ -16,7 +16,7 @@ import * as firebase from "firebase";
 import moment from "moment";
 import "moment-timezone";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     flexDirection: "column",
@@ -29,6 +29,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     margin: "30px 0 0 0",
+    [theme.breakpoints.up("sm")]: {
+      width: "350px",
+    },
   },
   chooseGiftText: {
     fontSize: "18px",
@@ -60,6 +63,9 @@ const useStyles = makeStyles({
   },
   giftIntro_text: {
     margin: "0 0 20px 0",
+    [theme.breakpoints.up("sm")]: {
+      height: "65px",
+    },
   },
   giftInfoContainer: {
     fontSize: "16px",
@@ -70,6 +76,12 @@ const useStyles = makeStyles({
     color: "rgba(0, 0, 0, 0.7)",
     fontFamily: "CoreSans, sans-serif",
     alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      flexDirection: "row",
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
   },
   chooseGiftAppearContainer: {
     display: "flex",
@@ -85,6 +97,12 @@ const useStyles = makeStyles({
     margin: "12px 0 30px 0",
     padding: "0 0 30px 0",
     borderBottom: "1px solid #4a4a4a",
+    [theme.breakpoints.up("sm")]: {
+      width: "240px",
+      height: "455px",
+      margin: "12px 10px 30px 10px",
+      borderBottom: "none",
+    },
   },
   linkContainer: {
     textDecoration: "none",
@@ -94,6 +112,9 @@ const useStyles = makeStyles({
     border: "3px solid rgb(0, 0, 0, 0.3)",
     padding: "15px",
     borderRadius: "5px",
+    [theme.breakpoints.up("sm")]: {
+      height: "240px",
+    },
   },
   giftImageContainer: {
     width: "100%",
@@ -101,10 +122,18 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     margin: "8px 0",
+    [theme.breakpoints.up("sm")]: {
+      // width: "100px",
+      // height: "100px"
+    },
   },
   giftImage: {
     width: "40%",
     overflow: "hidden",
+    [theme.breakpoints.up("sm")]: {
+      width: "85px",
+      height: "85px",
+    },
   },
   giftTitle: {
     width: "60%",
@@ -197,6 +226,9 @@ const useStyles = makeStyles({
     flexDirection: "column",
     alignItems: "center",
     padding: "20px 0",
+    [theme.breakpoints.up("sm")]: {
+      width: "350px",
+    },
   },
   dayOfWeek_text: {
     // width: "100%",
@@ -208,7 +240,7 @@ const useStyles = makeStyles({
     fontWeight: "bold",
   },
   expireTime_text: {},
-});
+}));
 
 const theme = createMuiTheme({
   overrides: {
@@ -292,6 +324,7 @@ export default function ({ userDbInfo, parentShopInfo }) {
   });
 
   const userId = userDbInfo.id;
+  const endRef = useRef(null);
 
   /**
    * Sets gift duration state
@@ -333,6 +366,10 @@ export default function ({ userDbInfo, parentShopInfo }) {
     setGiftChosen(true);
     setSelectGift(gift);
     setActiveDiv(gift.gift_name);
+  };
+
+  const scrollToRef = (ref) => {
+    window.scrollTo(0, ref.current.offsetTop);
   };
 
   /**
@@ -451,10 +488,14 @@ export default function ({ userDbInfo, parentShopInfo }) {
                   state: { userId, parentShopInfo, selectGift, giftDuration },
                 }}
               >
-                <Button className={classes.nextButton}>Next</Button>
+                <Button className={classes.nextButton} ref={endRef}>
+                  Next
+                </Button>
               </Link>
             ) : (
-              <Button className={classes.disableButton}>Next</Button>
+              <Button className={classes.disableButton} ref={endRef}>
+                Next
+              </Button>
             )}
           </div>
         </CSSTransition>

@@ -20,6 +20,17 @@ const useStyles = makeStyles((theme) => ({
   userNavigation_renderBodyContainer: {
     height: "100%",
     overflow: "auto",
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  },
+  userNavigation_innerContainer: {
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+      justifyContent: "center",
+    },
   },
   userNavigation_navContainer: {
     height: "80px",
@@ -27,11 +38,23 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 50px 4px 50px",
     boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
     zIndex: "100",
-    [theme.breakpoints.down(600)]: {
+    [theme.breakpoints.down("sm")]: {
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-around",
       alignItems: "center",
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "500px",
+      backgroundColor: "white",
+      height: "80px",
+      display: "flex",
+      justifyContent: "space-around",
+      alignItems: "center",
+      borderRadius: "30px 30px 0 0",
+      padding: "15px 10px 15px 10px",
+      boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
+      zIndex: "100",
     },
   },
   profileIcon: {
@@ -123,74 +146,76 @@ export default function ({
         <div className={classes.userNavigation_renderBodyContainer}>
           <RenderBody />
         </div>
-        <div className={classes.userNavigation_navContainer}>
-          <div className={classes.icon_container}>
-            <div className={classes.image_container}>
-              <img
-                className={classes.giftList_image}
+        <div className={classes.userNavigation_innerContainer}>
+          <div className={classes.userNavigation_navContainer}>
+            <div className={classes.icon_container}>
+              <div className={classes.image_container}>
+                <img
+                  className={classes.giftList_image}
+                  style={{
+                    filter:
+                      navigationValue === "giftRecord"
+                        ? "invert(33%) sepia(93%) saturate(2157%) hue-rotate(110deg) brightness(70%) contrast(101%)"
+                        : null,
+                  }}
+                  src="img/history.png"
+                  onClick={() => setNavigationValue("giftRecord")}
+                />
+              </div>
+              <div
+                className={classes.iconTitle}
                 style={{
-                  filter:
-                    navigationValue === "giftRecord"
-                      ? "invert(33%) sepia(93%) saturate(2157%) hue-rotate(110deg) brightness(70%) contrast(101%)"
-                      : null,
+                  color: navigationValue === "giftRecord" ? "black" : "#a9a8a9",
                 }}
-                src="img/history.png"
-                onClick={() => setNavigationValue("giftRecord")}
-              />
+              >
+                History
+              </div>
             </div>
-            <div
-              className={classes.iconTitle}
-              style={{
-                color: navigationValue === "giftRecord" ? "black" : "#a9a8a9",
-              }}
-            >
-              History
-            </div>
-          </div>
-          <div className={classes.icon_container}>
-            <div className={classes.image_container}>
-              <img
-                className={classes.giftList_image}
+            <div className={classes.icon_container}>
+              <div className={classes.image_container}>
+                <img
+                  className={classes.giftList_image}
+                  style={{
+                    filter:
+                      navigationValue === "giftList"
+                        ? "invert(86%) sepia(71%) saturate(625%) hue-rotate(3deg) brightness(94%) contrast(95%)"
+                        : null,
+                  }}
+                  src="img/rolll.png"
+                  onClick={() => setNavigationValue("giftList")}
+                />
+              </div>
+              <div
+                className={classes.iconTitle}
                 style={{
-                  filter:
-                    navigationValue === "giftList"
-                      ? "invert(86%) sepia(71%) saturate(625%) hue-rotate(3deg) brightness(94%) contrast(95%)"
-                      : null,
+                  color: navigationValue === "giftList" ? "black" : "#a9a8a9",
                 }}
-                src="img/rolll.png"
-                onClick={() => setNavigationValue("giftList")}
-              />
+              >
+                Rolll
+              </div>
             </div>
-            <div
-              className={classes.iconTitle}
-              style={{
-                color: navigationValue === "giftList" ? "black" : "#a9a8a9",
-              }}
-            >
-              Rolll
-            </div>
-          </div>
-          <div className={classes.icon_container}>
-            <div className={classes.image_container}>
-              <img
-                className={classes.giftList_image}
+            <div className={classes.icon_container}>
+              <div className={classes.image_container}>
+                <img
+                  className={classes.giftList_image}
+                  style={{
+                    filter:
+                      navigationValue === "profile"
+                        ? "invert(10%) sepia(100%) saturate(7026%) hue-rotate(252deg) brightness(70%) contrast(124%)"
+                        : null,
+                  }}
+                  src="img/profile_v2.png"
+                  onClick={() => setNavigationValue("profile")}
+                />
+              </div>
+              <div
+                className={classes.iconTitle}
                 style={{
-                  filter:
-                    navigationValue === "profile"
-                      ? "invert(10%) sepia(100%) saturate(7026%) hue-rotate(252deg) brightness(70%) contrast(124%)"
-                      : null,
+                  color: navigationValue === "profile" ? "black" : "#a9a8a9",
                 }}
-                src="img/profile_v2.png"
-                onClick={() => setNavigationValue("profile")}
-              />
-            </div>
-            <div
-              className={classes.iconTitle}
-              style={{
-                color: navigationValue === "profile" ? "black" : "#a9a8a9",
-              }}
-            >
-              Profile
+              >
+                Profile
+              </div>
             </div>
           </div>
         </div>

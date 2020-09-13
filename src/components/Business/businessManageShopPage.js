@@ -22,6 +22,23 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      height: "100%",
+      justifyContent: "center"
+    }
+  },
+  inner_container: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      width: "415px",
+      height: "675px",
+      overflow: "scroll",
+      backgroundColor: "#e8e8e8",
+      borderRadius: "20px"
+    }
   },
   manageShop_text: {
     fontFamily: "CoreSans, sans-serif",
@@ -554,62 +571,64 @@ export default function ({ userDbInfo, parentShopInfo, setParentShopInfo }) {
 
   return (
     <div className={classes.container}>
-      <div className={classes.manageShop_text}>Manage Shop</div>
-      {/* Maps a user's shop info */}
-      <ThemeProvider theme={theme}>
-        {newParentShopInfo && newParentShopInfo.shop ? (
-          <FormComponent
-            parentShopInfo={newParentShopInfo}
-            handleShopProfileChange={handleShopProfileChange}
-            handleShopProfileUpdate={handleShopProfileUpdate}
-            handleRemoveShop={handleRemoveShop}
-            setParentShopInfo={setNewParentShopInfo}
-            countryErrorState={countryErrorState}
-            regionErrorState={regionErrorState}
-            classes={classes}
-            validateCountryRegion={validateCountryRegion}
-            locationInfo={locationInfo}
-            setLocationInfo={setLocationInfo}
-            selectDisable={selectDisable}
-            setSelectDisable={setSelectDisable}
-            locationValid={locationValid}
-            setLocationValid={setLocationValid}
-          />
-        ) : null}
-        <div className={classes.addShop_container}>
-          {showMessage ? (
-            <Button
-              className={classes.openCloseForm}
-              onClick={() => setShowMessage(false)}
+      <div className={classes.inner_container}>
+        <div className={classes.manageShop_text}>Manage Shop</div>
+        {/* Maps a user's shop info */}
+        <ThemeProvider theme={theme}>
+          {newParentShopInfo && newParentShopInfo.shop ? (
+            <FormComponent
+              parentShopInfo={newParentShopInfo}
+              handleShopProfileChange={handleShopProfileChange}
+              handleShopProfileUpdate={handleShopProfileUpdate}
+              handleRemoveShop={handleRemoveShop}
+              setParentShopInfo={setNewParentShopInfo}
+              countryErrorState={countryErrorState}
+              regionErrorState={regionErrorState}
+              classes={classes}
+              validateCountryRegion={validateCountryRegion}
+              locationInfo={locationInfo}
+              setLocationInfo={setLocationInfo}
+              selectDisable={selectDisable}
+              setSelectDisable={setSelectDisable}
+              locationValid={locationValid}
+              setLocationValid={setLocationValid}
+            />
+          ) : null}
+          <div className={classes.addShop_container}>
+            {showMessage ? (
+              <Button
+                className={classes.openCloseForm}
+                onClick={() => setShowMessage(false)}
+              >
+                Close
+              </Button>
+            ) : (
+              <Button
+                className={classes.openCloseForm}
+                onClick={() => setShowMessage(true)}
+              >
+                Add Shop
+              </Button>
+            )}
+            <CSSTransition
+              in={showMessage}
+              timeout={200}
+              classNames="alert"
+              unmountOnExit
+              onEnter={() => setShowButton(false)}
+              onExited={() => setShowButton(true)}
             >
-              Close
-            </Button>
-          ) : (
-            <Button
-              className={classes.openCloseForm}
-              onClick={() => setShowMessage(true)}
-            >
-              Add Shop
-            </Button>
-          )}
-          <CSSTransition
-            in={showMessage}
-            timeout={200}
-            classNames="alert"
-            unmountOnExit
-            onEnter={() => setShowButton(false)}
-            onExited={() => setShowButton(true)}
-          >
-            <div>
-              <BusinessAddShopComponent
-                userDbInfo={userDbInfo}
-                parentShopInfo={parentShopInfo}
-                setParentShopInfo={setParentShopInfo}
-              />
-            </div>
-          </CSSTransition>
-        </div>
-      </ThemeProvider>
+              <div>
+                <BusinessAddShopComponent
+                  userDbInfo={userDbInfo}
+                  parentShopInfo={parentShopInfo}
+                  setParentShopInfo={setParentShopInfo}
+                />
+              </div>
+            </CSSTransition>
+          </div>
+        </ThemeProvider>
+      </div>
     </div>
   );
 }

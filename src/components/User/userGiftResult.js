@@ -102,7 +102,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     padding: "0 45px 0 45px",
     height: "55px",
-    alignItems: "center"
+    alignItems: "center",
   },
   minute_text: {
     fontSize: "40px",
@@ -137,6 +137,11 @@ const useStyles = makeStyles((theme) => ({
     margin: "20px 0 0 0",
     height: "45px",
   },
+  innerContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  }
 }));
 
 const theme = createMuiTheme({
@@ -208,57 +213,60 @@ export default function ({ userDbInfo, location }) {
     <Div100vh>
       <ThemeProvider theme={theme}>
         <div className={classes.container}>
-          <ThemeProvider theme={theme}>
-            {giftResult && giftResult.reward ? (
-              <>
-                <div className={classes.shopInfo_container}>
-                  <div className={classes.shopName_text}>
-                    {giftResult.shop_name}
+          <div className={classes.innerContainer}>
+            <ThemeProvider theme={theme}>
+              {giftResult && giftResult.reward ? (
+                <>
+                  <div className={classes.shopInfo_container}>
+                    <div className={classes.shopName_text}>
+                      {giftResult.shop_name}
+                    </div>
+                    <div className={classes.shopAddress_text}>
+                      {giftResult.shop_address}
+                    </div>
                   </div>
-                  <div className={classes.shopAddress_text}>
-                    {giftResult.shop_address}
+                  <div className="h1_container">
+                    <div
+                      // className="block-reveal"
+                      className={`${classes.reward_text} ${"block-reveal"}`}
+                    >
+                      {giftResult.reward}
+                    </div>
                   </div>
-                </div>
-                <div className="h1_container">
-                  <div
-                    // className="block-reveal"
-                    className={`${classes.reward_text} ${"block-reveal"}`}
+                  <div className={classes.countdown_outerContainer}>
+                    <Countdown
+                      date={
+                        // new Date(
+                        //   moment(giftResult.gift_open_timeStamp).add(
+                        //     10,
+                        //     "seconds"
+                        //   )
+                        // )
+                        // Uncomment to set gift expiry time accordingly
+                        moment(giftResult.gift_expiry_date)
+                      }
+                      precision={3}
+                      renderer={(props) => {
+                        return countDown(props);
+                      }}
+                    />
+                  </div>
+                  <div className={classes.storeRights_text}>
+                    {giftResult.shop_name} reserves the right to refuse
+                    redmeption of this reward.
+                  </div>
+                  <Button
+                    onClick={() => toRecord()}
+                    className={classes.dashboard_button}
                   >
-                    {giftResult.reward}
-                  </div>
-                </div>
-                <div className={classes.countdown_outerContainer}>
-                  <Countdown
-                    date={
-                      // new Date(
-                      //   moment(giftResult.gift_open_timeStamp).add(
-                      //     10,
-                      //     "seconds"
-                      //   )
-                      // )
-                      // Uncomment to set gift expiry time accordingly
-                      moment(giftResult.gift_expiry_date)
-                    }
-                    precision={3}
-                    renderer={(props) => {
-                      return countDown(props);
-                    }}
-                  />
-                </div>
-                <div className={classes.storeRights_text}>
-                {giftResult.shop_name} reserves the right to refuse redmeption of this reward. 
-                </div>
-                <Button
-                  onTouchStart={() => toRecord()}
-                  className={classes.dashboard_button}
-                >
-                  Back
-                </Button>
-              </>
-            ) : (
-              <div>no result</div>
-            )}
-          </ThemeProvider>
+                    Back
+                  </Button>
+                </>
+              ) : (
+                <div>no result</div>
+              )}
+            </ThemeProvider>
+          </div>
         </div>
       </ThemeProvider>
     </Div100vh>

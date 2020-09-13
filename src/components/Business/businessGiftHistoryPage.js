@@ -6,12 +6,31 @@ import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import moment from "moment";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   giftInfo_outerContainer: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      height: "100%",
+      justifyContent: "center"
+    }
+  },
+  giftHistory_container: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      width: "415px",
+      backgroundColor: "#e8e8e8",
+      height: "600px",
+      overflow: "scroll",
+      borderRadius: "25px",
+      margin: "15px 0 0 0",
+      padding: "25px 0 0 0"
+    },
   },
   recordText: {
     fontFamily: "CoreSans, sans-serif",
@@ -21,6 +40,10 @@ const useStyles = makeStyles({
     width: "70%",
     margin: "50px 0 10px 0",
     borderBottom: "1px solid black",
+    [theme.breakpoints.up("sm")]: {
+      width: "415px",
+      borderBottom: "none"
+    }
   },
   giftInfo_innerContainer: {
     width: "70%",
@@ -30,7 +53,7 @@ const useStyles = makeStyles({
     fontSize: "14px",
     borderBottom: "1.5px solid lightgray",
     backgroundColor: "white",
-    borderRadius: "0 0 10px 10px"
+    borderRadius: "0 0 10px 10px",
     // padding: "0 0 10px 0",
   },
   shopName_text: {
@@ -78,7 +101,7 @@ const useStyles = makeStyles({
     height: "35px",
     margin: "10px 0",
     borderRadius: "2px",
-    borderRadius: "5px"
+    borderRadius: "5px",
   },
   shopInfo_container: {
     backgroundColor: "#4a4a4a",
@@ -95,7 +118,7 @@ const useStyles = makeStyles({
     padding: "10px 0 5px 0px",
     backgroundColor: "white",
     borderLeft: "5px solid green",
-    borderRadius: "0 0 10px 10px"
+    borderRadius: "0 0 10px 10px",
   },
   expire_rewardInfo_container: {
     display: "flex",
@@ -116,7 +139,7 @@ const useStyles = makeStyles({
     letterSpacing: "1px",
     margin: "0 10px 0 0",
   },
-});
+}));
 
 export default function ({ userDbInfo }) {
   const classes = useStyles();
@@ -294,7 +317,9 @@ export default function ({ userDbInfo }) {
   return (
     <div className={classes.giftInfo_outerContainer}>
       <div className={classes.recordText}>Gift Record</div>
-      <RenderGiftHistory />
+      <div className={classes.giftHistory_container}>
+        <RenderGiftHistory />
+      </div>
     </div>
   );
 }

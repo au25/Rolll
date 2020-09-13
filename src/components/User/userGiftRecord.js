@@ -23,6 +23,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
+    [theme.breakpoints.up("sm")]: {
+      width: "415px",
+      height: "675px",
+      overflow: "scroll",
+      backgroundColor: "#e8e8e8",
+      borderRadius: "20px"
+    },
   },
   giftInfo_container_active: {
     width: "70%",
@@ -43,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     borderRadius: "5px 10px 10px 5px",
     margin: "15px 0px",
-    borderRadius: "0 0 10px 40px"
+    borderRadius: "0 0 10px 40px",
   },
   giftInfo_container: {
     width: "100%",
@@ -119,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: "1px",
     textTransform: "none",
     backgroundColor: "#4caf50",
-    borderRadius: "5px"
+    borderRadius: "5px",
   },
   active_rewardInfo_container: {
     display: "flex",
@@ -127,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "10px 0 10px 0px",
     borderLeft: "5px solid green",
-    borderRadius: "0 0 10px 40px"
+    borderRadius: "0 0 10px 40px",
   },
   expire_rewardInfo_container: {
     display: "flex",
@@ -135,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "10px 0 10px 0px",
     borderLeft: "5px solid red",
-    borderRadius: "0 0 10px 40px"
+    borderRadius: "0 0 10px 40px",
   },
 }));
 
@@ -246,7 +253,7 @@ export default function ({ userDbInfo }) {
                   <div>
                     <Button
                       className={classes.view_button}
-                      onTouchStart={() => toGiftResult(gift)}
+                      onClick={() => toGiftResult(gift)}
                     >
                       View
                     </Button>

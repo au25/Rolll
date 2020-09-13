@@ -12,7 +12,7 @@ import "moment-timezone";
 import { CSSTransition } from "react-transition-group";
 import "./styles.css";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   div100Container: {
     display: "flex",
     flexDirection: "column",
@@ -25,19 +25,39 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     overflow: "scroll",
+    [theme.breakpoints.up("sm")]: {
+      alignItems: "center",
+    },
   },
   selectShopContainer: {
     display: "flex",
     width: "70%",
     flexDirection: "column",
     alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      flexDirection: "row",
+      justifyContent: "center",
+      borderRadius: "45px",
+      width: "925px",
+      backgroundColor: "white",
+      height: "635px"
+    },
   },
   chooseGiftContainer: {
     backgroundColor: "white",
     borderRadius: "0 0 10px 10px",
+    [theme.breakpoints.up("sm")]: {
+      height: "500px",
+      borderRadius: "0 0 10px 10px",
+      backgroundColor: "#f5f5f5"
+    },
   },
   giftInfo_container: {
     margin: "48px 0 0 0",
+    [theme.breakpoints.up("sm")]: {
+      margin: "0",
+      width: "270px",
+    },
   },
   chooseShopText: {
     fontSize: "16px",
@@ -215,9 +235,15 @@ const useStyles = makeStyles({
     backgroundColor: "white",
     width: "100%",
     margin: "20px 0 40px 0",
-    borderRadius: "0 0 10px 10px"
+    borderRadius: "0 0 10px 10px",
+    [theme.breakpoints.up("sm")]: {
+      height: "500px",
+      overflow: "scroll",
+      margin: "0",
+      width: "500px",
+    },
   },
-});
+}));
 
 export default function ({ location }) {
   const classes = useStyles();
@@ -231,7 +257,6 @@ export default function ({ location }) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [selectShop, setSelectShop] = useState({});
   const [giftRecord, setGiftRecord] = useState({});
-  const [activeGift, setActiveGift] = useState({});
   const [userDbInfo, setUserDbInfo] = useState();
 
   /**

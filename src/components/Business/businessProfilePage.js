@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   businessProfilePageContainer: {
-    width: "415px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -31,9 +30,11 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
     },
     [theme.breakpoints.up("sm")]: {
-      backgroundColor: "white",
+      backgroundColor: "#e8e8e8",
       borderRadius: "20px",
       width: "415px",
+      height: "675px",
+      justifyContent: "center"
     },
   },
   maangerInfoText: {

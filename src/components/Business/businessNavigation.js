@@ -23,25 +23,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   navigationIconContainer: {
-    // height: "80px",
-    // backgroundColor: "white",
-    // padding: "0 40px 4px 40px",
-    // boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
-    // zIndex: "100",
-    // display: "flex",
-    // flexDirection: "row",
-    // justifyContent: "space-around",
-    // alignItems: "center",
-
-    [theme.breakpoints.down(600)]: {
-      // display: "flex",
-      // flexDirection: "row",
-      // justifyContent: "space-around",
-      // alignItems: "center",
-    },
+    [theme.breakpoints.down(600)]: {},
     [theme.breakpoints.up(600)]: {
-      // boxShadow: "none",
-      // backgroundColor: "transparent",
       display: "flex",
       justifyContent: "center",
     },

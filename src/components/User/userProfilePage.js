@@ -21,11 +21,18 @@ import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    [theme.breakpoints.down(600)]: {
+    [theme.breakpoints.down("sm")]: {
       height: "100%",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+    },
+    [theme.breakpoints.up("sm")]: {
+      width: "415px",
+      display: "flex",
+      justifyContent: "center",
+      backgroundColor: "#e8e8e8",
+      borderRadius: "20px",
     },
   },
   yourProfileText: {
@@ -39,7 +46,10 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
   },
   userProfileFormContainer: {
-    [theme.breakpoints.down(600)]: {
+    [theme.breakpoints.down("sm")]: {
+      width: "70%",
+    },
+    [theme.breakpoints.up("sm")]: {
       width: "70%",
     },
   },
