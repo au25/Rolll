@@ -34,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     color: "rgba(0, 0, 0, 0.5)",
     fontFamily: "CoreSans, sans-serif",
-    padding: "28px 0",
+    margin: "28px 0 0 0",
+    padding: "0 0 28px 0",
     borderBottom: "1px solid rgba(0, 0, 0, 0.15)",
   },
   dontHaveAccountText: {
@@ -69,8 +70,8 @@ const useStyles = makeStyles((theme) => ({
   signup_button: {
     width: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.09)",
-    color: "black"
-  }
+    color: "black",
+  },
 }));
 
 /**
@@ -245,7 +246,15 @@ const SignUp = ({ history }) => {
           LOG IN
         </Button>
       </ValidatorForm>
-      <div className={classes.forgotPasswordText}> Forgot Your Password?</div>
+      <div
+        className={classes.forgotPasswordText}
+        onClick={() => {
+          history.push("/resetPassword");
+        }}
+      >
+        {" "}
+        Forgot Your Password?
+      </div>
       <div className={classes.signup_container}>
         <div className={classes.dontHaveAccountText}>
           Don't have an account?

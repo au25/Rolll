@@ -16,6 +16,9 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 require("firebase/functions");
+// const admin = require("firebase-admin");
+
+// admin.initializeApp(firebase.functions.config().firebase);
 
 /**
  * CSS of the page

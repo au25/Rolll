@@ -7,7 +7,9 @@ import Home from "./components/home";
 import Login from "./components/User/userLoginPage";
 import Signup from "./components/User/userSignupPage";
 import Tos from "./components/tos";
-import Pp from "./components/privacyPolicy"
+import Pp from "./components/privacyPolicy";
+import userMgmt from "./components/userManagement";
+import resetPassword from "./components/resetPassword";
 
 // Admin imports
 import AdminLoginPage from "./components/Admin/adminLoginPage";
@@ -36,7 +38,9 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Route path="/tos" component={Tos} />
-          <Route path="/privacyPolicy" component={Pp}/>
+          <Route path="/privacyPolicy" component={Pp} />
+          <Route path="/userMgmt" component={userMgmt} />
+          <Route path="/resetPassword" component={resetPassword} />
 
           {/* User Routes */}
           <Route path="/userHome" component={UserHome} />
