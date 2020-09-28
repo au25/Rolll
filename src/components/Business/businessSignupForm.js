@@ -195,6 +195,13 @@ const useStyles = makeStyles(() => ({
       padding: "0",
     },
   },
+  signupMsg_text: {
+    fontFamily: "CoreSans, sans-serif",
+    justifyContent: "center",
+    color: "red",
+    margin: "0 0 25px 0",
+    fontSize: "14px",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -230,8 +237,20 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        backgroundColor: "rgba(0, 0, 0, 0.05)",
+        backgroundColor: "#4caf50",
+        color: "white",
         height: "60px",
+        "&$disabled": {
+          color: "white",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        },
+        "&:hover": {
+          backgroundColor: "#4caf50",
+          // Reset on touch devices, it doesn't add specificity
+          "@media (hover: none)": {
+            backgroundColor: "#4caf50",
+          },
+        },
       },
     },
     MuiIconButton: {
@@ -288,6 +307,8 @@ const SignUp = ({ history }) => {
     phone_number: "",
     email: "",
   });
+  const [newConfirmPassword, setNewConfirmPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [locationInfo, setLocationInfo] = useState();
   const [selectDisable, setSelectDisable] = useState({
@@ -301,6 +322,9 @@ const SignUp = ({ history }) => {
     region: true,
     country: false,
   });
+  const [signupMsg, setSignupMsg] = useState("");
+  const [loginValueCSS, setLoginValueCSS] = useState(false);
+  const [locationEmpty, setLocationEmpty] = useState(true);
 
   const db = firebase.firestore();
   let countryArray = [];
@@ -322,7 +346,10 @@ const SignUp = ({ history }) => {
         cityAreaArray: cityAreaArray,
       });
     };
-    fetchCountryInfo();
+    if (locationEmpty) {
+      console.log("location is empty");
+      fetchCountryInfo();
+    }
   }, [registrationValue.confirmPassword]);
 
   const checkValidationRule = () => {
@@ -383,11 +410,11 @@ const SignUp = ({ history }) => {
               gift_intro:
                 "This template is suitable for long term usage.  Ideal for attracting and retaining customers!",
               image_url:
-                "https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fred_gift_box.png?alt=media&token=ace05975-618b-4e8d-b9fd-a7d83736e5eb",
+                "img/red_gift_box.png",
               gift_description: {
                 chance: [0.02, 0.08, 0.5, 0.4],
                 reward: ["Free Drink", "15% Off", "10% Off", "Try Again"],
-                expire_time: [5, 1440, 1440, 1440],
+                expire_time: [5, 5, 5, 5],
               },
             },
             {
@@ -395,7 +422,7 @@ const SignUp = ({ history }) => {
               gift_intro:
                 "This template is perfect for celebratory events.  Let the community know you are there, make an impact!",
               image_url:
-                "https://firebasestorage.googleapis.com/v0/b/owospace-d6985.appspot.com/o/images%2Fblue_gift_box2.png?alt=media&token=a1e7a0ab-bf4e-4c07-8ca2-d4a841aa06b9",
+                "img/blue_gift_box2.png",
               gift_description: {
                 chance: [0.1, 0.3, 0.6],
                 reward: ["Free Drink", "50% discount", "25% discount"],
@@ -404,21 +431,31 @@ const SignUp = ({ history }) => {
             },
           ],
         });
+
+      // Adds "shop role" to account after account creation
+      try {
+        const addBusinessUserRole = await firebase
+          .functions()
+          .httpsCallable("addBusinessUserRole");
+        addBusinessUserRole({ email: registrationValue.email }).then(
+          (result) => {
+            console.log(result);
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+
+      history.push("/businessHome");
     } catch (error) {
       console.log(error);
+      setLoginValueCSS(true);
+      setSignupMsg(error.message);
     }
-
-    // Adds "shop role" to account after account creation
-    const addBusinessUserRole = await firebase
-      .functions()
-      .httpsCallable("addBusinessUserRole");
-    addBusinessUserRole({ email: registrationValue.email }).then((result) => {
-      console.log(result);
-    });
-
-    // history.push("/businessHome");
   }
+
   const handleCountryChange = async (e) => {
+    setLocationEmpty(false);
     setRegistrationValue({
       ...registrationValue,
       shop_country: e.target.value,
@@ -513,7 +550,7 @@ const SignUp = ({ history }) => {
           >
             <div className={classes.formContainer}>
               <TextValidator
-                id="filled-basic"
+                id="filled-basic4"
                 label="Shop Name"
                 variant="filled"
                 value={registrationValue.shop_name}
@@ -527,7 +564,7 @@ const SignUp = ({ history }) => {
                 }
               />
               <TextValidator
-                id="filled-basic"
+                id="filled-basic5"
                 label="Shop Address"
                 variant="filled"
                 value={registrationValue.shop_address}
@@ -681,7 +718,7 @@ const SignUp = ({ history }) => {
                 <div className={classes.managerInfoBorderBottom}></div>
               </div>
               <TextValidator
-                id="filled-basic"
+                id="filled-basic0"
                 label="Email Address"
                 variant="filled"
                 value={registrationValue.email}
@@ -696,7 +733,7 @@ const SignUp = ({ history }) => {
               />
               <div className={classes.passwordContainer}>
                 <TextValidator
-                  id="filled-basic"
+                  id="filled-basic1"
                   label="Password"
                   variant="filled"
                   type={showPassword ? "text" : "password"}
@@ -722,7 +759,7 @@ const SignUp = ({ history }) => {
               </div>
               <div className={classes.passwordContainer}>
                 <TextValidator
-                  id="filled-basic"
+                  id="filled-basic2"
                   label="Repeat Password"
                   variant="filled"
                   type={showPassword ? "text" : "password"}
@@ -748,6 +785,12 @@ const SignUp = ({ history }) => {
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
+              </div>
+              <div
+                className={classes.signupMsg_text}
+                style={{ display: loginValueCSS ? "flex" : "none" }}
+              >
+                {signupMsg}
               </div>
               <Button
                 className={classes.userSignup_saveButton}

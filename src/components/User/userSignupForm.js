@@ -86,6 +86,13 @@ const useStyles = makeStyles((theme) => ({
       width: "70%",
     },
   },
+  signupMsg_text: {
+    fontFamily: "CoreSans, sans-serif",
+    justifyContent: "center",
+    color: "red",
+    margin: "0 0 25px 0",
+    fontSize: "14px",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -198,6 +205,9 @@ const SignUp = ({ history }) => {
     region: true,
     country: false,
   });
+  const [signupMsg, setSignupMsg] = useState("");
+  const [loginValueCSS, setLoginValueCSS] = useState(false);
+  const [locationEmpty, setLocationEmpty] = useState(true);
 
   const db = firebase.firestore();
   let countryArray = [];
@@ -220,13 +230,15 @@ const SignUp = ({ history }) => {
         cityAreaArray: cityAreaArray,
       });
     };
-    fetchCountryInfo();
+    if (locationEmpty) {
+      fetchCountryInfo();
+    }
   }, [registrationValue.confirmPassword]);
 
   const checkValidationRule = () => {
     ValidatorForm.addValidationRule("isPasswordMatch", (value) => {
       if (value !== registrationValue.password) {
-        console.log(value + "     " + registrationValue.password);
+        // console.log(value + "     " + registrationValue.password);
         return false;
       }
       return true;
@@ -255,7 +267,7 @@ const SignUp = ({ history }) => {
           registrationValue.password
         );
 
-      credential.user.sendEmailVerification();
+      // credential.user.sendEmailVerification();
 
       await db.collection("user").doc(credential.user.uid).set({
         user_email: registrationValue.user_email,
@@ -268,17 +280,19 @@ const SignUp = ({ history }) => {
 
       const addUserRole = firebase.functions().httpsCallable("addUserRole");
       addUserRole({ email: registrationValue.user_email }).then((result) => {
-        console.log(result);
+        // console.log(result);
       });
 
       // Redirect user to user home page after signing up
-      // history.push("/");
+      history.push("/");
     } catch (error) {
-      console.log(error);
+      setLoginValueCSS(true);
+      setSignupMsg(error.message);
     }
   }
 
   const handleCountryChange = async (e) => {
+    setLocationEmpty(false);
     setRegistrationValue({
       ...registrationValue,
       user_country: e.target.value,
@@ -521,7 +535,12 @@ const SignUp = ({ history }) => {
               )}
             </FormControl>
           </div>
-
+          <div
+            className={classes.signupMsg_text}
+            style={{ display: loginValueCSS ? "flex" : "none" }}
+          >
+            {signupMsg}
+          </div>
           <Button
             className={classes.userSignup_saveButton}
             type="submit"

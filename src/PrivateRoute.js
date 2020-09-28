@@ -4,14 +4,16 @@ import { AuthContext } from "./Auth";
 
 /**
  * Authenticate user and returns token
- * @param {} param0 
+ * @param {} param0
  */
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
   const { currentUser } = useContext(AuthContext);
   return (
     <Route
       {...rest}
-      render={routeProps =>
+      render={(routeProps) =>
+        // if there is a user, return routeCompoenne
+        // else redirects to home
         !!currentUser ? (
           <RouteComponent {...routeProps} />
         ) : (

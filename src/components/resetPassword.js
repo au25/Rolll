@@ -49,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     // margin: "0 0 10px 0",
   },
+  sentMessage_text: {
+    margin: "25px 0 10px 0",
+    fontSize: "14px",
+    fontWeight: "bold",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -89,16 +94,24 @@ export default function () {
     password: "",
     email: "",
   });
+  const [sentMsg, setSentMsg] = useState("lol");
+  const [displayValue, setDisplayValue] = useState(false);
+  const [emailSuccessValue, setEmailSuccessValue] = useState();
 
   function sendPasswordReset() {
     const auth = firebase.auth();
     auth
       .sendPasswordResetEmail(loginValue.email)
       .then(function () {
-        console.log("email sent");
+        setSentMsg("Email Sent");
+        setEmailSuccessValue(true);
+        setDisplayValue(true);
+        setLoginValue({ ...loginValue, setLoginValue, email: "" });
       })
       .catch(function (error) {
-        console.log(error);
+        setSentMsg("Invalid Email");
+        setEmailSuccessValue(false);
+        setDisplayValue(true);
       });
     // console.log(loginValue.email);
   }
@@ -133,6 +146,15 @@ export default function () {
                 setLoginValue({ ...loginValue, email: e.target.value })
               }
             />
+            <div
+              className={classes.sentMessage_text}
+              style={{
+                display: displayValue ? "flex" : "none",
+                color: emailSuccessValue ? "green" : "red",
+              }}
+            >
+              {sentMsg}
+            </div>
             <Button type="submit">Send</Button>
           </ValidatorForm>
         </div>

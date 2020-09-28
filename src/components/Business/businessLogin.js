@@ -104,7 +104,14 @@ const useStyles = makeStyles((theme) => ({
   form_container: {
     width: "70%",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+  },
+  loginMsg_text: {
+    fontFamily: "CoreSans, sans-serif",
+    justifyContent: "center",
+    color: "red",
+    margin: "0 0 25px 0",
+    fontSize: "14px"
   },
 }));
 
@@ -182,6 +189,8 @@ export default function () {
     email: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loginMsg, setLoginMsg] = useState("");
+  const [loginValueCSS, setLoginValueCSS] = useState(false);
 
   /**
    * Shows password when eye icon is clicked
@@ -213,9 +222,16 @@ export default function () {
    * Signs business user in
    */
   const businessLogin = async () => {
-    await firebase
-      .auth()
-      .signInWithEmailAndPassword(loginValue.email, loginValue.password);
+    try {
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(loginValue.email, loginValue.password);
+      history.push("/");
+    } catch (error) {
+      setLoginValueCSS(true);
+      setLoginMsg("Invalid Login");
+      console.log(error);
+    }
   };
 
   return (
@@ -266,6 +282,12 @@ export default function () {
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
+              </div>
+              <div
+                className={classes.loginMsg_text}
+                style={{ display: loginValueCSS ? "flex" : "none" }}
+              >
+                {loginMsg}
               </div>
               <Button type="submit">LOG IN</Button>
               <div className={classes.forgotPasswordText}>

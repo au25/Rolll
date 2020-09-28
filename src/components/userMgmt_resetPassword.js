@@ -11,6 +11,11 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
+import Alert from "@material-ui/lab/Alert";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   outerContainer: {
@@ -37,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    [theme.breakpoints.up("sm")]: {
+      width: "375px",
+    },
   },
   verified_text: {
     fontSize: "16px",
@@ -65,12 +73,52 @@ const useStyles = makeStyles((theme) => ({
   },
   passwordContainer: {
     width: "100%",
+    margin: "0 0 10px 0",
+  },
+  enterPasswordFor_container: {},
+  logo_image: {
+    width: "50px",
+    margin: "0 0 20px 0",
+    backgroundColor: "white",
+    borderRadius: "50px",
+  },
+  newPassword_text: {
+    fontSize: "15px",
+    fontWeight: "bold",
+    margin: "0 0 5px 0",
+  },
+  email_text: {
+    fontSize: "15px",
+    margin: "0 0 20px 0",
+  },
+  passwordChange_container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "10px 0 10px 0",
+  },
+  passwordChange_printedText: {
+    fontWeight: "bold",
+    fontSize: "14px",
+    margin: "0 0 5px 0",
+    color: "green",
+  },
+  submitMsg_printedText: {
+    textAlign: "center",
+    fontSize: "14px",
+    color: "green",
   },
 }));
 
 const theme = createMuiTheme({
   overrides: {
     root: {},
+    MuiButtonBase: {
+      root: {
+        width: "20%",
+      },
+    },
     MuiButton: {
       root: {
         backgroundColor: "#4caf50",
@@ -87,6 +135,17 @@ const theme = createMuiTheme({
             backgroundColor: "#4caf50",
           },
         },
+      },
+      text: {
+        width: "100px",
+        padding: "0",
+        height: "50px",
+        margin: "10px 0 0 0",
+      },
+    },
+    MuiFormControl: {
+      root: {
+        width: "80%",
       },
     },
   },
@@ -105,9 +164,14 @@ export default function ({ actionCode }) {
     confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [submitMsg_text, setSubmitMsg_text] = useState("");
+  const [passwordChange_text, setPasswordChange_text] = useState("");
+  const [displayValue, setDisplayValue] = useState(false);
+  const [emailSuccess, setEmailSuccess] = useState(false);
+  const auth = firebase.auth();
 
   useEffect(() => {
-    const auth = firebase.auth();
     ValidatorForm.addValidationRule("isPasswordMatch", (value) => {
       if (value !== registrationValue.password) {
         // console.log("value: " + value);
@@ -139,15 +203,38 @@ export default function ({ actionCode }) {
   };
 
   const submitPasswordChange = () => {
-    console.log("changing password");
+    auth
+      .confirmPasswordReset(actionCode, registrationValue.password)
+      .then(() => {
+        auth.signInWithEmailAndPassword(email, registrationValue.password);
+        console.log("password change success");
+        setEmail(true);
+        setPasswordChange_text("Password Changed");
+        setSubmitMsg_text("You will be redirected in a few seconds..");
+        setDisplayValue(true);
+        setRegistrationValue({
+          ...registrationValue,
+          password: "",
+          confirmPassword: "",
+        });
+        history.push("/home");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return verify ? (
     valid ? (
       <ThemeProvider theme={theme}>
         <div className={classes.enterPassword_container}>
-          <div>Enter new password for</div>
-          <div>{email}</div>
+          <img className={classes.logo_image} src="img/logo_96x96_ver1.png" />
+          <div className={classes.newPassword_text}>New Password</div>
+          <div className={classes.email_text}>{email}</div>
           <ValidatorForm
             className={classes.form}
             autoComplete="off"
@@ -209,8 +296,53 @@ export default function ({ actionCode }) {
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </IconButton>
             </div>
+            <div
+              className={classes.passwordChange_container}
+              style={{ display: displayValue ? "flex" : "none" }}
+            >
+              <div className={classes.passwordChange_printedText}>
+                {passwordChange_text}
+              </div>
+              <div className={classes.submitMsg_printedText} style={{ display: emailSuccess ? "green" : "red"}}>
+                {submitMsg_text}
+              </div>
+            </div>
             <Button type="submit">Submit</Button>
           </ValidatorForm>
+          {/* <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={classes.modal}
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>
+              <Alert
+                className={classes.alert_button}
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <CloseIcon
+                      className={classes.closeIcon}
+                      fontSize="inherit"
+                    />
+                  </IconButton>
+                }
+              >
+                Profile updated!
+              </Alert>
+            </Fade>
+          </Modal> */}
         </div>
       </ThemeProvider>
     ) : (

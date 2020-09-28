@@ -72,6 +72,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "rgba(0, 0, 0, 0.09)",
     color: "black",
   },
+  loginMsg_text: {
+    fontFamily: "CoreSans, sans-serif",
+    justifyContent: "center",
+    color: "red",
+    margin: "0 0 25px 0",
+    fontSize: "14px"
+  },
 }));
 
 /**
@@ -159,6 +166,8 @@ const SignUp = ({ history }) => {
     email: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loginMsg, setLoginMsg] = useState("");
+  const [loginValueCSS, setLoginValueCSS] = useState(false);
 
   /**
    * Shows password after clicking eye icon
@@ -181,6 +190,8 @@ const SignUp = ({ history }) => {
         .signInWithEmailAndPassword(loginValue.email, loginValue.password);
       history.push("/");
     } catch (error) {
+      setLoginValueCSS(true);
+      setLoginMsg("Invalid Login");
       console.log(error);
     }
   }
@@ -241,7 +252,12 @@ const SignUp = ({ history }) => {
             {showPassword ? <Visibility /> : <VisibilityOff />}
           </IconButton>
         </div>
-
+        <div
+          className={classes.loginMsg_text}
+          style={{ display: loginValueCSS ? "flex" : "none" }}
+        >
+          {loginMsg}
+        </div>
         <Button className={classes.userSignup_saveButton} type="submit">
           LOG IN
         </Button>

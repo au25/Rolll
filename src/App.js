@@ -34,6 +34,7 @@ function App() {
       <Router>
         <div className="App">
           <PrivateRoute path="/" exact component={Home} />
+          {/* <Route path="/" exact component={Home} /> */}
           <Route path="/home" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
