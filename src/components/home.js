@@ -2,12 +2,9 @@ import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../Auth";
 import { Redirect, useHistory } from "react-router";
 import Navigation from "./landingPageNavigation";
-import {
-  makeStyles,
-  ThemeProvider,
-  createMuiTheme,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Div100vh from "react-div-100vh";
+import FAQ from "./betaFAQ";
 
 const useStyles = makeStyles((theme) => ({
   outer_container: {
@@ -18,15 +15,25 @@ const useStyles = makeStyles((theme) => ({
   banner_container: {
     height: "100%",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     overflow: "hidden",
     backgroundColor: "black",
-    maxWidth: "825px",
+    maxWidth: "600px",
   },
   banner_image: {
     objectFit: "cover",
     height: "100%",
     margin: "0 0 0 14px",
+    width: "100%",
+  },
+  betaFAQ_container: {
+    display: "flex",
+    flexGrow: "1",
+    justifyContent: "center",
+    overflow: "scroll",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
 }));
 
@@ -56,6 +63,10 @@ export default function () {
   return (
     <div>
       <Div100vh className={classes.outer_container}>
+        <div className={classes.betaFAQ_container}>
+          {" "}
+          <FAQ />
+        </div>
         <div className={classes.banner_container}>
           <Navigation />
           <img

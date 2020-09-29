@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px",
     letterSpacing: "1.5px",
     textTransform: "none",
-    [theme.breakpoints.up("md")]: {
-      color: "yellow",
+    [theme.breakpoints.up("sm")]: {
+      // color: "yellow",
     },
   },
   welcomeMsgContainer: {
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
   navigationContainer: {
     display: "flex",
     justifyContent: "flex-end",
-    width: "100%",
+    // width: "100%",
     maxWidth: "825px",
     position: "absolute",
     backgroundColor: "black",
