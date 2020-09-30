@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     [theme.breakpoints.up("sm")]: {
       width: "415px",
-      height: "675px",
+      height: "600px",
       overflow: "scroll",
       backgroundColor: "#e8e8e8",
       borderRadius: "20px"

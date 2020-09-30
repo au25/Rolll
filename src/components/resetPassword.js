@@ -54,6 +54,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
     fontWeight: "bold",
   },
+  sendEmail_button: {
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
+  }
 }));
 
 const theme = createMuiTheme({
@@ -155,7 +160,7 @@ export default function () {
             >
               {sentMsg}
             </div>
-            <Button type="submit">Send</Button>
+            <Button className={classes.sendEmail_button}type="submit">Send</Button>
           </ValidatorForm>
         </div>
       </div>

@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexGrow: "1",
     justifyContent: "center",
-    overflow: "scroll",
+    overflow: "auto",
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },

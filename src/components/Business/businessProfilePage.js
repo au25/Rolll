@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#e8e8e8",
       borderRadius: "20px",
       width: "415px",
-      height: "675px",
+      height: "600px",
       justifyContent: "center"
     },
   },
@@ -66,11 +66,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
   },
   logoutButton: {
-    width: "40%",
     fontSize: "12px",
     padding: "0",
     height: "40px",
     backgroundColor: "rgba(0, 0, 0, 0)",
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
   },
   updateButton: {
     textTransform: "none",
@@ -81,6 +83,9 @@ const useStyles = makeStyles((theme) => ({
     width: "50%",
     margin: " 0 0 12px 0",
     height: "50px",
+    "&:hover": {
+      backgroundColor: "#439a47 !important",
+    },
   },
 }));
 

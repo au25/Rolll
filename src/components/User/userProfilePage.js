@@ -30,9 +30,11 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       width: "415px",
       display: "flex",
+      height: "605px",
       justifyContent: "center",
       backgroundColor: "#e8e8e8",
       borderRadius: "20px",
+      overflow: "auto"
     },
   },
   yourProfileText: {
@@ -155,6 +157,9 @@ const useStyles = makeStyles((theme) => ({
     width: "50%",
     margin: " 0 0 12px 0",
     height: "50px",
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
   },
   logoutButton: {
     width: "40%",
@@ -163,6 +168,9 @@ const useStyles = makeStyles((theme) => ({
     height: "40px",
     backgroundColor: "rgba(0, 0, 0, 0)",
     margin: "0 0 25px 0",
+    "&:hover": {
+      backgroundColor: "transparent", //dark green
+    },
   },
   logoutContainer: {
     display: "flex",

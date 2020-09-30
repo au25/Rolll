@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     [theme.breakpoints.up("sm")]: {
       width: "415px",
-      height: "675px",
-      overflow: "scroll",
+      height: "600px",
+      overflow: "auto",
       backgroundColor: "#e8e8e8",
       borderRadius: "20px"
     },

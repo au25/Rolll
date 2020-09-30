@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     display: "flex",
     justifyContent: "center",
-    overflow: "scroll",
+    overflow: "auto",
     [theme.breakpoints.up("sm")]: {
       alignItems: "center",
     },
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: "45px",
       width: "925px",
       backgroundColor: "white",
-      height: "635px"
+      height: "635px",
     },
   },
   chooseGiftContainer: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       height: "500px",
       borderRadius: "0 0 10px 10px",
-      backgroundColor: "#f5f5f5"
+      backgroundColor: "#f5f5f5",
     },
   },
   giftInfo_container: {
@@ -182,6 +182,9 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     textTransform: "none",
     letterSpacing: "1px",
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
   },
   enableGift_button: {
     fontSize: "12px",
@@ -194,10 +197,16 @@ const useStyles = makeStyles((theme) => ({
     height: "50px",
     width: "126px",
     padding: "6px 8px",
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
   },
   enableGift_backButton: {
     margin: "5px 0 0 0",
     textTransform: "none",
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
   },
   disableGift_button: {
     width: "40%",
@@ -207,6 +216,9 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: "1px",
     textTransform: "none",
     color: "white",
+    "&:hover": {
+      backgroundColor: "#b10000!important", //dark red
+    },
   },
   renderShop_container: {
     margin: "0 0 10px 0",
@@ -238,7 +250,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "0 0 10px 10px",
     [theme.breakpoints.up("sm")]: {
       height: "500px",
-      overflow: "scroll",
+      overflow: "auto",
       margin: "0",
       width: "500px",
     },

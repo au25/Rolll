@@ -22,13 +22,14 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    padding: "50px 0 0 0",
     [theme.breakpoints.up("sm")]: {
       width: "415px",
       backgroundColor: "#e8e8e8",
       height: "600px",
-      overflow: "scroll",
+      overflow: "auto",
       borderRadius: "25px",
-      margin: "15px 0 0 0",
+      // margin: "15px 0 0 0",
       padding: "25px 0 0 0"
     },
   },
@@ -316,7 +317,7 @@ export default function ({ userDbInfo }) {
 
   return (
     <div className={classes.giftInfo_outerContainer}>
-      <div className={classes.recordText}>Gift Record</div>
+      {/* <div className={classes.recordText}>Gift Record</div> */}
       <div className={classes.giftHistory_container}>
         <RenderGiftHistory />
       </div>

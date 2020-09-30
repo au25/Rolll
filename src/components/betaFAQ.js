@@ -146,7 +146,7 @@ export default function () {
             id="panel2a-header"
           >
             <Typography className={classes.heading}>
-              What cities is this for?
+              Can I use this locally?
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
@@ -184,8 +184,7 @@ export default function () {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
-              Recent graduate from BCIT looking for a software development
-              position.
+             lolooooololoOLolOLoLololoLOL
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>

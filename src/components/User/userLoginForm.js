@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
   },
   userSignup_saveButton: {
     // backgroundColor: "rgba(0, 0, 0, 0.05)",
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
   },
   signupLinkContainer: {
     textDecoration: "none",
@@ -71,6 +74,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.09)",
     color: "black",
+    "&:hover": {
+      backgroundColor: "#00000033", //dark light gray
+    },
   },
   loginMsg_text: {
     fontFamily: "CoreSans, sans-serif",

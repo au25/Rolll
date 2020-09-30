@@ -100,6 +100,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.09) !important",
     color: "black",
+    "&:hover": {
+      backgroundColor: "#00000033 !important", //dark light gray
+    },
   },
   form_container: {
     width: "70%",
@@ -111,7 +114,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     color: "red",
     margin: "0 0 25px 0",
-    fontSize: "14px"
+    fontSize: "14px",
+  },
+  login_button: {
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
   },
 }));
 
@@ -289,8 +297,15 @@ export default function () {
               >
                 {loginMsg}
               </div>
-              <Button type="submit">LOG IN</Button>
-              <div className={classes.forgotPasswordText}>
+              <Button className={classes.login_button} type="submit">
+                LOG IN
+              </Button>
+              <div
+                className={classes.forgotPasswordText}
+                onClick={() => {
+                  history.push("/resetPassword");
+                }}
+              >
                 Forgot Your Password?
               </div>
               <div className={classes.register_container}>

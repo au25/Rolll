@@ -178,6 +178,9 @@ const useStyles = makeStyles((theme) => ({
     padding: "6px 8px",
     width: "126px",
     height: "50px",
+    "&:hover": {
+      backgroundColor: "#439a47 !important",
+    },
   },
   nextButton: {
     fontWeight: "bold",
@@ -189,6 +192,9 @@ const useStyles = makeStyles((theme) => ({
     width: "126px",
     height: "50px",
     margin: "25px 0 35px 0",
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
   },
   disableButton: {
     fontWeight: "bold",

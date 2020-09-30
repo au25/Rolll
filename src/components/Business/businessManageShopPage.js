@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     [theme.breakpoints.up("sm")]: {
       height: "100%",
-      justifyContent: "center"
-    }
+      justifyContent: "center",
+    },
   },
   inner_container: {
     width: "100%",
@@ -34,11 +34,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     [theme.breakpoints.up("sm")]: {
       width: "415px",
-      height: "675px",
-      overflow: "scroll",
+      height: "600px",
+      overflow: "auto",
       backgroundColor: "#e8e8e8",
-      borderRadius: "20px"
-    }
+      borderRadius: "20px",
+    },
   },
   manageShop_text: {
     fontFamily: "CoreSans, sans-serif",
@@ -116,6 +116,10 @@ const useStyles = makeStyles((theme) => ({
     padding: "6px 8px",
     width: "126px",
     height: "50px",
+    "&:hover": {
+      backgroundColor: "#439a47 !important",
+      margin: "28px 0 45px 0",
+    },
   },
   addShop_container: {
     display: "flex",
@@ -148,11 +152,9 @@ const theme = createMuiTheme({
         height: "60px",
         width: "100%",
         "&:hover": {
-          backgroundColor: "#4caf50",
-          // Reset on touch devices, it doesn't add specificity
-          "@media (hover: none)": {
-            backgroundColor: "#4caf50",
-          },
+          backgroundColor: "#cc0000",
+          color: "white",
+          padding: "3px 15px 0",
         },
       },
     },

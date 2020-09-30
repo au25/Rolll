@@ -93,6 +93,11 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 0 25px 0",
     fontSize: "14px",
   },
+  userSignup_saveButton: {
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
+  }
 }));
 
 const theme = createMuiTheme({

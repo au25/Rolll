@@ -202,6 +202,11 @@ const useStyles = makeStyles(() => ({
     margin: "0 0 25px 0",
     fontSize: "14px",
   },
+  userSignup_saveButton: {
+    "&:hover": {
+      backgroundColor: "#439a47 !important", //dark green
+    },
+  }
 }));
 
 const theme = createMuiTheme({
@@ -534,7 +539,7 @@ const SignUp = ({ history }) => {
       {/* <Navigation /> */}
       <div className={classes.outerFormContainer}>
         <div className={classes.rollWithUsTextUsText}>
-          We just need a few information to get you rolling.
+          We just need a few information to get you rollling.
         </div>
         <div className={classes.form_container}>
           <div className={classes.shopInfoTitle}>

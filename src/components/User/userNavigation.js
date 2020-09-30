@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: "row",
       justifyContent: "space-around",
       alignItems: "center",
+      padding: "0 50px 4px 50px",
     },
     [theme.breakpoints.up("sm")]: {
       width: "500px",
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "space-around",
       alignItems: "center",
       borderRadius: "30px 30px 0 0",
-      padding: "15px 10px 15px 10px",
+      padding: "15px 60px 15px",
       boxShadow: "0px -4px 3px rgba(50, 50, 50, 0.03)",
       zIndex: "100",
     },

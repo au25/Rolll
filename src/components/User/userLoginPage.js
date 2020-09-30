@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "white",
     borderRadius: "20px",
     padding: "45px 0",
-    height: "75%",
+    // height: "75%",
     maxHeight: "600px",
     [theme.breakpoints.down("sm")]: {
       height: "100vh",
