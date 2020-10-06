@@ -15,7 +15,9 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import ReCAPTCHA from "react-google-recaptcha";
 require("firebase/functions");
+// const functions = require("firebase-functions");
 // const admin = require("firebase-admin");
 
 // admin.initializeApp(firebase.functions.config().firebase);
@@ -94,10 +96,25 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
   },
   userSignup_saveButton: {
+    margin: "25px 0 0 0",
     "&:hover": {
       backgroundColor: "#439a47 !important", //dark green
     },
-  }
+  },
+  recaptcha_container: {
+    display: "flex",
+    justifyContent: "center",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
+  recaptchaCompact_container: {
+    display: "flex",
+    justifyContent: "center",
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
+  },
 }));
 
 const theme = createMuiTheme({
@@ -289,7 +306,7 @@ const SignUp = ({ history }) => {
       });
 
       // Redirect user to user home page after signing up
-      history.push("/");
+      history.push("/businessPending");
     } catch (error) {
       setLoginValueCSS(true);
       setSignupMsg(error.message);
@@ -371,6 +388,10 @@ const SignUp = ({ history }) => {
     setLocationValid({ ...locationValid, cityArea: true });
   };
 
+  function onChange(value) {
+    console.log("Captcha value:", value);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <div className={classes.rollWithUsText}>
@@ -407,8 +428,11 @@ const SignUp = ({ history }) => {
               variant="filled"
               type={showPassword ? "text" : "password"}
               value={registrationValue.password}
-              validators={["required"]}
-              errorMessages={["Password is required"]}
+              validators={["required", "matchRegexp:^.{8,16}$"]}
+              errorMessages={[
+                "Password is required",
+                "Password must be 8 - 16 characters",
+              ]}
               onChange={(e) =>
                 setRegistrationValue({
                   ...registrationValue,
@@ -433,10 +457,15 @@ const SignUp = ({ history }) => {
               variant="filled"
               type={showPassword ? "text" : "password"}
               value={registrationValue.confirmPassword}
-              validators={["isPasswordMatch", "required"]}
+              validators={[
+                "isPasswordMatch",
+                "required",
+                "matchRegexp:^.{8,16}$",
+              ]}
               errorMessages={[
                 "Password doesn't match",
                 "Confirm password is required",
+                "Password must be 8 - 16 characters",
               ]}
               onChange={(e) =>
                 setRegistrationValue({
@@ -546,6 +575,19 @@ const SignUp = ({ history }) => {
           >
             {signupMsg}
           </div>
+          {/* <div className={classes.recaptcha_container}>
+            <ReCAPTCHA
+              sitekey="6LcRxtIZAAAAANNhJOTMkMNUOT3EA6DFTxBUzPA8"
+              onChange={onChange}
+            />
+          </div>
+          <div className={classes.recaptchaCompact_container}>
+            <ReCAPTCHA
+              sitekey="6LcRxtIZAAAAANNhJOTMkMNUOT3EA6DFTxBUzPA8"
+              onChange={onChange}
+              size="compact"
+            />
+          </div> */}
           <Button
             className={classes.userSignup_saveButton}
             type="submit"

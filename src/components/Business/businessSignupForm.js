@@ -445,13 +445,13 @@ const SignUp = ({ history }) => {
         addBusinessUserRole({ email: registrationValue.email }).then(
           (result) => {
             console.log(result);
+            history.push("/businessPending");
           }
         );
       } catch (error) {
         console.log(error);
       }
 
-      history.push("/businessHome");
     } catch (error) {
       console.log(error);
       setLoginValueCSS(true);
@@ -743,8 +743,11 @@ const SignUp = ({ history }) => {
                   variant="filled"
                   type={showPassword ? "text" : "password"}
                   value={registrationValue.password}
-                  validators={["required"]}
-                  errorMessages={["Password is required"]}
+                  validators={["required", "matchRegexp:^.{8,16}$"]}
+                  errorMessages={[
+                    "Password is required",
+                    "Password must be 8 - 16 characters",
+                  ]}
                   onChange={(e) =>
                     setRegistrationValue({
                       ...registrationValue,
@@ -769,10 +772,11 @@ const SignUp = ({ history }) => {
                   variant="filled"
                   type={showPassword ? "text" : "password"}
                   value={registrationValue.confirmPassword}
-                  validators={["isPasswordMatch", "required"]}
+                  validators={["isPasswordMatch", "required", "matchRegexp:^.{8,16}$"]}
                   errorMessages={[
                     "Password doesn't match",
                     "Confirm password is required",
+                    "Password must be 8 - 16 characters",
                   ]}
                   onChange={(e) =>
                     setRegistrationValue({

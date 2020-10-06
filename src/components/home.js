@@ -48,15 +48,16 @@ export default function () {
   // Redirect user to their home page according to their role
   if (currentUser != null) {
     currentUser.getIdTokenResult().then((idTokenResult) => {
-      if (idTokenResult.claims.adminRole) {
-        history.push("/adminHome");
-      }
+      // if (idTokenResult.claims.adminRole) {
+      //   history.push("/adminHome");
+      // }
       if (idTokenResult.claims.userRole) {
         history.push("/userHome");
-      }
-      if (idTokenResult.claims.shopRole) {
-        history.push("/businessHome");
-      }
+      } else if (idTokenResult.claims.is_approve) {
+        if (idTokenResult.claims.shopRole) {
+          history.push("/businessHome");
+        }
+      } 
     });
   }
 

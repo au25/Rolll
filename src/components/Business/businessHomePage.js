@@ -30,6 +30,14 @@ export default function ({ location }) {
     }
   });
 
+  if (currentUser != null) {
+    currentUser.getIdTokenResult().then((idTokenResult) => {
+      if (!idTokenResult.claims.is_approve) {
+        history.push("/businessPending");
+      }
+    });
+  }
+
   /**
    * Sets initial state of userDbInfo and shopInfo
    */

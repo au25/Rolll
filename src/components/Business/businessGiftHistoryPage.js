@@ -6,19 +6,21 @@ import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import moment from "moment";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   giftInfo_outerContainer: {
     width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     [theme.breakpoints.up("sm")]: {
       height: "100%",
-      justifyContent: "center"
-    }
+      justifyContent: "center",
+    },
   },
   giftHistory_container: {
     width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -30,7 +32,7 @@ const useStyles = makeStyles(theme => ({
       overflow: "auto",
       borderRadius: "25px",
       // margin: "15px 0 0 0",
-      padding: "25px 0 0 0"
+      padding: "25px 0 0 0",
     },
   },
   recordText: {
@@ -43,8 +45,8 @@ const useStyles = makeStyles(theme => ({
     borderBottom: "1px solid black",
     [theme.breakpoints.up("sm")]: {
       width: "415px",
-      borderBottom: "none"
-    }
+      borderBottom: "none",
+    },
   },
   giftInfo_innerContainer: {
     width: "70%",
@@ -139,6 +141,17 @@ const useStyles = makeStyles(theme => ({
     padding: "6px 15px",
     letterSpacing: "1px",
     margin: "0 10px 0 0",
+  },
+  noGift_container: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noGift_text: {
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "14px",
   },
 }));
 
@@ -248,6 +261,7 @@ export default function ({ userDbInfo }) {
 
   const RenderGiftHistory = () => {
     if (giftRecord && giftRecord[0]) {
+    // if (false) {
       // Renders gift information
       // If gift has not expire, renders diable button as well
       return giftRecord.map((gift) =>
@@ -312,7 +326,14 @@ export default function ({ userDbInfo }) {
           </div>
         )
       );
-    } else return <div>No gift record</div>;
+    } else
+      return (
+        <div className={classes.noGift_container}>
+          <div className={classes.noGift_text}>
+            You have not created any gifts yet.
+          </div>
+        </div>
+      );
   };
 
   return (
