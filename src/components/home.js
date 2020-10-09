@@ -10,7 +10,10 @@ const useStyles = makeStyles((theme) => ({
   outer_container: {
     display: "flex",
     justifyContent: "flex-end",
-    backgroundColor: "rgba(241, 241, 241, 0.7)",
+    backgroundColor: "black",
+    [theme.breakpoints.down(600)]: {
+      flexDirection: "column-reverse",
+    },
   },
   banner_container: {
     height: "100%",
@@ -19,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     backgroundColor: "black",
     maxWidth: "600px",
+    [theme.breakpoints.down(600)]: {
+      minHeight: "100%",
+    },
   },
   banner_image: {
     objectFit: "cover",
@@ -28,11 +34,17 @@ const useStyles = makeStyles((theme) => ({
   },
   betaFAQ_container: {
     display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     flexGrow: "1",
-    justifyContent: "center",
+    justifyContent: "space-between",
     overflow: "auto",
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
+    backgroundColor: "rgba(241, 241, 241)",
+    borderRadius: "0 50px 0 0",
+    [theme.breakpoints.down(600)]: {
+      overflow: "initial",
+      backgroundColor: "rgba(241, 241, 241)",
+      borderRadius: "0 0 0 0"
     },
   },
 }));
@@ -53,11 +65,9 @@ export default function () {
       // }
       if (idTokenResult.claims.userRole) {
         history.push("/userHome");
-      } else if (idTokenResult.claims.is_approve) {
-        if (idTokenResult.claims.shopRole) {
-          history.push("/businessHome");
-        }
-      } 
+      } else if (idTokenResult.claims.shopRole) {
+        history.push("/businessHome");
+      }
     });
   }
 
@@ -72,7 +82,7 @@ export default function () {
           <Navigation />
           <img
             className={classes.banner_image}
-            src="img/landing_withLogo.jpg"
+            src="img/landing_withLogo_smol2.jpg"
           />
         </div>
       </Div100vh>

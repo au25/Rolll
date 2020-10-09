@@ -16,10 +16,11 @@ export const AuthProvider = ({ children }) => {
         user.userRole = IdTokenResult.claims.userRole;
         user.approvedShop = IdTokenResult.claims.approvedShop;
         console.log("------------------------------");
+        console.log("user", user);
         console.log("admin role: " + user.adminRole);
         console.log("user role: " + user.userRole);
         console.log("shop role: " + user.shopRole);
-        console.log("approved shop: " + user.is_approve);
+        console.log("approved shop: " + user.approvedShop);
         console.log(user);
         console.log("------------------------------");
       });

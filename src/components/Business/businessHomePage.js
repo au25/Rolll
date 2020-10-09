@@ -32,7 +32,7 @@ export default function ({ location }) {
 
   if (currentUser != null) {
     currentUser.getIdTokenResult().then((idTokenResult) => {
-      if (!idTokenResult.claims.is_approve) {
+      if (!idTokenResult.claims.approvedShop) {
         history.push("/businessPending");
       }
     });

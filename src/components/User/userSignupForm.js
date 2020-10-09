@@ -306,7 +306,7 @@ const SignUp = ({ history }) => {
       });
 
       // Redirect user to user home page after signing up
-      history.push("/businessPending");
+      history.push("/");
     } catch (error) {
       setLoginValueCSS(true);
       setSignupMsg(error.message);

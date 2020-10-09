@@ -60,7 +60,7 @@ export default function () {
         className={classes.logout_button}
         onClick={async (e) => {
           e.preventDefault();
-          app.auth().signOut();
+          await app.auth().signOut();
           history.push("/home");
         }}
       >

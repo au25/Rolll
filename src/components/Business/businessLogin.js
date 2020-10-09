@@ -214,17 +214,17 @@ export default function () {
    * Checks user auth status
    * If approved, takes user to approved home page else pending page
    */
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user != null) {
-      currentUser.getIdTokenResult().then((idTokenResult) => {
-        if (idTokenResult.claims.is_approve) {
-          history.push("/businessHome");
-        } else {
-          history.push("/businessPending");
-        }
-      });
-    }
-  });
+  // firebase.auth().onAuthStateChanged((user) => {
+  //   if (user != null) {
+  //     currentUser.getIdTokenResult().then((idTokenResult) => {
+  //       if (idTokenResult.claims.is_approve) {
+  //         history.push("/businessHome");
+  //       } else {
+  //         history.push("/businessPending");
+  //       }
+  //     });
+  //   }
+  // });
 
   /**
    * Signs business user in

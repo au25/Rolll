@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
     margin: "25px 0 0 0",
     fontSize: "15px",
+    color: "#000000d1"
   },
   questions_text: {
     margin: "25px 0 0 0",
@@ -29,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   faq_outerContainer: {
     width: "70%",
     maxWidth: "415px",
+    [theme.breakpoints.down(600)]: {
+      margin: "0 0 80px 0",
+    },
   },
   accordion_container: {
     margin: "25px 0 0 0",
@@ -50,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
     fontSize: "13px",
   },
+  copyright_text: {
+    margin: "0 0 30px 0",
+    fontSize: "13px",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -60,6 +68,18 @@ const theme = createMuiTheme({
         margin: "0 0 3px 0",
         "&$expanded": {
           borderRadius: "15px",
+        },
+      },
+    },
+    MuiExpansionPanelSummary: {
+      content: {
+        padding: "0 45px 0 0",
+      },
+      root: {
+        minHeight: "30px",
+        "&$expanded": {
+          // height: "48px",
+          minHeight: "48px",
         },
       },
     },
@@ -75,11 +95,19 @@ const theme = createMuiTheme({
     MuiTypography: {
       body1: {
         fontSize: "14px",
+        lineHeight: "18px",
       },
     },
     MuiExpansionPanelDetails: {
       root: {
         margin: "0 15px 15px",
+        padding: "15px 15px 0px",
+      },
+    },
+    MuiCollapse: {
+      wrapperInner: {
+        backgroundColor: "#e2e2e2",
+        // borderRadius: "0 0 15px 15px",
       },
     },
   },
@@ -106,16 +134,13 @@ export default function () {
             shops.
           </div>
         </div>
-
         <ExpansionPanel>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography className={classes.heading}>
-              Is it free to use?
-            </Typography>
+            <Typography className={classes.heading}>Is it free?</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>Yes.</Typography>
@@ -133,9 +158,12 @@ export default function () {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
-              Let the cashier know you would like to Rolll. Open it and show the
-              prize to cashier to redeem it. Shop reserves the right to refuse
-              usage.
+              1. Sign up <br />
+              <br />
+              2. Choose the shop you want to go to
+              <br />
+              <br />
+              3. Let the cashier know. Open gift and show the prize to cashier.
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -146,49 +174,19 @@ export default function () {
             id="panel2a-header"
           >
             <Typography className={classes.heading}>
-              Can I use this locally?
+              The sign-up form does not have my location?
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>
-              Vancouver only? If you would like to see your city added to the
-              signup form, please send a brief email to support@rolll.app.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-          >
             <Typography className={classes.heading}>
-              Expansion Panel 2
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-          >
-            <Typography className={classes.heading}>About Us</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-             lolooooololoOLolOLoLololoLOL
+              We are currently only supporting Vancouver BC. If you want to use
+              our services, please send a brief email with your location to
+              support@rolll.app.
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </div>
+      <div className={classes.copyright_text}> &copy; 2020 Rolll App</div>
     </ThemeProvider>
   );
 }
