@@ -207,7 +207,7 @@ export default function ({ actionCode }) {
       .confirmPasswordReset(actionCode, registrationValue.password)
       .then(() => {
         auth.signInWithEmailAndPassword(email, registrationValue.password);
-        console.log("password change success");
+        // console.log("password change success");
         setEmail(true);
         setPasswordChange_text("Password Changed");
         setSubmitMsg_text("You will be redirected in a few seconds..");

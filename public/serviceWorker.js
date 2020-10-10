@@ -4,7 +4,7 @@ const cacheArray = [
   "/",
   "index.html",
   "offline.html",
-  "img/landing_withLogo.jpg",
+  "img/landing_withLogo_smol2.jpg",
   "img/blue_gift_box2.png",
   "img/red_gift_box.png",
   "img/rolll_logo_2.png",
@@ -24,7 +24,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
       try {
-        console.log("opened cache");
+        // console.log("opened cache");
         const cache = await caches.open(static_cache_ver);
         // reaches out to server to get resources
         return cache.addAll(cacheArray);

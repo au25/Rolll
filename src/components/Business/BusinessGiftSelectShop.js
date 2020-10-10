@@ -1,5 +1,9 @@
 import React, { useEffect, useContext, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  ThemeProvider,
+  makeStyles,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 import * as firebase from "firebase";
 import { AuthContext } from "../../Auth";
 import { useHistory } from "react-router-dom";
@@ -7,6 +11,7 @@ import BusinessSelectShopNavigation from "./businessSelectShopNavigation";
 import Div100vh from "react-div-100vh";
 import Button from "@material-ui/core/Button";
 import moment from "moment";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import "moment-timezone";
 
 import { CSSTransition } from "react-transition-group";
@@ -175,9 +180,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   selectShop_button: {
-    width: "40%",
+    // width: "40%",
     fontSize: "14px",
-    padding: "10px 5px",
+    padding: "10px 15px",
     backgroundColor: "#4caf50",
     color: "white",
     textTransform: "none",
@@ -188,15 +193,14 @@ const useStyles = makeStyles((theme) => ({
   },
   enableGift_button: {
     fontSize: "12px",
-    padding: "12px 15px",
+    padding: "6px 15px",
     backgroundColor: "#4caf50",
     fontSize: "14px",
     color: "white",
     textTransform: "none",
     letterSpacing: "1px",
     height: "50px",
-    width: "126px",
-    padding: "6px 8px",
+    // width: "126px",
     "&:hover": {
       backgroundColor: "#439a47 !important", //dark green
     },
@@ -209,9 +213,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   disableGift_button: {
-    width: "40%",
+    // width: "40%",
     fontSize: "13px",
-    padding: "10px 5px",
+    padding: "10px 15px",
     backgroundColor: "rgba(204, 0, 0, 0.7)",
     letterSpacing: "1px",
     textTransform: "none",
@@ -255,7 +259,20 @@ const useStyles = makeStyles((theme) => ({
       width: "500px",
     },
   },
+  circularProgress_container: {
+    display: "flex",
+    margin: "0 0 0 10px",
+  },
+  circularProgress: {
+    width: "20px !important",
+    height: "20px !important",
+    color: "white !important",
+  },
 }));
+
+const theme = createMuiTheme({
+  overrides: {},
+});
 
 export default function ({ location }) {
   const classes = useStyles();
@@ -270,6 +287,7 @@ export default function ({ location }) {
   const [selectShop, setSelectShop] = useState({});
   const [giftRecord, setGiftRecord] = useState({});
   const [userDbInfo, setUserDbInfo] = useState();
+  const [loading, setLoading] = useState(false);
 
   /**
    * Props from parent from <Link> route
@@ -280,8 +298,8 @@ export default function ({ location }) {
   const userId = location.state.userId;
   const db = firebase.firestore();
 
-  console.log("this is the selected gift info");
-  console.log(gift);
+  // console.log("this is the selected gift info");
+  // console.log(gift);
 
   const fetch_giftRecord = async () => {
     const template_exist = await db
@@ -310,8 +328,8 @@ export default function ({ location }) {
    * @param {*} shop
    */
   const handleShopClick = (shop) => {
-    console.log("onclick before creating");
-    console.log(giftRecord.data());
+    // console.log("onclick before creating");
+    // console.log(giftRecord.data());
     setShowConfirmation(true);
     setSelectShop(shop);
   };
@@ -348,7 +366,7 @@ export default function ({ location }) {
       };
 
       const handleGiftDisable = async (shop, index) => {
-        console.log("disable");
+        // console.log("disable");
 
         const giftRecordArray = giftRecord.data()[gift.gift_name];
         const currentTime = moment(
@@ -359,8 +377,8 @@ export default function ({ location }) {
           for (let i = giftRecordArray.length - 1; i >= 0; i--) {
             if (giftRecordArray[i].shop_name == shop.shop_name) {
               if (currentTime.isBefore(giftRecordArray[i].gift_expiry_date)) {
-                console.log(giftRecordArray[i].gift_id);
-                console.log(i);
+                // console.log(giftRecordArray[i].gift_id);
+                // console.log(i);
 
                 giftRecordArray[i].gift_expiry_date = moment(
                   firebase.firestore.Timestamp.now(new Date()).toDate()
@@ -385,7 +403,7 @@ export default function ({ location }) {
                   .collection("area")
                   .doc(shop.shop_area);
                 const cityRefSnapshop = await cityAreaRef.get();
-                console.log(cityRefSnapshop.data());
+                // console.log(cityRefSnapshop.data());
                 let claimedGifts = cityRefSnapshop.data().gift;
 
                 const cityRef = db
@@ -394,19 +412,19 @@ export default function ({ location }) {
                   .collection(shop.shop_region)
                   .doc(shop.shop_city);
 
-                console.log("before change");
-                console.log(claimedGifts);
+                // console.log("before change");
+                // console.log(claimedGifts);
 
                 for (let j = claimedGifts.length - 1; j >= 0; j--) {
                   if (claimedGifts[j].gift_id == giftRecordArray[i].gift_id) {
-                    console.log("changing expiry date");
+                    // console.log("changing expiry date");
                     claimedGifts[j].gift_expiry_date = moment(
                       firebase.firestore.Timestamp.now(new Date()).toDate()
                     ).format();
                   }
                 }
-                console.log("new claimed gift array");
-                console.log(claimedGifts);
+                // console.log("new claimed gift array");
+                // console.log(claimedGifts);
                 await cityAreaRef.set({ gift: claimedGifts });
                 await cityRef.set({ gift: claimedGifts });
               }
@@ -468,6 +486,7 @@ export default function ({ location }) {
    * Sets shopShop state to false, which hides the modal
    */
   const createGift = async () => {
+    setLoading(true);
     const db = firebase.firestore();
 
     const currentTimeStamp = firebase.firestore.Timestamp.now(new Date());
@@ -482,8 +501,8 @@ export default function ({ location }) {
      * Gets the ID of document before creating it
      */
     const giftDocRef = db.collection("gift").doc();
-    console.log("this is the select shop info");
-    console.log(selectShop);
+    // console.log("this is the select shop info");
+    // console.log(selectShop);
 
     const cityAreaRef = db
       .collection("gift")
@@ -501,8 +520,8 @@ export default function ({ location }) {
       .collection(selectShop.shop_region)
       .doc(selectShop.shop_city);
     const cityRefSnapshop = await cityRef.get();
-    console.log("this is city ref");
-    console.log(cityRefSnapshop);
+    // console.log("this is city ref");
+    // console.log(cityRefSnapshop);
 
     const giftName = "gift";
 
@@ -595,12 +614,12 @@ export default function ({ location }) {
      * If it does, then update the array
      * If not, create the collection and document
      */
-    console.log(giftRecord.exists);
+    // console.log(giftRecord.exists);
 
     if (giftRecord && giftRecord.exists) {
-      console.log("template exists, now updating...");
-      console.log(giftRecord.exists);
-      console.log(giftRecord);
+      // console.log("template exists, now updating...");
+      // console.log(giftRecord.exists);
+      // console.log(giftRecord);
       await db
         .collection("businessUser")
         .doc(userId)
@@ -624,8 +643,8 @@ export default function ({ location }) {
         });
       fetch_giftRecord();
     } else {
-      console.log("doesnt exist");
-      console.log(giftRecord);
+      // console.log("doesnt exist");
+      // console.log(giftRecord);
       const new_giftRecord_ref = db
         .collection("businessUser")
         .doc(userId)
@@ -646,7 +665,7 @@ export default function ({ location }) {
           shop_area: selectShop.shop_area,
         }),
       });
-      console.log("new gift record created");
+      // console.log("new gift record created");
       fetch_giftRecord();
     }
 
@@ -655,88 +674,105 @@ export default function ({ location }) {
 
   return (
     <Div100vh className={classes.div100Container}>
-      <div className={classes.selectShopOuterContainer}>
-        <div className={classes.selectShopContainer}>
-          <div className={classes.giftInfo_container}>
-            <div className={classes.chooseGiftContainer}>
-              <div className={classes.giftTitle_text}>{gift.gift_name}</div>
-              <div className={classes.giftIntro_text}>{gift.gift_intro}</div>
-              <div
-                className={classes.imageDescription_container}
-                style={{
-                  backgroundColor: "#e0eee0",
-                  borderColor: "#3d9140",
-                }}
-              >
-                <div className={classes.giftImageContainer}>
-                  <img
-                    className={classes.giftImage}
-                    src={gift.image_url}
-                    alt="lol"
-                  />
-                </div>
-                <div className={classes.giftDescription_container}>
-                  <div className={classes.chanceText_container}>
-                    {gift.gift_description.chance.map((chance) => {
-                      {
-                        return (
-                          <div className={classes.chanceText}>
-                            {chance * 100}%
-                          </div>
-                        );
-                      }
-                    })}
+      <ThemeProvider theme={theme}>
+        <div className={classes.selectShopOuterContainer}>
+          <div className={classes.selectShopContainer}>
+            <div className={classes.giftInfo_container}>
+              <div className={classes.chooseGiftContainer}>
+                <div className={classes.giftTitle_text}>{gift.gift_name}</div>
+                <div className={classes.giftIntro_text}>{gift.gift_intro}</div>
+                <div
+                  className={classes.imageDescription_container}
+                  style={{
+                    backgroundColor: "#e0eee0",
+                    borderColor: "#3d9140",
+                  }}
+                >
+                  <div className={classes.giftImageContainer}>
+                    <img
+                      className={classes.giftImage}
+                      src={gift.image_url}
+                      alt="lol"
+                    />
                   </div>
-                  <div className={classes.rewardText_container}>
-                    {gift.gift_description.reward.map((reward) => {
-                      {
-                        return (
-                          <div className={classes.rewardText}>{reward}</div>
-                        );
-                      }
-                    })}
+                  <div className={classes.giftDescription_container}>
+                    <div className={classes.chanceText_container}>
+                      {gift.gift_description.chance.map((chance) => {
+                        {
+                          return (
+                            <div className={classes.chanceText}>
+                              {chance * 100}%
+                            </div>
+                          );
+                        }
+                      })}
+                    </div>
+                    <div className={classes.rewardText_container}>
+                      {gift.gift_description.reward.map((reward) => {
+                        {
+                          return (
+                            <div className={classes.rewardText}>{reward}</div>
+                          );
+                        }
+                      })}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className={classes.expireInfo_container}>
-                <div className={classes.expire_text}>Expires</div>
-                <div className={classes.date_text}>September 5, 2020</div>
-                <div className={classes.time_text}>@ 11:59pm</div>
+                <div className={classes.expireInfo_container}>
+                  <div className={classes.expire_text}>Expires</div>
+                  <div className={classes.date_text}>September 5, 2020</div>
+                  <div className={classes.time_text}>@ 11:59pm</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className={classes.chooseShop_container}>
-            <div className={classes.chooseShopText}>Choose shop to apply:</div>
-            <div className={classes.renderShop_container}>
-              <RenderShop />
-              <CSSTransition
-                in={showConfirmation}
-                timeout={300}
-                classNames="alert"
-                unmountOnExit
-                onEnter={() => setShowSelection(false)}
-                onExited={() => setShowSelection(true)}
-              >
-                <div key="lol">
-                  <Button
-                    className={classes.enableGift_button}
-                    onClick={() => createGift()}
-                  >
-                    Enable Gift
-                  </Button>
-                  <Button
-                    className={classes.enableGift_backButton}
-                    onClick={() => setShowConfirmation(false)}
-                  >
-                    Back
-                  </Button>
-                </div>
-              </CSSTransition>
+            <div className={classes.chooseShop_container}>
+              <div className={classes.chooseShopText}>
+                Choose shop to apply:
+              </div>
+              <div className={classes.renderShop_container}>
+                <RenderShop />
+                <CSSTransition
+                  in={showConfirmation}
+                  timeout={300}
+                  classNames="alert"
+                  unmountOnExit
+                  onEnter={() => setShowSelection(false)}
+                  onExited={() => {
+                    setShowSelection(true);
+                    setLoading(false);
+                  }}
+                >
+                  <div key="lol">
+                    <Button
+                      className={classes.enableGift_button}
+                      onClick={() => createGift()}
+                    >
+                      Enable Gift
+                      <div
+                        className={classes.circularProgress_container}
+                        style={{ display: loading ? "flex" : "none" }}
+                      >
+                        {loading && (
+                          <CircularProgress
+                            className={classes.circularProgress}
+                          />
+                        )}
+                      </div>
+                    </Button>
+                    <Button
+                      className={classes.enableGift_backButton}
+                      onClick={() => setShowConfirmation(false)}
+                    >
+                      Back
+                    </Button>
+                  </div>
+                </CSSTransition>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <BusinessSelectShopNavigation />
+        <BusinessSelectShopNavigation />
+      </ThemeProvider>
     </Div100vh>
   );
 }

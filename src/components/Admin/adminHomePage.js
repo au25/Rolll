@@ -103,7 +103,7 @@ export default function() {
       .functions()
       .httpsCallable("addBusinessUserApproved");
     addBusinessUserApproved({ email: data.email }).then(result => {
-      console.log(result);
+      // console.log(result);
     });
 
     // Updates database that the approveShop status to true
@@ -164,7 +164,7 @@ export default function() {
       .functions()
       .httpsCallable("removeBusinessUserApproved");
     removeBusinessUserApproved({ email: data.email }).then(result => {
-      console.log(result);
+      // console.log(result);
     });
 
     // Updates database that the approveShop status to false

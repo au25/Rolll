@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Fade from "@material-ui/core/Fade";
 import Alert from "@material-ui/lab/Alert";
 import IconButton from "@material-ui/core/IconButton";
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
       backgroundColor: "#e8e8e8",
       borderRadius: "20px",
-      overflow: "auto"
+      overflow: "auto",
     },
   },
   yourProfileText: {
@@ -207,6 +208,15 @@ const useStyles = makeStyles((theme) => ({
   closeIcon: {
     padding: "0px",
   },
+  circularProgress_container: {
+    display: "flex",
+    margin: "0 0 0 10px",
+  },
+  circularProgress: {
+    width: "20px !important",
+    height: "20px !important",
+    color: "white !important",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -346,6 +356,7 @@ export default function ({
   });
   const [profileUpdateMsg, setProfileUpdateMsg] = useState("before update");
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   const db = firebase.firestore();
   let countryArrayCopy = [];
@@ -397,13 +408,13 @@ export default function ({
    */
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    await db
-      .collection("user")
-      .doc(userDbInfo.id)
-      .set(userInfo)
-      .then(async () => {
-        await new Promise((resolve) => setOpen(true, () => resolve()));
-      });
+    setLoading(true);
+    try {
+      await db.collection("user").doc(userDbInfo.id).set(userInfo);
+    } catch (err) {
+      console.log(err);
+    }
+
     setUserLocationInfo({
       ...userLocationInfo,
       cityArea: currentLocation.cityArea,
@@ -411,6 +422,7 @@ export default function ({
       region: currentLocation.region,
       country: currentLocation.country,
     });
+    setLoading(false);
   };
 
   const handleOpen = () => {
@@ -743,6 +755,14 @@ export default function ({
                 }
               >
                 Update
+                <div
+                  className={classes.circularProgress_container}
+                  style={{ display: loading ? "flex" : "none" }}
+                >
+                  {loading && (
+                    <CircularProgress className={classes.circularProgress} />
+                  )}
+                </div>
               </Button>
               <Button
                 className={classes.logoutButton}
@@ -765,29 +785,7 @@ export default function ({
                 BackdropProps={{
                   timeout: 500,
                 }}
-              >
-                <Fade in={open}>
-                  <Alert
-                    className={classes.alert_button}
-                    action={
-                      <IconButton
-                        aria-label="close"
-                        color="inherit"
-                        onClick={() => {
-                          setOpen(false);
-                        }}
-                      >
-                        <CloseIcon
-                          className={classes.closeIcon}
-                          fontSize="inherit"
-                        />
-                      </IconButton>
-                    }
-                  >
-                    Profile updated!
-                  </Alert>
-                </Fade>
-              </Modal>
+              ></Modal>
             </div>
           </div>
         </ValidatorForm>

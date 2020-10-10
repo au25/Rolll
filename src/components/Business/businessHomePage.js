@@ -21,8 +21,8 @@ export default function ({ location }) {
   const [userAuthInfo, setUserAuthnfo] = useState();
   const [userDbInfo, setUserDbInfo] = useState();
 
-  console.log("business home");
-  console.log(location);
+  // console.log("business home");
+  // console.log(location);
 
   firebase.auth().onAuthStateChanged((user) => {
     if (user != null) {

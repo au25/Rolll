@@ -173,6 +173,14 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    padding: "0 0 80px 0"
+  },
+  actualLoading_container: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   logo_image: {
     width: "100px",
@@ -188,6 +196,12 @@ const useStyles = makeStyles((theme) => ({
     margin: "25px 0 20px 0",
     width: "80%",
     height: "56px",
+  },
+  logo_image: {
+    width: "45px",
+    margin: "0 0 10px 0",
+    backgroundColor: "white",
+    borderRadius: "50px",
   },
 }));
 
@@ -251,14 +265,14 @@ export default function ({ userDbInfo, userAuthInfo, userLocationInfo }) {
      * Fetches the gift record from a city and saves it as state
      */
     const fetchCityRecord = async () => {
-      if (userDbInfo && userDbInfo.data()) {
+      if (userDbInfo && userDbInfo.data() && userLocationInfo) {
         const cityRef = await db
           .collection("gift")
           .doc(userDbInfo.data().user_country)
           .collection(userDbInfo.data().user_region)
           .doc(userDbInfo.data().user_city)
           .collection("area")
-          .doc(userDbInfo.data().user_cityArea)
+          .doc(userLocationInfo.cityArea)
           .get();
 
         // Sets the gifts from the city
@@ -465,10 +479,7 @@ export default function ({ userDbInfo, userAuthInfo, userLocationInfo }) {
           return (
             <div className={classes.loading_container}>
               <div className={classes.logo_container}>
-                <img
-                  className={classes.logo_image}
-                  src="img/rolll_logo_2.png"
-                />
+              <img className={classes.logo_image} src="img/logo_96x96_ver1.png" />
               </div>
               <div className={classes.allGiftsClaimed_text}>
                 No gifts available, come back later!
@@ -554,9 +565,9 @@ export default function ({ userDbInfo, userAuthInfo, userLocationInfo }) {
       </ThemeProvider>
     </div>
   ) : (
-    <div className={classes.loading_container}>
+    <div className={classes.actualLoading_container}>
       <div className={classes.logo_container}>
-        <img className={classes.logo_image} src="img/rolll_logo_2.png" />
+      <img className={classes.logo_image} src="img/logo_96x96_ver1.png" />
       </div>
       <div className={classes.allGiftsClaimed_text}>Loading...</div>
     </div>

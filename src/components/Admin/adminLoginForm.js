@@ -100,7 +100,6 @@ const AdminLoginPage = () => {
    */
   async function makeAdmin(e) {
     e.preventDefault();
-    console.log("Making admin...");
 
     // Get e-mail
     const addAdminRole = firebase.functions().httpsCallable("addAdminRole");

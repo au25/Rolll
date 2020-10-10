@@ -219,15 +219,16 @@ export default function ({ userDbInfo }) {
     const giftArrayCopy = giftArray.data()[gift.gift_name];
     for (let i = giftArrayCopy.length - 1; i >= 0; i--) {
       if (giftArrayCopy[i].gift_id == gift.gift_id) {
-        console.log("updating array at index: " + i);
+        // console.log("updating array at index: " + i);
         giftArrayCopy[i].gift_expiry_date = moment(
           firebase.firestore.Timestamp.now(new Date()).toDate()
         ).format();
       }
     }
-    console.log({ [gift.gift_name]: giftArrayCopy });
-    console.log(giftArray.data());
+    // console.log({ [gift.gift_name]: giftArrayCopy });
+    // console.log(giftArray.data());
     giftArrayRef.set({ [gift.gift_name]: giftArrayCopy });
+    setGiftRecord(giftArrayCopy);
 
     // Updating array of gift in location
     // Gets shop information first to cross match address to ensure gift belongs to that shop
@@ -261,7 +262,7 @@ export default function ({ userDbInfo }) {
 
   const RenderGiftHistory = () => {
     if (giftRecord && giftRecord[0]) {
-    // if (false) {
+      // if (false) {
       // Renders gift information
       // If gift has not expire, renders diable button as well
       return giftRecord.map((gift) =>

@@ -87,12 +87,8 @@ export default function ({ actionCode }) {
 
   useEffect(() => {
     const auth = firebase.auth();
-
-    console.log("pls work");
-    console.log(actionCode);
     auth.applyActionCode(actionCode).then(
       () => {
-        console.log("verified");
         setVerify(true);
         setValid(true);
         setTimeout(function(){history.push("/");}, 5000);
