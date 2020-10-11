@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import {
   ThemeProvider,
   makeStyles,
@@ -145,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "85%",
     margin: "0 0 15px 0",
-    padding: "0 0 10px 0",
+    padding: "0 0 5px 0",
     borderBottom: "1px solid lightgray",
   },
   shopName_text: {
@@ -158,6 +158,12 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     lineHeight: "15px",
     padding: "0 15px 0 0",
+    fontWeight: "bold",
+    [theme.breakpoints.down("sm")]: {
+      padding: "0",
+      margin: "0 0 10px 0",
+      width: "90%",
+    },
   },
   shopEnabled_message: {
     fontSize: "14px",
@@ -165,19 +171,30 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 0 5px 0",
     fontFamily: "CoreSans, sans-serif",
     margin: "0 0 5px 0",
+    [theme.breakpoints.down("sm")]: {
+      margin: "0 0 5px 0",
+    },
   },
   shopName_disable: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: "52px",
+    // height: "52px",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      margin: "0 0 10px 0",
+    },
   },
   shopName_select: {
     width: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      margin: "0 0 10px 0",
+    },
   },
   selectShop_button: {
     // width: "40%",
@@ -288,6 +305,7 @@ export default function ({ location }) {
   const [giftRecord, setGiftRecord] = useState({});
   const [userDbInfo, setUserDbInfo] = useState();
   const [loading, setLoading] = useState(false);
+  const [disableLoading, setDisableLoading] = useState(false);
 
   /**
    * Props from parent from <Link> route
@@ -367,6 +385,7 @@ export default function ({ location }) {
 
       const handleGiftDisable = async (shop, index) => {
         // console.log("disable");
+        setDisableLoading(true);
 
         const giftRecordArray = giftRecord.data()[gift.gift_name];
         const currentTime = moment(
@@ -425,14 +444,22 @@ export default function ({ location }) {
                 }
                 // console.log("new claimed gift array");
                 // console.log(claimedGifts);
-                await cityAreaRef.set({ gift: claimedGifts });
-                await cityRef.set({ gift: claimedGifts });
+                try {
+                  await cityAreaRef.set({ gift: claimedGifts });
+                  await cityRef.set({ gift: claimedGifts });
+                  setTimeout(() => {
+                    setDisableLoading(false);
+                  }, 500);
+                } catch (err) {
+                  console.log(err);
+                }
               }
             }
           }
           fetch_giftRecord();
         }
       };
+
 
       /**
        * Returns the list of shop
@@ -443,7 +470,7 @@ export default function ({ location }) {
             showSelection && (
               <div className={classes.applyGiftShopContainer}>
                 <div className={classes.shopEnabled_message}>
-                  Gift enabled for this shop.
+                  Gift is enabled.
                 </div>
                 <div className={classes.shopName_disable}>
                   <div className={classes.shopName_text}>{shop.shop_name}</div>
@@ -454,6 +481,16 @@ export default function ({ location }) {
                     }}
                   >
                     Disable
+                    {/* <div
+                      className={classes.circularProgress_container}
+                      style={{ display: disableLoading ? "flex" : "none" }}
+                    >
+                      {disableLoading && (
+                        <CircularProgress
+                          className={classes.circularProgress}
+                        />
+                      )}
+                    </div> */}
                   </Button>
                 </div>
               </div>

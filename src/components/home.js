@@ -44,8 +44,17 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down(600)]: {
       overflow: "initial",
       backgroundColor: "rgba(241, 241, 241)",
-      borderRadius: "0 0 0 0"
+      borderRadius: "0 0 0 0",
     },
+  },
+  arrowDown: {
+    zIndex: "100000",
+    borderLeft: "5px solid transparent",
+    borderRight: "5px solid transparent",
+    borderTop: "8px solid white",
+    position: "absolute",
+    bottom: "3%",
+    right: "7%"
   },
 }));
 
@@ -82,8 +91,9 @@ export default function () {
           <Navigation />
           <img
             className={classes.banner_image}
-            src="img/landing_withLogo_smol2.jpg"
+            src="img/landing_withLogo_loopOnce.gif"
           />
+          <div className={classes.arrowDown}></div>
         </div>
       </Div100vh>
     </div>

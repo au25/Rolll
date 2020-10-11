@@ -61,6 +61,8 @@ const useStyles = makeStyles((theme) => ({
   },
   shopName_text: {
     fontWeight: "bold",
+    width: "90%",
+    textAlign: "center"
   },
   giftName_text: {
     // fontWeight: "bold"

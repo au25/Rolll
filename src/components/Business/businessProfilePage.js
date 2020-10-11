@@ -8,6 +8,7 @@ import firebase from "../../firebase";
 import { useHistory } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   businessProfilePage_outerContainer: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: "20px",
       width: "415px",
       height: "600px",
-      justifyContent: "center"
+      justifyContent: "center",
     },
   },
   maangerInfoText: {
@@ -80,12 +81,22 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(255, 255, 255)",
     letterSpacing: "1px",
     fontSize: "16px",
-    width: "50%",
+    // width: "50%",
     margin: " 0 0 12px 0",
+    padding: "5px 15px",
     height: "50px",
     "&:hover": {
       backgroundColor: "#439a47 !important",
     },
+  },
+  circularProgress_container: {
+    display: "flex",
+    margin: "0 0 0 10px",
+  },
+  circularProgress: {
+    width: "20px !important",
+    height: "20px !important",
+    color: "white !important",
   },
 }));
 
@@ -146,6 +157,7 @@ export default function ({ userDbInfo }) {
   const history = useHistory();
 
   const [userInfo, setUserInfo] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setUserInfo(userDbInfo.data());
@@ -167,22 +179,29 @@ export default function ({ userDbInfo }) {
    * Handles profile submit
    */
   function handleProfileSubmit(e) {
+    setLoading(true);
     e.preventDefault();
-    console.log("profile submiting...");
 
     const db = firebase.firestore();
-    db.collection("businessUser").doc(userDbInfo.id).update({
-      email: userInfo.email,
-      first_name: userInfo.first_name,
-      last_name: userInfo.last_name,
-      phone_number: userInfo.phone_number,
-    });
+    try {
+      db.collection("businessUser").doc(userDbInfo.id).update({
+        email: userInfo.email,
+        first_name: userInfo.first_name,
+        last_name: userInfo.last_name,
+        phone_number: userInfo.phone_number,
+      });
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
     <div className={classes.businessProfilePage_outerContainer}>
       <div className={classes.businessProfilePageContainer}>
-        <div className={classes.maangerInfoText}>User Info</div>
+        <div className={classes.maangerInfoText}>Manager Info</div>
         <ThemeProvider theme={theme}>
           <ValidatorForm
             className={classes.formContainer}
@@ -192,7 +211,7 @@ export default function ({ userDbInfo }) {
           >
             <TextValidator
               className={classes.emailInput}
-              // disabled="true"
+              disabled="true"
               id="filled-basic"
               label="Email"
               InputLabelProps={{ shrink: true }}
@@ -241,6 +260,14 @@ export default function ({ userDbInfo }) {
             />
             <Button className={classes.updateButton} type="submit">
               Update
+              <div
+                className={classes.circularProgress_container}
+                style={{ display: loading ? "flex" : "none" }}
+              >
+                {loading && (
+                  <CircularProgress className={classes.circularProgress} />
+                )}
+              </div>
             </Button>
             <div className={classes.logoutButtonContainer}>
               <Button
