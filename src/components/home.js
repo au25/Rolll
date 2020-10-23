@@ -91,7 +91,7 @@ export default function () {
           <Navigation />
           <img
             className={classes.banner_image}
-            src="img/landing_withLogo_loopOnce.gif"
+            src="img/landing_withLogo_foreverLoop.gif"
           />
           <div className={classes.arrowDown}></div>
         </div>

@@ -81,17 +81,9 @@ const AdminLoginPage = () => {
       const credential = await firebase
         .auth()
         .signInWithEmailAndPassword(loginValue.email, loginValue.password);
+        history.push("/6047275107plswork")
     } catch (error) {
       console.log(error);
-    }
-
-    // If user is logged in, route to user home page
-    if (currentUser != null) {
-      currentUser.getIdTokenResult().then(idTokenResult => {
-        if (idTokenResult.claims.adminRole) {
-          history.push("/adminHome");
-        }
-      });
     }
   }
 

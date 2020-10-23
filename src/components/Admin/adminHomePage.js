@@ -11,19 +11,19 @@ const useStyles = makeStyles({
   shopInfoContainer: {
     display: "flex",
     flexDirection: "column",
-    margin: "25px"
+    margin: "25px",
   },
   unapprovedTitleContainer: {
     margin: "50px 0 25px 0",
-    fontSize: "20px"
+    fontSize: "20px",
   },
   approvedTitleContainer: {
     margin: "50px 0 25px 0",
-    fontSize: "20px"
-  }
+    fontSize: "20px",
+  },
 });
 
-export default function() {
+export default function () {
   const [allShopSnapshot, setAllShopSnapshot] = useState([]);
   const [allApproveUser, setAllApproveUser] = useState([]);
   const [allUnapproveUser, setAllUnapproveUser] = useState([]);
@@ -33,13 +33,24 @@ export default function() {
   const history = useHistory();
   const db = firebase.firestore();
 
+  if (currentUser != null) {
+    console.log("running user auth");
+    currentUser.getIdTokenResult().then((idTokenResult) => {
+      if (!idTokenResult.claims.adminRole) {
+        history.push("/home");
+      }
+    });
+  } else {
+    history.push("/home");
+  }
+
   useEffect(() => {
     async function fetchAllBusinessUser() {
       const businessUserCollection = await db.collection("businessUser").get();
       const businessUserDoc = businessUserCollection.docs;
       for (let i = 0; i < businessUserDoc.length; i++) {
         if (businessUserDoc[i].data().is_approve == "false") {
-          setAllUnapproveUser(user => [
+          setAllUnapproveUser((user) => [
             ...user,
             {
               id: businessUserDoc[i].id,
@@ -50,13 +61,13 @@ export default function() {
               shop_floor: businessUserDoc[i].data().shop.shop_floor,
               shop_name: businessUserDoc[i].data().shop.shop_name,
               email: businessUserDoc[i].data().email,
-              approveShop: businessUserDoc[i].data().is_approve
-            }
+              approveShop: businessUserDoc[i].data().is_approve,
+            },
           ]);
         }
 
         if (businessUserDoc[i].data().is_approve == "true") {
-          setAllApproveUser(user => [
+          setAllApproveUser((user) => [
             ...user,
             {
               id: businessUserDoc[i].id,
@@ -67,8 +78,8 @@ export default function() {
               shop_floor: businessUserDoc[i].data().shop.shop_floor,
               shop_name: businessUserDoc[i].data().shop.shop_name,
               email: businessUserDoc[i].data().email,
-              approveShop: businessUserDoc[i].data().is_approve
-            }
+              approveShop: businessUserDoc[i].data().is_approve,
+            },
           ]);
         }
       }
@@ -80,14 +91,14 @@ export default function() {
    * Renders the list of unapproved shop from allUnapproveUser state
    */
   function RenderUnapproveUser() {
-    return allUnapproveUser.map(data => (
+    return allUnapproveUser.map((data) => (
       <div className={classes.shopInfoContainer}>
         <div>{data.email}</div>
         <div>
           Status: {data.approveShop == "false" ? "Not Approved" : "Approved"}
         </div>
         <button
-          onClick={e => {
+          onClick={(e) => {
             approveUser(data);
           }}
         >
@@ -97,31 +108,29 @@ export default function() {
     ));
   }
 
-  const approveUser = data => {
+  const approveUser = (data) => {
     // Change the custom claim of shop to not approved
     const addBusinessUserApproved = firebase
       .functions()
       .httpsCallable("addBusinessUserApproved");
-    addBusinessUserApproved({ email: data.email }).then(result => {
+    addBusinessUserApproved({ email: data.email }).then((result) => {
       // console.log(result);
     });
 
     // Updates database that the approveShop status to true
-    db.collection("businessUser")
-      .doc(data.id)
-      .update({
-        is_approve: "true"
-      });
+    db.collection("businessUser").doc(data.id).update({
+      is_approve: "true",
+    });
 
     // Set state of unapproved shop to filter out new approved shop
     setAllUnapproveUser(
-      allUnapproveUser.filter(shop => {
+      allUnapproveUser.filter((shop) => {
         return shop.id != data.id;
       })
     );
 
     // Set state of approved shop and add new approved shop
-    setAllApproveUser(user => [
+    setAllApproveUser((user) => [
       ...user,
       {
         id: data.id,
@@ -132,8 +141,8 @@ export default function() {
         shop_floor: data.shop_floor,
         shop_name: data.shop_name,
         email: data.email,
-        approveShop: data.approveShop
-      }
+        approveShop: data.approveShop,
+      },
     ]);
   };
 
@@ -141,7 +150,7 @@ export default function() {
    * Renders the list of approved shop from allApproveUser state
    */
   function RenderApproveUser() {
-    return allApproveUser.map(data => (
+    return allApproveUser.map((data) => (
       <div className={classes.shopInfoContainer}>
         <div>{data.email}</div>
         <div>
@@ -158,31 +167,29 @@ export default function() {
     ));
   }
 
-  const removeApproveUser = data => {
+  const removeApproveUser = (data) => {
     // Change the custom claim of shop to not approved
     const removeBusinessUserApproved = firebase
       .functions()
       .httpsCallable("removeBusinessUserApproved");
-    removeBusinessUserApproved({ email: data.email }).then(result => {
+    removeBusinessUserApproved({ email: data.email }).then((result) => {
       // console.log(result);
     });
 
     // Updates database that the approveShop status to false
-    db.collection("businessUser")
-      .doc(data.id)
-      .update({
-        is_approve: "false"
-      });
+    db.collection("businessUser").doc(data.id).update({
+      is_approve: "false",
+    });
 
     // Set new state of approved shop to filter new unapproved shop
     setAllApproveUser(
-      allApproveUser.filter(shop => {
+      allApproveUser.filter((shop) => {
         return shop.id != data.id;
       })
     );
 
     // Set new state of unapproved shop and add new unapproved shop
-    setAllUnapproveUser(shop => [
+    setAllUnapproveUser((shop) => [
       ...shop,
       {
         id: data.id,
@@ -193,8 +200,8 @@ export default function() {
         shop_floor: data.shop_floor,
         shop_name: data.shop_name,
         email: data.email,
-        approveShop: data.approveShop
-      }
+        approveShop: data.approveShop,
+      },
     ]);
   };
 
@@ -206,10 +213,10 @@ export default function() {
       <RenderApproveUser />
       <br />
       <button
-        onClick={async e => {
+        onClick={async (e) => {
           e.preventDefault();
           await app.auth().signOut();
-          history.push('/home');
+          history.push("/home");
         }}
       >
         Log out

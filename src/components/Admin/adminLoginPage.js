@@ -27,17 +27,9 @@ export default function() {
   const history = useHistory();
   const { currentUser } = useContext(AuthContext);
 
-  if (currentUser != null) {
-    currentUser.getIdTokenResult().then(idTokenResult => {
-      if (idTokenResult.claims.adminRole) {
-        history.push("/adminHome");
-      }
-    });
-  }
-
   return (
     <div className={classes.signupPageContainer}>
-      <Navigation />
+      {/* <Navigation /> */}
       <div className={classes.formContainer}>
         <AdminLoginForm />
       </div>

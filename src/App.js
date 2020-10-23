@@ -60,8 +60,8 @@ function App() {
           />
 
           {/* Admin Routes */}
-          <Route path="/admin" component={AdminLoginPage} />
-          <Route path="/adminHome" component={AdminHomePage} />
+          <Route path="/6047275107" component={AdminLoginPage} />
+          <Route path="/6047275107plswork" component={AdminHomePage} />
         </div>
       </Router>
     </AuthProvider>

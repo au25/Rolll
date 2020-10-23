@@ -21,7 +21,11 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
     margin: "25px 0 0 0",
     fontSize: "15px",
-    color: "#000000d1"
+    color: "#000000d1",
+  },
+  intro_innerText: {
+    textAlign: "center",
+    margin: "0 0 25px 0",
   },
   questions_text: {
     margin: "25px 0 0 0",
@@ -73,7 +77,7 @@ const theme = createMuiTheme({
     },
     MuiExpansionPanelSummary: {
       content: {
-        padding: "0 45px 0 0",
+        padding: "0 30px 0 0",
       },
       root: {
         minHeight: "30px",
@@ -130,8 +134,9 @@ export default function () {
         <div className={classes.intro_container}>
           <div className={classes.betaVersion_text}>1.0.0 beta</div>
           <div className={classes.intro_text}>
-            Rolll is meant to create a fun interaction with your local beverage
-            shops.
+            <div className={classes.intro_innerText}>
+              You can gacha - like, in real life, for yummy stuff.
+            </div>
           </div>
         </div>
         <ExpansionPanel>
@@ -140,7 +145,23 @@ export default function () {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography className={classes.heading}>Is it free?</Typography>
+            <Typography className={classes.heading}>What is gacha?</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <Typography>
+              Gacha is to win something at random.
+            </Typography>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography className={classes.heading}>
+              Is it free-to-use?
+            </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>Yes.</Typography>
@@ -158,12 +179,14 @@ export default function () {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography>
-              1. Sign up <br />
+              <div className={classes.signup_text}>
+                Sign up. <br />
+              </div>
               <br />
-              2. Choose the shop you want to go to
+              Choose the shop you want to visit.
               <br />
               <br />
-              3. Let the cashier know. Open gift and show the prize to cashier.
+              Let the cashier know you want to rolll.
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -174,14 +197,14 @@ export default function () {
             id="panel2a-header"
           >
             <Typography className={classes.heading}>
-              The sign-up form does not have my location?
+              Sign-up form does not have my shop's location?
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Typography className={classes.heading}>
-              We are currently only supporting Vancouver BC. If you want to use
-              our services, please send a brief email with your location to
-              support@rolll.app.
+              Currently only supporting Metro Vancouver in beta.
+              <br />
+              <br /> But, send us an e-mail and we can add your location.
             </Typography>
           </ExpansionPanelDetails>
         </ExpansionPanel>

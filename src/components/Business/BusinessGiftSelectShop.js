@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
   giftDescription_container: {
     display: "flex",
     justifyContent: "space-evenly",
-    padding: "0 15px 0 35px",
+    padding: "0 7px 0 30px",
   },
   chanceText_container: {
     margin: "10px 0 0 0",

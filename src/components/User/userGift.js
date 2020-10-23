@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
       height: "600px",
       overflow: "auto",
       backgroundColor: "#e8e8e8",
-      borderRadius: "20px"
+      borderRadius: "20px",
     },
   },
   giftContainer: {
@@ -56,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#fbfcfc",
     fontFamily: "CoreSans, sans-serif",
     letterSpacing: "0.5px",
+    textAlign: "center",
   },
   shopAddress_text: {
     fontSize: "14px",
@@ -173,7 +174,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: "0 0 80px 0"
+    padding: "0 0 80px 0",
   },
   actualLoading_container: {
     height: "100%",
@@ -428,9 +429,7 @@ export default function ({ userDbInfo, userAuthInfo, userLocationInfo }) {
                             ? classes.shakeCSS
                             : classes.giftImageContainer
                         }
-                        onClick={(e) =>
-                          handleGiftMouseDown(e, index, cityGift)
-                        }
+                        onClick={(e) => handleGiftMouseDown(e, index, cityGift)}
                       >
                         <img
                           className={classes.giftImage}
@@ -479,7 +478,10 @@ export default function ({ userDbInfo, userAuthInfo, userLocationInfo }) {
           return (
             <div className={classes.loading_container}>
               <div className={classes.logo_container}>
-              <img className={classes.logo_image} src="img/logo_96x96_ver1.png" />
+                <img
+                  className={classes.logo_image}
+                  src="img/logo_96x96_ver1.png"
+                />
               </div>
               <div className={classes.allGiftsClaimed_text}>
                 No gifts available, come back later!
@@ -567,7 +569,7 @@ export default function ({ userDbInfo, userAuthInfo, userLocationInfo }) {
   ) : (
     <div className={classes.actualLoading_container}>
       <div className={classes.logo_container}>
-      <img className={classes.logo_image} src="img/logo_96x96_ver1.png" />
+        <img className={classes.logo_image} src="img/logo_96x96_ver1.png" />
       </div>
       <div className={classes.allGiftsClaimed_text}>Loading...</div>
     </div>

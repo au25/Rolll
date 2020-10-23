@@ -430,7 +430,7 @@ const SignUp = ({ history }) => {
                 "img/blue_gift_box2.png",
               gift_description: {
                 chance: [0.1, 0.3, 0.6],
-                reward: ["Free Drink", "50% discount", "25% discount"],
+                reward: ["Free Drink", "50% Off", "25% Off"],
                 expire_time: [5, 5, 5],
               },
             },

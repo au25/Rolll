@@ -34,6 +34,10 @@ export default function (location) {
     }
   });
 
+  if (currentUser == null) {
+    history.push("/");
+  }
+
   /**
    * Sets initial state of userDbInfo and shopInfo
    */
@@ -52,7 +56,7 @@ export default function (location) {
           country: user.data().user_country,
           region: user.data().user_region,
           city: user.data().user_city,
-          cityArea: user.data().user_cityArea
+          cityArea: user.data().user_cityArea,
         });
         console.log(user);
       }

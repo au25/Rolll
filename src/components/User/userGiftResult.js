@@ -140,8 +140,8 @@ const useStyles = makeStyles((theme) => ({
   innerContainer: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 }));
 
 const theme = createMuiTheme({
@@ -171,6 +171,9 @@ export default function ({ userDbInfo, location }) {
   const [expireFlag, setExpireFlag] = useState(true);
 
   useEffect(() => {
+    if (currentUser == null) {
+      history.push("/");
+    }
     if (userDbInfo && userDbInfo.data()) {
       setUserInfo(userDbInfo.data());
     }
