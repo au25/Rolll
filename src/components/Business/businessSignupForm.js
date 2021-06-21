@@ -411,7 +411,7 @@ const SignUp = ({ history }) => {
           is_approve: "false",
           gift: [
             {
-              gift_name: "Essential Template",
+              gift_name: "Doubly For Two",
               gift_intro:
                 "This template is suitable for long term usage.  Ideal for attracting and retaining customers!",
               image_url:

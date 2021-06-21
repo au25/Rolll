@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo_image: {
     width: "50px",
+    height: "50px",
     margin: "0px 0 5px 0",
     backgroundColor: "white",
     borderRadius: "50px",

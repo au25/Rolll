@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "CoreSans, sans-serif",
     letterSpacing: "0.5px",
     textAlign: "center",
+    padding: "0 15px 0",
   },
   shopAddress_text: {
     fontSize: "14px",

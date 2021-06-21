@@ -183,6 +183,9 @@ export default function ({ userDbInfo }) {
       .collection("giftRecord")
       .get();
 
+      console.log("what is snapshot");
+      console.log(db_giftRecord);
+
     let giftRecordArray = [];
     db_giftRecord.docs.map((doc) => {
       for (let giftTemplate in doc.data()) {
@@ -300,6 +303,10 @@ export default function ({ userDbInfo }) {
                   Disable
                 </Button>
               </div>
+              {/* <div>
+                <div>Clicks</div>
+                <div>100</div>
+              </div> */}
             </div>
           </div>
         ) : (
