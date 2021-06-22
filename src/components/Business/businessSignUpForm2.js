@@ -18,6 +18,10 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 
 /**
  * CSS of the page
@@ -63,8 +67,14 @@ const useStyles = makeStyles(() => ({
       width: "70%",
     },
   },
+  shopInfo_container: {
+    fontSize: "15px",
+    margin: "0 0 0 15px",
+    color: "rgba(0, 0, 0, 0.8)",
+    fontFamily: "CoreSans, sans-serif",
+  },
   root: {
-    margin: "0 0 32px 0",
+    margin: "0 0 128px 0",
     width: "100%",
     display: "flex",
     justifyContent: "center",
@@ -205,6 +215,40 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "#439a47 !important", //dark green
     },
   },
+  searchBar_container: {
+    width: "70%",
+    height: "60%",
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  searchInput: {
+    width: "100%",
+    height: "60px",
+    border: "none",
+    outline: "none",
+    fontWeight: "bold",
+    fontFamily: "CoreSans, sans-serif",
+    fontSize: "16px",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.4)",
+  },
+  shopName_input: {
+    margin: "28px 0 28px 0",
+  },
+  suggestionList_container: {
+    listStyleType: "none",
+    width: "100%",
+    padding: "5px 0 8px 0",
+    border: "1px solid rgba(0, 0, 0, 0.4)"
+  },
+  listItems: {
+    padding: "6px 0 6px 10px",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "rgba(205, 239, 245, 0.4)",
+    },
+  },
 }));
 
 const theme = createMuiTheme({
@@ -313,10 +357,19 @@ export default function () {
   const [addr_info, setAddr_info] = useState({
     postal_code: "lol",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     console.log("Registeation values: ", registrationValue);
   }, [registrationValue]);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   /**
    * This creates authentication user and also database user with the same unique ID
@@ -468,6 +521,8 @@ export default function () {
         setRegistrationValue({
           ...registrationValue,
           ...temp_addressInfo,
+          shop_name: details.name,
+          phone_number: details.formatted_phone_number,
         });
       })
       .catch((error) => {
@@ -493,28 +548,24 @@ export default function () {
       } = suggestion;
 
       return (
-        <li key={place_id} onClick={handleSelect(suggestion, place_id)}>
-          <strong>{main_text}</strong> <small>{secondary_text}</small>
+        <li
+          className={classes.listItems}
+          key={place_id}
+          onClick={handleSelect(suggestion, place_id)}
+        >
+          <div>
+            <strong>{main_text}</strong>
+          </div>
+          <div>
+            <small>{secondary_text}</small>
+          </div>
         </li>
       );
     });
 
   return (
     <div>
-      <div ref={ref}>
-        <input
-          value={value}
-          onChange={handleInput}
-          disabled={!ready}
-          placeholder="Where are you going?"
-        />
-        {/* We can use the "status" to decide whether we should display the dropdown or not */}
-        {status === "OK" && <ul>{renderSuggestions()}</ul>}
-      </div>
       <ThemeProvider theme={theme}>
-        <div>
-          <div>shop name: {registrationValue.postal_code}</div>
-        </div>
         <div className={classes.outerFormContainer}>
           <div className={classes.rollWithUsTextUsText}>
             We just need a few information to get you rollling.
@@ -525,6 +576,22 @@ export default function () {
               <div>Shop Information</div>
               <div className={classes.borderBottom}></div>
             </div>
+            <div ref={ref} className={classes.searchBar_container}>
+              <input
+                value={value}
+                onChange={handleInput}
+                disabled={!ready}
+                placeholder="Enter shop name"
+                className={classes.searchInput}
+              />
+              {/* We can use the "status" to decide whether we should display the dropdown or not */}
+              {status === "OK" && (
+                <ul className={classes.suggestionList_container}>
+                  {" "}
+                  {renderSuggestions()}
+                </ul>
+              )}
+            </div>
             <ValidatorForm
               className={classes.root}
               noValidate
@@ -532,34 +599,148 @@ export default function () {
               onSubmit={accountSignup}
             >
               <div className={classes.formContainer}>
+                <div>
+                  <TextValidator
+                    className={classes.shopName_input}
+                    id="filled-basic4"
+                    label="Shop Name"
+                    variant="filled"
+                    value={registrationValue.shop_name}
+                    validators={["required"]}
+                    errorMessages={["Shop name is requred"]}
+                    onChange={(e) =>
+                      setRegistrationValue({
+                        ...registrationValue,
+                        shop_name: e.target.value,
+                      })
+                    }
+                  />
+                  <div className={classes.shopInfo_container}>
+                    <div>
+                      {registrationValue.shop_streetNumber +
+                        " " +
+                        registrationValue.shop_address}
+                    </div>
+                    <div>
+                      {" "}
+                      {registrationValue.shop_city +
+                        " " +
+                        registrationValue.shop_region +
+                        ", " +
+                        registrationValue.shop_country}
+                    </div>
+                    <div>{registrationValue.phone_number}</div>
+                  </div>
+                  <div className={classes.managerInfoTitleContainer}>
+                    <div className={classes.managerInfoBorderBottom}></div>
+                    <div>Account Information</div>
+                    <div className={classes.managerInfoBorderBottom}></div>
+                  </div>
+                </div>
                 <TextValidator
-                  id="filled-basic4"
-                  label="Shop Name"
+                  id="filled-basic"
+                  label="Full Name"
                   variant="filled"
-                  value={registrationValue.shop_name}
+                  value={registrationValue.first_name}
                   validators={["required"]}
-                  errorMessages={["Shop name is requred"]}
+                  errorMessages={["First name is requred"]}
                   onChange={(e) =>
                     setRegistrationValue({
                       ...registrationValue,
-                      shop_name: e.target.value,
+                      first_name: e.target.value,
                     })
                   }
                 />
-                <div>
-                  {registrationValue.shop_streetNumber +
-                    " " +
-                    registrationValue.shop_address}
+                <TextValidator
+                  id="filled-basic0"
+                  label="Email Address"
+                  variant="filled"
+                  value={registrationValue.email}
+                  validators={["required"]}
+                  errorMessages={["Email address is requred"]}
+                  onChange={(e) =>
+                    setRegistrationValue({
+                      ...registrationValue,
+                      email: e.target.value,
+                    })
+                  }
+                />
+                <div className={classes.passwordContainer}>
+                  <TextValidator
+                    id="filled-basic1"
+                    label="Password"
+                    variant="filled"
+                    type={showPassword ? "text" : "password"}
+                    value={registrationValue.password}
+                    validators={["required", "matchRegexp:^.{8,16}$"]}
+                    errorMessages={[
+                      "Password is required",
+                      "Password must be 8 - 16 characters",
+                    ]}
+                    onChange={(e) =>
+                      setRegistrationValue({
+                        ...registrationValue,
+                        password: e.target.value,
+                      })
+                    }
+                  />
+                  <IconButton
+                    className={classes.passwordIcon}
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
                 </div>
-                <div>
-                  {" "}
-                  {registrationValue.shop_city +
-                    " " +
-                    registrationValue.shop_region +
-                    ", " +
-                    registrationValue.shop_country}
+                <div className={classes.passwordContainer}>
+                  <TextValidator
+                    id="filled-basic2"
+                    label="Repeat Password"
+                    variant="filled"
+                    type={showPassword ? "text" : "password"}
+                    value={registrationValue.confirmPassword}
+                    validators={[
+                      "isPasswordMatch",
+                      "required",
+                      "matchRegexp:^.{8,16}$",
+                    ]}
+                    errorMessages={[
+                      "Password doesn't match",
+                      "Confirm password is required",
+                      "Password must be 8 - 16 characters",
+                    ]}
+                    onChange={(e) =>
+                      setRegistrationValue({
+                        ...registrationValue,
+                        confirmPassword: e.target.value,
+                      })
+                    }
+                  />
+                  <IconButton
+                    className={classes.passwordIcon}
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
                 </div>
-                <div>{registrationValue.phone_number}</div>
+                <div
+                  className={classes.signupMsg_text}
+                  style={{ display: loginValueCSS ? "flex" : "none" }}
+                >
+                  {signupMsg}
+                </div>
+                <Button
+                  className={classes.userSignup_saveButton}
+                  type="submit"
+                  disabled={false}
+                >
+                  SIGN UP
+                </Button>
               </div>
             </ValidatorForm>
           </div>

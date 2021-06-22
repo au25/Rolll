@@ -382,7 +382,7 @@ const SignUp = ({ history }) => {
    */
   async function accountSignup(e) {
     const db = firebase.firestore();
-    console.log(registrationValue);
+    console.log("Registration value beofre form submitted to FireBase: ", registrationValue);
     try {
       const credential = await firebase
         .auth()
