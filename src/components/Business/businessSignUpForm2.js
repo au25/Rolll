@@ -240,7 +240,7 @@ const useStyles = makeStyles(() => ({
     listStyleType: "none",
     width: "100%",
     padding: "5px 0 8px 0",
-    border: "1px solid rgba(0, 0, 0, 0.4)"
+    border: "1px solid rgba(0, 0, 0, 0.4)",
   },
   listItems: {
     padding: "6px 0 6px 10px",
@@ -249,6 +249,22 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "rgba(205, 239, 245, 0.4)",
     },
   },
+  changeShop_text: {
+    fontSize: "12px",
+    padding: "5px 0 5px 0",
+    width: "140px",
+    // backgroundColor: "rgba(0, 0, 0, 0)",
+    "&:hover": {
+    //   backgroundColor: "#409243",
+        color: "red",
+        cursor: "pointer"
+    },
+  },
+  changeShop_container: {
+    //   display: "flex",
+    //   justifyContent: "center",
+      margin: "25px 0 0 0"
+  }
 }));
 
 const theme = createMuiTheme({
@@ -358,6 +374,8 @@ export default function () {
     postal_code: "lol",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showShopInfo, setShowShopInfo] = useState(false);
+  const [showSearchInput, setShowSearchInput] = useState(true);
 
   useEffect(() => {
     console.log("Registeation values: ", registrationValue);
@@ -538,6 +556,9 @@ export default function () {
       .catch((error) => {
         console.log("😱 Error: ", error);
       });
+
+    setShowShopInfo(true);
+    setShowSearchInput(false);
   };
 
   const renderSuggestions = () =>
@@ -576,22 +597,24 @@ export default function () {
               <div>Shop Information</div>
               <div className={classes.borderBottom}></div>
             </div>
-            <div ref={ref} className={classes.searchBar_container}>
-              <input
-                value={value}
-                onChange={handleInput}
-                disabled={!ready}
-                placeholder="Enter shop name"
-                className={classes.searchInput}
-              />
-              {/* We can use the "status" to decide whether we should display the dropdown or not */}
-              {status === "OK" && (
-                <ul className={classes.suggestionList_container}>
-                  {" "}
-                  {renderSuggestions()}
-                </ul>
-              )}
-            </div>
+            {showSearchInput ? (
+              <div ref={ref} className={classes.searchBar_container}>
+                <input
+                  value={value}
+                  onChange={handleInput}
+                  disabled={!ready}
+                  placeholder="Enter shop name"
+                  className={classes.searchInput}
+                />
+                {/* We can use the "status" to decide whether we should display the dropdown or not */}
+                {status === "OK" && (
+                  <ul className={classes.suggestionList_container}>
+                    {" "}
+                    {renderSuggestions()}
+                  </ul>
+                )}
+              </div>
+            ) : null}
             <ValidatorForm
               className={classes.root}
               noValidate
@@ -600,37 +623,46 @@ export default function () {
             >
               <div className={classes.formContainer}>
                 <div>
-                  <TextValidator
-                    className={classes.shopName_input}
-                    id="filled-basic4"
-                    label="Shop Name"
-                    variant="filled"
-                    value={registrationValue.shop_name}
-                    validators={["required"]}
-                    errorMessages={["Shop name is requred"]}
-                    onChange={(e) =>
-                      setRegistrationValue({
-                        ...registrationValue,
-                        shop_name: e.target.value,
-                      })
-                    }
-                  />
-                  <div className={classes.shopInfo_container}>
+                  {showShopInfo ? (
                     <div>
-                      {registrationValue.shop_streetNumber +
-                        " " +
-                        registrationValue.shop_address}
+                      <TextValidator
+                        className={classes.shopName_input}
+                        id="filled-basic4"
+                        label="Shop Name"
+                        variant="filled"
+                        value={registrationValue.shop_name}
+                        validators={["required"]}
+                        errorMessages={["Shop name is requred"]}
+                        onChange={(e) =>
+                          setRegistrationValue({
+                            ...registrationValue,
+                            shop_name: e.target.value,
+                          })
+                        }
+                      />
+                      <div className={classes.shopInfo_container}>
+                        <div>
+                          {registrationValue.shop_streetNumber +
+                            " " +
+                            registrationValue.shop_address}
+                        </div>
+                        <div>
+                          {" "}
+                          {registrationValue.shop_city +
+                            " " +
+                            registrationValue.shop_region +
+                            ", " +
+                            registrationValue.shop_country}
+                        </div>
+                        <div>{registrationValue.phone_number}</div>
+                        <div className={classes.changeShop_container}>
+                          <div onClick={console.log("lol")} className={classes.changeShop_text}>
+                            Choose another shop
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      {" "}
-                      {registrationValue.shop_city +
-                        " " +
-                        registrationValue.shop_region +
-                        ", " +
-                        registrationValue.shop_country}
-                    </div>
-                    <div>{registrationValue.phone_number}</div>
-                  </div>
+                  ) : null}
                   <div className={classes.managerInfoTitleContainer}>
                     <div className={classes.managerInfoBorderBottom}></div>
                     <div>Account Information</div>

@@ -9,8 +9,8 @@ export default function () {
   const classes = useStyles();
   return (
     <div>
-      {/* <BusinessSignupForm /> */}
-      <BusinessSignupForm2 />
+      <BusinessSignupForm />
+      {/* <BusinessSignupForm2 /> */}
     </div>
   );
 }
